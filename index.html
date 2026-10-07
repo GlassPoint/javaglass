@@ -1,0 +1,7194 @@
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width,initial-scale=1.0">  
+<title>JAVA GLASS LTD | Glass Order System</title>  <style>  
+*{box-sizing:border-box;margin:0;padding:0}  
+  
+:root{  
+--navy:#061426;  
+--navy2:#0b2942;  
+--blue:#232aeb;  
+--blue2:#5c63ff;  
+--darkblue:#123b4a;  
+--light:#eaf4ff;  
+--muted:#9bb8cf;  
+--border:#2b6388;  
+--green:#20b66b;  
+--red:#d93636;  
+--orange:#f59342  
+}  
+  
+body{  
+font-family:Arial,Helvetica,sans-serif;  
+background:var(--navy);  
+color:var(--light);  
+padding:8px  
+}  
+  
+.container{max-width:1250px;margin:auto}  
+  
+.card{  
+background:var(--navy2);  
+border:1px solid var(--border);  
+border-radius:9px;  
+padding:10px;  
+margin-bottom:8px  
+}  
+  
+.header{  
+display:flex;  
+justify-content:space-between;  
+align-items:center;  
+gap:8px  
+}  
+  
+.header h1{font-size:20px}  
+.header small{color:var(--muted);font-size:11px}  
+  
+button{  
+border:0;  
+border-radius:6px;  
+padding:7px 10px;  
+font-weight:700;  
+cursor:pointer;  
+background:var(--blue);  
+color:white;  
+font-size:12px  
+}  
+  
+button:hover{opacity:.9}  
+.btn-green{background:var(--green)}  
+.btn-red{background:var(--red)}  
+.btn-orange{background:var(--orange);color:#111}  
+.btn-dark{background:#173f5c}  
+  
+input,select,textarea{  
+width:100%;  
+background:#0b2740;  
+color:white;  
+border:1px solid #397ca5;  
+border-radius:5px;  
+padding:7px;  
+outline:none;  
+font-size:12px  
+}  
+  
+input:focus,select:focus,textarea:focus{  
+border-color:var(--blue2);  
+box-shadow:0 0 0 1px rgba(92,99,255,.25)  
+}  
+  
+textarea{resize:vertical}  
+  
+label{  
+display:block;  
+font-size:10px;  
+font-weight:700;  
+margin-bottom:3px  
+}  
+  
+.grid,.customer-grid,.cp-grid{  
+display:grid;  
+grid-template-columns:repeat(2,1fr);  
+gap:7px  
+}  
+  
+.customer-grid .full,.full{grid-column:1/-1}  
+  
+.section-title{  
+color:var(--blue2);  
+font-size:14px;  
+margin:12px 0 7px  
+}  
+  
+.promo{  
+background:#0b2942;  
+border-left:3px solid var(--orange);  
+padding:8px;  
+border-radius:6px;  
+line-height:1.45;  
+font-size:11px  
+}  
+  
+.promo strong{color:var(--blue2)}  
+  
+.mode-buttons{  
+display:flex;  
+gap:5px;  
+flex-wrap:wrap;  
+margin:6px 0  
+}  
+  
+.table-wrap{  
+overflow:auto;  
+-webkit-overflow-scrolling:touch  
+}  
+  
+.order-table,.cp-table,.db-table{  
+width:100%;  
+border-collapse:collapse;  
+min-width:850px  
+}  
+  
+.order-table th,.order-table td,  
+.cp-table th,.cp-table td,  
+.db-table th,.db-table td{  
+border:1px solid #39708f;  
+padding:5px;  
+font-size:10px;  
+vertical-align:middle  
+}  
+  
+.order-table th,.cp-table th,.db-table th{  
+background:#104064;  
+white-space:nowrap  
+}  
+  
+.order-table input,  
+.order-table select{  
+min-width:75px;  
+padding:6px;  
+font-size:10px  
+}  
+  
+.amount{  
+text-align:right;  
+font-weight:700;  
+white-space:nowrap  
+}  
+  
+.sqm{text-align:center;white-space:nowrap}  
+  
+.remove-btn{  
+background:var(--red);  
+padding:5px 8px  
+}  
+  
+.extra-box,.accessory-box{  
+margin-top:9px;  
+border:1px solid var(--border);  
+border-radius:7px;  
+padding:8px  
+}  
+  
+.extra-row{  
+display:grid;  
+grid-template-columns:130px 70px 100px 110px 35px;  
+gap:4px;  
+align-items:center;  
+margin:4px 0  
+}  
+  
+.accessory-head,.accessory-row{  
+display:grid;  
+grid-template-columns:35px 1fr 70px 105px 110px 35px;  
+gap:4px;  
+align-items:center  
+}  
+  
+.accessory-head{  
+font-size:10px;  
+font-weight:700;  
+margin:6px 0 3px  
+}  
+  
+.accessory-row{margin:4px 0}  
+  
+.summary-box{  
+display:flex;  
+justify-content:flex-end;  
+margin-top:8px  
+}  
+  
+.summary{width:320px}  
+  
+.summary-row{  
+display:flex;  
+justify-content:space-between;  
+padding:6px 8px;  
+border-bottom:1px solid #39708f;  
+font-size:12px  
+}  
+  
+.summary-row strong{font-size:13px}  
+  
+.order-summary{margin-top:10px;margin-bottom:3px}  
+  
+.order-summary .summary-row:last-child{  
+background:rgba(35,42,235,.25);  
+border:1px solid var(--blue);  
+border-radius:5px  
+}  
+  
+.order-summary .summary-row:last-child strong{  
+font-size:15px;  
+font-weight:900;  
+color:white  
+}  
+  
+.accessory-summary{margin-top:7px}  
+  
+.error{  
+text-align:center;  
+color:#ff9999;  
+font-weight:700;  
+margin:7px;  
+min-height:16px;  
+font-size:11px  
+}  
+  
+.generate{text-align:center;margin-top:10px}  
+.generate button{font-size:14px;padding:9px 15px}  
+  
+.modal{  
+display:none;  
+position:fixed;  
+inset:0;  
+background:rgba(0,0,0,.82);  
+z-index:9999;  
+padding:8px;  
+overflow:auto  
+}  
+  
+.modal-box{  
+max-width:1150px;  
+margin:auto;  
+background:var(--navy2);  
+border:1px solid var(--border);  
+border-radius:9px;  
+padding:10px  
+}  
+  
+.modal-header{  
+display:flex;  
+justify-content:space-between;  
+align-items:center;  
+margin-bottom:8px  
+}  
+  
+.cp-actions{  
+display:flex;  
+gap:6px;  
+flex-wrap:wrap;  
+margin-top:9px  
+}  
+  
+.lock-area{max-width:350px;margin:25px auto}  
+.hidden{display:none!important}  
+  
+.small-note{  
+font-size:9px;  
+color:var(--muted);  
+margin-top:3px  
+}  
+  
+.toast{  
+display:none;  
+position:fixed;  
+right:12px;  
+bottom:12px;  
+background:#123c59;  
+border:1px solid #4282a8;  
+padding:9px 12px;  
+border-radius:7px;  
+z-index:10000;  
+font-weight:700;  
+font-size:11px  
+}  
+  
+.phone-group{  
+display:grid;  
+grid-template-columns:150px 1fr;  
+gap:4px  
+}  
+  
+.phone-country{min-width:0}  
+  
+.phone-country option{  
+background:#0b2740;  
+color:white  
+}  
+  
+.phone-preview{  
+font-size:9px;  
+color:var(--muted);  
+margin-top:3px  
+}  
+  
+.cp-type-badge{  
+display:inline-block;  
+padding:4px 6px;  
+border-radius:4px;  
+font-size:9px;  
+font-weight:900;  
+background:#173f5c;  
+white-space:nowrap  
+}  
+  
+.db-search{  
+display:grid;  
+grid-template-columns:180px 1fr;  
+gap:6px;  
+margin:8px 0  
+}  
+  
+.db-date-search{  
+display:grid;  
+grid-template-columns:1fr 1fr;  
+gap:6px;  
+margin:6px 0  
+}  
+  
+.db-result-count{  
+font-size:10px;  
+color:var(--muted);  
+margin:7px 0  
+}  
+  
+.db-table{min-width:1000px}  
+  
+.db-table .db-actions{  
+white-space:nowrap;  
+text-align:center  
+}  
+  
+.db-empty{  
+text-align:center;  
+padding:18px;  
+font-size:11px;  
+color:var(--muted)  
+}  
+  
+.invoice-preview-card{  
+margin-top:10px;  
+border:1px solid var(--border);  
+border-radius:7px;  
+padding:8px  
+}  
+  
+/* DATABASE BUTTON */  
+  
+.db-circle{  
+width:38px;  
+height:38px;  
+min-width:38px;  
+padding:0;  
+border-radius:50%;  
+background:#173f5c;  
+border:2px solid var(--blue2);  
+display:flex;  
+align-items:center;  
+justify-content:center;  
+font-size:9px;  
+font-weight:900;  
+letter-spacing:.3px;  
+box-shadow:0 0 8px rgba(92,99,255,.25)  
+}  
+  
+.db-circle:hover{  
+background:var(--blue);  
+transform:scale(1.04)  
+}  
+  
+.header-actions{  
+display:flex;  
+align-items:center;  
+gap:6px  
+}  
+  
+/* DATABASE LOCK */  
+  
+.db-lock-box{  
+max-width:360px;  
+margin:45px auto;  
+text-align:center  
+}  
+  
+.db-lock-icon{  
+width:55px;  
+height:55px;  
+border-radius:50%;  
+margin:0 auto 10px;  
+display:flex;  
+align-items:center;  
+justify-content:center;  
+background:#173f5c;  
+border:2px solid var(--blue2);  
+font-size:22px  
+}  
+  
+/* DATABASE INTERNAL VIEW */  
+  
+.db-view-header{  
+display:flex;  
+justify-content:space-between;  
+align-items:center;  
+gap:8px;  
+flex-wrap:wrap;  
+margin-bottom:8px  
+}  
+  
+.db-view-title{  
+font-size:14px;  
+font-weight:900;  
+color:var(--blue2)  
+}  
+  
+.db-editor{  
+margin-top:10px;  
+border:1px solid var(--border);  
+border-radius:8px;  
+padding:9px;  
+background:#08233a  
+}  
+  
+.db-editor h4{  
+font-size:12px;  
+color:var(--blue2);  
+margin-bottom:7px  
+}  
+  
+.db-editor-grid{  
+display:grid;  
+grid-template-columns:repeat(2,1fr);  
+gap:7px  
+}  
+  
+.db-editor-grid .full{  
+grid-column:1/-1  
+}  
+  
+.db-edit-glass{  
+margin-top:10px  
+}  
+  
+.db-edit-glass table{  
+width:100%;  
+border-collapse:collapse;  
+min-width:950px  
+}  
+  
+.db-edit-glass th,  
+.db-edit-glass td{  
+border:1px solid #39708f;  
+padding:4px;  
+font-size:9px  
+}  
+  
+.db-edit-glass th{  
+background:#104064  
+}  
+  
+.db-edit-glass input,  
+.db-edit-glass select{  
+font-size:9px;  
+padding:5px  
+}  
+  
+.db-edit-summary{  
+margin-top:9px;  
+display:flex;  
+justify-content:flex-end  
+}  
+  
+.db-editor-note{  
+font-size:9px;  
+color:var(--muted);  
+margin-top:5px  
+}  
+  
+.db-back{  
+background:#173f5c  
+}  
+  
+.db-current-record{  
+background:rgba(35,42,235,.18);  
+border:1px solid var(--blue);  
+padding:7px;  
+border-radius:6px;  
+font-size:10px;  
+margin-bottom:8px  
+}  
+  
+#invoiceArea{  
+display:none;  
+background:#fff;  
+color:#111;  
+margin:10px auto;  
+width:100%;  
+max-width:210mm;  
+overflow:visible  
+}  
+  
+.invoice-paper{  
+background:#fff;  
+color:#111;  
+padding:8mm;  
+width:100%;  
+font-weight:600;  
+font-family:Arial,Helvetica,sans-serif  
+}  
+  
+.invoice-company{  
+text-align:center;  
+font-size:25px;  
+font-weight:900;  
+letter-spacing:.3px  
+}  
+  
+.invoice-address,  
+.invoice-phone{  
+text-align:center;  
+font-size:11px;  
+margin-top:3px;  
+font-weight:700  
+}  
+  
+.invoice-heading{  
+text-align:center;  
+margin:9px 0;  
+border-bottom:3px solid #2341eb;  
+padding-bottom:5px  
+}  
+  
+.invoice-heading h2{  
+font-size:22px;  
+font-weight:900;  
+color:#111  
+}  
+  
+.invoice-info{  
+display:grid;  
+grid-template-columns:1.35fr .85fr;  
+gap:6px;  
+margin:7px 0;  
+align-items:stretch  
+}  
+  
+.invoice-box{  
+border:1.5px solid #123b4a;  
+border-radius:4px;  
+padding:6px 7px;  
+font-size:10px;  
+line-height:1.5;  
+font-weight:700  
+}  
+  
+.invoice-box div{margin:2px 0}  
+.invoice-box strong{font-weight:900}  
+  
+.invoice-table{  
+width:100%;  
+border-collapse:collapse;  
+font-size:10px;  
+font-weight:700  
+}  
+  
+.invoice-table th,  
+.invoice-table td{  
+border:1px solid #111;  
+padding:4px;  
+text-align:center;  
+font-weight:700  
+}  
+  
+.invoice-table th{  
+font-weight:900;  
+background:#f3f3f3  
+}  
+  
+.invoice-table td{font-weight:700}  
+  
+.invoice-table .desc{  
+text-align:left;  
+font-weight:700;  
+white-space:pre-wrap  
+}  
+  
+.invoice-summary-row,  
+.invoice-summary-row td{  
+font-weight:900  
+}  
+  
+.invoice-summary-label{  
+text-align:right!important;  
+font-weight:900!important  
+}  
+  
+.invoice-grand-row{  
+font-weight:900;  
+font-size:12px;  
+background:#eee  
+}  
+  
+.invoice-grand-row td{font-weight:900}  
+  
+.invoice-grand-number{  
+font-size:13px!important;  
+font-weight:900!important  
+}  
+  
+.invoice-accessories-title{  
+font-weight:900!important;  
+font-size:11px;  
+text-align:left!important;  
+background:#e8e8e8;  
+padding:5px!important  
+}  
+  
+.invoice-accessory-subtotal{  
+font-weight:900!important;  
+background:#eee  
+}  
+  
+.invoice-accessory-subtotal td{  
+font-weight:900!important  
+}  
+  
+.invoice-lower{  
+display:grid;  
+grid-template-columns:1fr 1fr;  
+gap:10px;  
+margin-top:10px  
+}  
+  
+.invoice-lower-box{  
+border:1.5px solid #123b4a;  
+border-radius:4px;  
+padding:7px 8px;  
+font-size:10px;  
+line-height:1.6;  
+min-height:75px  
+}  
+  
+.invoice-lower-title{  
+font-size:11px;  
+font-weight:900;  
+border-bottom:1px solid #aaa;  
+padding-bottom:3px;  
+margin-bottom:4px  
+}  
+  
+.invoice-lower-row{  
+display:flex;  
+justify-content:space-between;  
+gap:10px  
+}  
+  
+.invoice-lower-row span:first-child{  
+font-weight:900;  
+white-space:nowrap  
+}  
+  
+.invoice-lower-row span:last-child{text-align:right}  
+  
+.signatures{  
+display:grid;  
+grid-template-columns:repeat(3,1fr);  
+gap:25px;  
+margin-top:25px;  
+font-size:10px;  
+font-weight:700;  
+text-align:center  
+}  
+  
+.signature-line{  
+border-bottom:1px dotted #111;  
+height:25px;  
+margin-bottom:4px  
+}  
+  
+.invoice-actions{  
+text-align:center;  
+padding:10px  
+}  
+  
+.invoice-actions button{margin:3px}  
+  
+.na{font-weight:700!important}  
+  
+.keyboard-help{  
+margin-top:8px;  
+padding:7px;  
+border:1px dashed #397ca5;  
+border-radius:6px;  
+font-size:9px;  
+color:var(--muted);  
+line-height:1.5  
+}  
+  
+.keyboard-help strong{color:white}  
+  
+.plus-edit-note{  
+font-size:9px;  
+color:var(--orange);  
+margin-top:3px  
+}  
+  
+@media(max-width:800px){  
+  
+.grid,.cp-grid,.customer-grid{  
+grid-template-columns:1fr  
+}  
+  
+.full{grid-column:auto}  
+  
+.summary{width:100%}  
+  
+.extra-row{  
+grid-template-columns:1fr 65px 90px 95px 30px  
+}  
+  
+.accessory-head,.accessory-row{  
+grid-template-columns:28px 1fr 60px 85px 90px 28px  
+}  
+  
+.header{align-items:flex-start}  
+.header h1{font-size:17px}  
+  
+.db-search{  
+grid-template-columns:1fr  
+}  
+  
+.db-date-search{  
+grid-template-columns:1fr  
+}  
+  
+.db-editor-grid{  
+grid-template-columns:1fr  
+}  
+  
+.db-editor-grid .full{  
+grid-column:auto  
+}  
+  
+.invoice-paper{padding:5mm}  
+.invoice-company{font-size:20px}  
+  
+.invoice-address,  
+.invoice-phone{font-size:9px}  
+  
+.invoice-heading{  
+margin:6px 0;  
+padding-bottom:4px  
+}  
+  
+.invoice-heading h2{font-size:17px}  
+  
+.invoice-box{  
+font-size:8.5px;  
+padding:5px  
+}  
+  
+.invoice-table{font-size:8.5px}  
+  
+.invoice-table th,  
+.invoice-table td{  
+padding:3px 2px  
+}  
+  
+.invoice-lower{  
+grid-template-columns:1fr 1fr;  
+gap:6px  
+}  
+  
+.invoice-lower-box{  
+font-size:8px;  
+padding:5px  
+}  
+  
+.invoice-lower-title{font-size:9px}  
+  
+.signatures{  
+font-size:8.5px;  
+gap:10px  
+}  
+  
+.phone-group{  
+grid-template-columns:135px 1fr  
+}  
+}  
+  
+@media print{  
+  
+@page{  
+size:A4;  
+margin:7mm  
+}  
+  
+body{  
+background:#fff;  
+padding:0  
+}  
+  
+.container>.card,  
+.header,  
+#orderCard,  
+.invoice-actions,  
+#controlModal,  
+#dbModal,  
+#toast{  
+display:none!important  
+}  
+  
+#invoiceArea{  
+display:block!important;  
+margin:0;  
+width:100%;  
+max-width:none  
+}  
+  
+.invoice-paper{  
+padding:0;  
+width:100%;  
+font-weight:700!important  
+}  
+  
+.invoice-paper,  
+.invoice-paper *{  
+font-weight:700!important  
+}  
+  
+.invoice-company{  
+font-size:24px!important;  
+font-weight:900!important  
+}  
+  
+.invoice-address,  
+.invoice-phone{  
+font-size:10px!important  
+}  
+  
+.invoice-heading{  
+border-bottom:3px solid #2341eb!important;  
+margin:7px 0!important  
+}  
+  
+.invoice-heading h2{  
+font-size:20px!important;  
+font-weight:900!important  
+}  
+  
+.invoice-box{font-size:9.5px!important}  
+.invoice-table{font-size:9.5px!important}  
+  
+.invoice-table th,  
+.invoice-table td{padding:3.5px!important}  
+  
+.invoice-summary-row td,  
+.invoice-grand-row td{  
+font-weight:900!important  
+}  
+  
+.invoice-grand-row{font-size:11px!important}  
+.invoice-grand-number{font-size:12px!important}  
+  
+.invoice-lower-box{font-size:9px!important}  
+.invoice-lower-title{font-size:10px!important}  
+  
+.signatures{  
+font-size:9px!important;  
+margin-top:20px!important  
+}  
+  
+.invoice-company,  
+.invoice-heading h2,  
+.invoice-table th,  
+.invoice-summary-row td,  
+.invoice-grand-row td,  
+.invoice-grand-number,  
+.invoice-accessories-title,  
+.invoice-accessory-subtotal td,  
+.invoice-box strong,  
+.invoice-lower-title,  
+.invoice-lower-row span:first-child{  
+font-weight:900!important  
+}  
+}  
+</style>  </head>  <body>  <div class="container">  <div class="card header">  <div>  
+<h1>JAVA GLASS LTD</h1>  
+<small>Glass Order & Proforma Invoice System</small>  
+</div>  <div class="header-actions">  <button  
+type="button"  
+class="db-circle"  
+onclick="openDatabaseLogin()"  
+title="DATABASE">
+DB
+</button>
+
+<button  
+type="button"  
+onclick="openControlPanel()">
+⚙ CONTROL PANEL
+</button>
+
+</div>  </div>  <div class="card" id="orderCard">  <div class="promo">  
+<strong>BLUE BAY × JAVA GLASS LIMITED</strong><br>  
+Promotion Period: August 11, 2026 — September 30, 2026<br>  
+Promotional prices are before VAT.<br>  
+<strong>HOTLINE: 255 610 100 385</strong>  
+</div>  <h3 class="section-title">01. CUSTOMER DETAILS</h3>  <div class="customer-grid">  <div>  
+<label>CUSTOMER NAME</label>  
+<input id="customerName">  
+</div>  <div>  
+<label>CUSTOMER ID</label>  
+<input id="customerID">  
+</div>  <div>  
+<label>INVOICE NO</label>  
+<input id="invoiceNo">  
+</div>  <div>  
+<label>CUSTOMER PHONE</label>  <div class="phone-group">  <select id="countryCode"  
+class="phone-country"  
+onchange="updatePhonePreview()"></select>
+
+<input  
+id="customerPhone"  
+inputmode="numeric"  
+maxlength="15"  
+placeholder="Phone number">
+
+</div>  <div id="phonePreview" class="phone-preview"></div>  </div>  <div>  
+<label>CUSTOMER TIN</label>  
+<input id="customerTIN">  
+</div>  <div>  
+<label>SELLER TIN</label>  
+<input id="sellerTIN">  
+</div>  <div class="full">  
+<label>CUSTOMER ADDRESS</label>  
+<input id="customerAddress">  
+</div>  </div>  <h3 class="section-title">02. WORKING DAYS</h3>  <div style="max-width:260px">  
+<label>WORKING DAYS *</label>  
+<input id="workDays" type="number" min="1">  
+</div>  <h3 class="section-title">03. GLASS ORDER</h3>  <div class="small-note">  
+Enter Width, Height and Quantity. Area is calculated automatically.  
+</div>  <div class="mode-buttons">  <button type="button" onclick="addGlass('Tempered')">  
+TEMPERED  
+</button>  <button type="button" onclick="addGlass('Non-Tempered')">  
+NON-TEMPERED  
+</button>  <button type="button" onclick="addPlus()">+</button>
+
+</div>  <div class="table-wrap">  <table class="order-table">  <thead>  
+<tr>  
+<th>S/N</th>  
+<th>TYPE</th>  
+<th>DESCRIPTION / SEARCH</th>  
+<th>UNIT</th>  
+<th>WIDTH</th>  
+<th>HEIGHT</th>  
+<th>SQM</th>  
+<th>QTY</th>  
+<th>UNIT PRICE</th>  
+<th>AMOUNT</th>  
+<th>REMARK</th>  
+<th>REMOVE</th>  
+</tr>  
+</thead>  <tbody id="orderBody"></tbody>  </table>  </div>  <div class="extra-box">  <strong>CUT OUT / HOLES</strong>
+
+<div id="extraRows"></div>  <div style="margin-top:6px">  <button type="button" onclick="addExtra('CUT OUT')">  
+＋ CUT OUT  
+</button>  <button type="button" onclick="addExtra('HOLES')">  
+＋ HOLES  
+</button>  </div>  </div>  <div class="summary-box order-summary">  <div class="summary">  <div class="summary-row">  
+<strong>SUBTOTAL</strong>  
+<strong id="orderSubtotal">0.00</strong>  
+</div>  <div class="summary-row">  
+<strong>VAT</strong>  
+<strong id="orderVAT">0.00</strong>  
+</div>  <div class="summary-row">  
+<strong>DISCOUNT</strong>  
+<strong id="orderDiscount">0.00</strong>  
+</div>  <div class="summary-row">  
+<strong>GRAND TOTAL</strong>  
+<strong id="orderGrandTotal">0.00</strong>  
+</div>  </div>  </div>  <div class="accessory-box">  <strong>ACCESSORIES</strong>
+
+<div class="small-note">  
+Choose an accessory from the catalogue or type any new accessory name.  
+The description remains fully editable.  
+</div>  <div class="accessory-head">  
+<div>S/N</div>  
+<div>DESCRIPTION</div>  
+<div>QTY</div>  
+<div>UNIT PRICE</div>  
+<div>AMOUNT</div>  
+<div></div>  
+</div>  <div id="accessoryRows"></div>  <button type="button" onclick="addAccessory()">  
+＋ ADD ACCESSORY  
+</button>  <div class="summary-box accessory-summary">  <div class="summary">  <div class="summary-row">  
+<strong>SUBTOTAL</strong>  
+<strong id="accessorySubtotal">0.00</strong>  
+</div>  </div>  </div>  </div>  <div id="errorMessage" class="error"></div>  <div class="keyboard-help">  
+<strong>KEYBOARD:</strong>  
+ENTER = move to next field |  
+CTRL+ENTER = generate invoice |  
+CTRL+P = print |  
+CTRL+S = generate/update invoice |  
+CTRL+N = new order |  
+ESC = close panel |  
+TAB / SHIFT+TAB = move between fields  
+</div>  <div class="generate">  <button type="button"  
+class="btn-green"  
+onclick="generateInvoice()">
+🧾 GENERATE / UPDATE PROFORMA INVOICE
+</button>
+
+</div>  </div>  <div id="invoiceArea">  <div class="invoice-paper" id="invoicePaper">  <div class="invoice-company">  
+JAVA GLASS LTD  
+</div>  <div class="invoice-address">  
+ADD: PLOT 3 MANDELA ROAD, DAR ES SALAAM TANZANIA  
+</div>  <div class="invoice-phone">  
+TEL : 255 610 100 385  
+</div>  <div class="invoice-heading">  
+<h2>PROFORMA INVOICE</h2>  
+</div>  <div class="invoice-info">  <div class="invoice-box">  <div>  
+<strong>NAME:</strong>  
+<span id="iName"></span>  
+</div>  <div>  
+<strong>ADDRESS:</strong>  
+<span id="iAddress"></span>  
+</div>  <div>  
+<strong>TIN:</strong>  
+<span id="iCustomerTIN"></span>  
+</div>  <div>  
+<strong>PHONE:</strong>  
+<span id="iPhone"></span>  
+</div>  <div>  
+<strong>CUSTOMER ID:</strong>  
+<span id="iCustomerID"></span>  
+</div>  </div>  <div class="invoice-box">  <div>  
+<strong>INVOICE NO:</strong>  
+<span id="iInvoiceNo"></span>  
+</div>  <div>  
+<strong>DATE:</strong>  
+<span id="iDate"></span>  
+</div>  <div>  
+<strong>SELLER TIN:</strong>  
+<span id="iSellerTIN"></span>  
+</div>  </div>  </div>  <table class="invoice-table">  <thead>  
+<tr>  
+<th>S/N</th>  
+<th>DESCRIPTION</th>  
+<th>W</th>  
+<th>H</th>  
+<th>QTY</th>  
+<th>SQM</th>  
+<th>UNIT PRICE</th>  
+<th>AMOUNT</th>  
+<th>REMARK</th>  
+</tr>  
+</thead>  <tbody id="invoiceGlassRows"></tbody>  </table>  <div class="invoice-lower">  <div class="invoice-lower-box">  <div class="invoice-lower-title">  
+BANK / PAYMENT DETAILS  
+</div>  <div class="invoice-lower-row">  
+<span>ACCOUNT NAME</span>  
+<span>JAVA GLASS LTD</span>  
+</div>  <div class="invoice-lower-row">  
+<span>CRDB ACCOUNT 1</span>  
+<span id="invoiceBank1"></span>  
+</div>  <div class="invoice-lower-row">  
+<span>CRDB ACCOUNT 2</span>  
+<span id="invoiceBank2"></span>  
+</div>  <div class="invoice-lower-row">  
+<span>M-PESA</span>  
+<span id="invoiceMpesa"></span>  
+</div>  </div>  <div class="invoice-lower-box">  <div class="invoice-lower-title">  
+DELIVERY & CUSTOMER SERVICE  
+</div>  <div class="invoice-lower-row">  
+<span>DELIVERY</span>  
+<span>  
+Work will be conducted in  
+<strong id="invoiceWorkingDays"></strong>  
+working days  
+</span>  
+</div>  <div class="invoice-lower-row">  
+<span>CUSTOMER SERVICE</span>  
+<span>255 610 100 385</span>  
+</div>  <div class="invoice-lower-row">  
+<span>HOTLINE</span>  
+<span>+255 610 100 385</span>  
+</div>  </div>  </div>  <div class="signatures">  <div>  
+<div class="signature-line"></div>  
+SELLER  
+</div>  <div>  
+<div class="signature-line"></div>  
+CHECKED BY  
+</div>  <div>  
+<div class="signature-line"></div>  
+CUSTOMER  
+</div>  </div>  </div>  <div class="invoice-actions">  <button type="button" onclick="printInvoice()">  
+🖨 PRINT  
+</button>  <button type="button"  
+class="btn-green"  
+onclick="printInvoice()">
+📄 SAVE AS PDF
+</button>
+
+<button type="button"  
+class="btn-orange"  
+onclick="exportExcel()">
+📊 EXCEL
+</button>
+
+<button type="button"  
+onclick="newOrder()">
+＋ NEW ORDER
+</button>
+
+</div>  </div>  <!-- DATABASE LOGIN -->  <div class="modal" id="dbModal">  <div class="modal-box">  <div class="modal-header">  <h2>🗄 DATABASE</h2>  <button  
+type="button"  
+class="btn-red"  
+onclick="closeDatabase()">
+×
+</button>
+
+</div>  <div id="dbLogin">  <div class="db-lock-box">  <div class="db-lock-icon">🔐</div>  <h3 style="font-size:15px;margin-bottom:5px">  
+DATABASE ACCESS  
+</h3>  <div class="small-note" style="margin-bottom:10px">  
+Enter Database Password  
+</div>  <input  
+id="dbPassword"  
+type="password"  
+placeholder="DATABASE PASSWORD">
+
+<div class="cp-actions"  
+style="justify-content:center">  <button  
+type="button"  
+onclick="unlockDatabase()">
+🔓 ENTER DATABASE
+</button>
+
+<button  
+type="button"  
+class="btn-dark"  
+onclick="showDatabaseRecovery()">
+FORGOT PASSWORD
+</button>
+
+</div>  <div  
+id="dbRecoveryArea"  
+class="hidden"  
+style="margin-top:10px">  <label>RECOVERY CODE</label>
+
+<input  
+id="dbRecoveryCode"  
+type="password"  
+placeholder="Recovery code">
+
+<button  
+type="button"  
+style="margin-top:5px"  
+onclick="recoverDatabasePassword()">
+RESET DATABASE PASSWORD
+</button>
+
+</div>  <div class="small-note" style="margin-top:10px">  
+Default database password: 1234  
+</div>  </div>  </div>  <!-- DATABASE CONTENT -->  <div id="dbContent" class="hidden">  <div id="dbListView">  <div class="db-view-header">  <div>  
+<div class="db-view-title">  
+CUSTOMER / INVOICE DATABASE  
+</div>  <div class="small-note">  
+Protected database — VIEW and EDIT records without returning to the Order screen.  
+</div>  
+</div>  <button  
+type="button"  
+class="btn-red"  
+onclick="lockDatabase()">
+🔒 EXIT DATABASE
+</button>
+
+</div>  <div class="promo">  
+<strong>DATABASE SEARCH</strong><br>  
+Search Customer Name, Customer ID, Phone Number, Invoice Number,  
+Month, Date Interval or Month Interval.  
+</div>  <div class="db-search">  <select  
+id="dbSearchType"  
+onchange="changeDatabaseSearchType()">
+
+<option value="all">ALL RECORDS</option>  
+<option value="month">MONTH</option>  
+<option value="number">NUMBER / PHONE</option>  
+<option value="name">CUSTOMER NAME</option>  
+<option value="id">CUSTOMER ID</option>  
+<option value="invoice">INVOICE NO</option>  
+<option value="date">DATE INTERVAL</option>  
+<option value="monthInterval">MONTH INTERVAL</option>  </select>  <input  
+id="dbSearchInput"  
+placeholder="SEARCH DATABASE..."  
+oninput="searchDatabase()">
+
+</div>  <div id="dbDateArea" class="hidden">  <div class="db-date-search">  <div>  
+<label>FROM DATE</label>  
+<input  
+id="dbDateFrom"  
+type="date"  
+onchange="searchDatabase()">  
+</div>  <div>  
+<label>TO DATE</label>  
+<input  
+id="dbDateTo"  
+type="date"  
+onchange="searchDatabase()">  
+</div>  </div>  </div>  <div id="dbMonthArea" class="hidden">  <div class="db-date-search">  <div>  
+<label>FROM MONTH</label>  
+<input  
+id="dbMonthFrom"  
+type="month"  
+onchange="searchDatabase()">  
+</div>  <div>  
+<label>TO MONTH</label>  
+<input  
+id="dbMonthTo"  
+type="month"  
+onchange="searchDatabase()">  
+</div>  </div>  </div>  <div class="cp-actions">  <button type="button"  
+onclick="searchDatabase()">
+🔎 SEARCH
+</button>
+
+<button type="button"  
+class="btn-dark"  
+onclick="clearDatabaseSearch()">
+CLEAR SEARCH
+</button>
+
+<button type="button"  
+class="btn-orange"  
+onclick="exportDatabaseCSV()">
+📊 EXPORT DATABASE
+</button>
+
+</div>  <div id="dbResultCount"  
+class="db-result-count">  
+0 records  
+</div>  <div class="table-wrap">  <table class="db-table">  <thead>  <tr>  
+<th>N</th>  
+<th>CUSTOMER NAME</th>  
+<th>CUSTOMER ID</th>  
+<th>ADDRESS</th>  
+<th>CONTACT</th>  
+<th>INVOICE NO</th>  
+<th>DATE</th>  
+<th>TOTAL</th>  
+<th>ACTION</th>  
+</tr>  </thead>  <tbody id="databaseBody"></tbody>  </table>  </div>  </div>  <!-- DATABASE EDITOR -->  <div id="dbEditView" class="hidden">  <div class="db-view-header">  <div>  
+<div class="db-view-title">  
+DATABASE RECORD — VIEW / EDIT  
+</div>  <div class="small-note">  
+You are still inside the protected Database.  
+</div>  
+</div>  <button  
+type="button"  
+class="db-back"  
+onclick="closeDatabaseEditor()">
+← BACK TO DATABASE
+</button>
+
+</div>  <div  
+id="dbCurrentRecord"  
+class="db-current-record">  
+</div>  <div class="db-editor">  <h4>01. CUSTOMER DETAILS</h4>  <div class="db-editor-grid">  <div>  
+<label>CUSTOMER NAME</label>  
+<input id="dbEditCustomerName">  
+</div>  <div>  
+<label>CUSTOMER ID</label>  
+<input id="dbEditCustomerID">  
+</div>  <div>  
+<label>INVOICE NO</label>  
+<input id="dbEditInvoiceNo">  
+</div>  <div>  
+<label>PHONE</label>  
+<div class="phone-group">  
+<select id="dbEditCountryCode"></select>  
+<input id="dbEditCustomerPhone">  
+</div>  
+</div>  <div>  
+<label>CUSTOMER TIN</label>  
+<input id="dbEditCustomerTIN">  
+</div>  <div>  
+<label>SELLER TIN</label>  
+<input id="dbEditSellerTIN">  
+</div>  <div class="full">  
+<label>CUSTOMER ADDRESS</label>  
+<input id="dbEditCustomerAddress">  
+</div>  <div>  
+<label>WORKING DAYS</label>  
+<input id="dbEditWorkingDays" type="number" min="1">  
+</div>  <div>  
+<label>DATE</label>  
+<input id="dbEditDate" readonly>  
+</div>  </div>  </div>  <div class="db-editor db-edit-glass">  <h4>02. GLASS / PROCESSING ITEMS</h4>  <div class="table-wrap">  <table>  <thead>  
+<tr>  
+<th>N</th>  
+<th>TYPE</th>  
+<th>DESCRIPTION</th>  
+<th>W</th>  
+<th>H</th>  
+<th>QTY</th>  
+<th>SQM</th>  
+<th>UNIT PRICE</th>  
+<th>AMOUNT</th>  
+<th>REMARK</th>  
+<th>REMOVE</th>  
+</tr>  
+</thead>  <tbody id="dbEditGlassBody"></tbody>  </table>  </div>  <div class="cp-actions">  <button type="button"  
+onclick="dbEditorAddGlass('Tempered')">
+＋ TEMPERED
+</button>
+
+<button type="button"  
+onclick="dbEditorAddGlass('Non-Tempered')">
+＋ NON-TEMPERED
+</button>
+
+</div>  </div>  <div class="db-editor">  <h4>03. CUT OUT / HOLES</h4>  <div id="dbEditExtras"></div>  <div class="cp-actions">  <button type="button"  
+onclick="dbEditorAddExtra('CUT OUT')">
+＋ CUT OUT
+</button>
+
+<button type="button"  
+onclick="dbEditorAddExtra('HOLES')">
+＋ HOLES
+</button>
+
+</div>  </div>  <div class="db-editor">  <h4>04. ACCESSORIES</h4>  <div class="table-wrap">  <table>  <thead>  
+<tr>  
+<th>N</th>  
+<th>DESCRIPTION</th>  
+<th>QTY</th>  
+<th>UNIT PRICE</th>  
+<th>AMOUNT</th>  
+<th>REMOVE</th>  
+</tr>  
+</thead>  <tbody id="dbEditAccessoriesBody"></tbody>  </table>  </div>  <button  
+type="button"  
+style="margin-top:7px"  
+onclick="dbEditorAddAccessory()">
+＋ ADD ACCESSORY
+</button>
+
+</div>  <div class="db-editor">  <h4>05. VAT / DISCOUNT / TOTAL</h4>  <div class="db-editor-grid">  <div>  
+<label>VAT %</label>  
+<input id="dbEditVAT" type="number" min="0">  
+</div>  <div>  
+<label>DISCOUNT %</label>  
+<input id="dbEditDiscount" type="number" min="0">  
+</div>  </div>  <div class="db-edit-summary">  <div class="summary">  <div class="summary-row">  
+<strong>SUBTOTAL</strong>  
+<strong id="dbEditSubtotal">0.00</strong>  
+</div>  <div class="summary-row">  
+<strong>VAT</strong>  
+<strong id="dbEditVATAmount">0.00</strong>  
+</div>  <div class="summary-row">  
+<strong>DISCOUNT</strong>  
+<strong id="dbEditDiscountAmount">0.00</strong>  
+</div>  <div class="summary-row">  
+<strong>ACCESSORIES</strong>  
+<strong id="dbEditAccessorySubtotal">0.00</strong>  
+</div>  <div class="summary-row">  
+<strong>GRAND TOTAL</strong>  
+<strong id="dbEditGrandTotal">0.00</strong>  
+</div>  </div>  </div>  </div>  <div class="cp-actions">  <button  
+type="button"  
+class="btn-green"  
+onclick="saveDatabaseEditedRecord()">
+💾 SAVE DATABASE CHANGES
+</button>
+
+<button  
+type="button"  
+class="btn-orange"  
+onclick="previewDatabaseRecordInvoice()">
+🧾 PREVIEW INVOICE
+</button>
+
+<button  
+type="button"  
+class="btn-red"  
+onclick="deleteCurrentDatabaseRecord()">
+🗑 DELETE RECORD
+</button>
+
+<button  
+type="button"  
+class="db-back"  
+onclick="closeDatabaseEditor()">
+← BACK TO DATABASE
+</button>
+
+</div>  </div>  </div>  </div>  </div>  <!-- CONTROL PANEL -->  <div class="modal" id="controlModal">  <div class="modal-box">  <div class="modal-header">  <h2>⚙ CONTROL PANEL</h2>  <button  
+type="button"  
+class="btn-red"  
+onclick="closeControlPanel()">×</button>
+
+</div>  <div id="cpLogin" class="lock-area">  <label>CONTROL PANEL PASSWORD</label>
+
+<input id="cpPassword" type="password">  <div class="cp-actions">  <button  
+type="button"  
+onclick="unlockControlPanel()">
+🔐 UNLOCK
+</button>
+
+<button  
+type="button"  
+class="btn-dark"  
+onclick="showRecovery()">
+FORGOT PASSWORD
+</button>
+
+</div>  <div  
+id="recoveryArea"  
+class="hidden"  
+style="margin-top:8px">  <label>RECOVERY CODE</label>
+
+<input id="recoveryCode" type="password">  <button  
+type="button"  
+onclick="recoverPassword()">
+RESET PASSWORD
+</button>
+
+</div>  </div>  <div id="cpContent" class="hidden">  <h3 class="section-title">  
+TEMPERED GLASS CATALOGUE  
+</h3>  <div class="small-note">  
+TEMPERED entries are automatically available only when TYPE = TEMPERED.  
+Each catalogue series remains exactly as entered here.  
+</div>  <button type="button" onclick="addTemperedEntry()">  
+＋ ADD TEMPERED ENTRY  
+</button>  <div class="table-wrap" style="margin-top:6px">  <table class="cp-table">  <thead>  
+<tr>  
+<th>N</th>  
+<th>SERIES / DESCRIPTION</th>  
+<th>TYPE</th>  
+<th>UNIT PRICE</th>  
+<th>REMOVE</th>  
+</tr>  
+</thead>  <tbody id="temperedCP"></tbody>  </table>  </div>  <h3 class="section-title">  
+NON-TEMPERED GLASS CATALOGUE  
+</h3>  <div class="small-note">  
+NON-TEMPERED entries automatically support CUT, POLISH and BOTH.  
+</div>  <button type="button" onclick="addNonTemperedEntry()">  
+＋ ADD NON-TEMPERED ENTRY  
+</button>  <div class="table-wrap" style="margin-top:6px">  <table class="cp-table">  <thead>  
+<tr>  
+<th>N</th>  
+<th>SERIES / DESCRIPTION</th>  
+<th>TYPE</th>  
+<th>CUT PRICE</th>  
+<th>POLISH PRICE</th>  
+<th>REMOVE</th>  
+</tr>  
+</thead>  <tbody id="nonTemperedCP"></tbody>  </table>  </div>  <h3 class="section-title">  
+PROCESSING PRICES  
+</h3>  <div class="cp-grid">  <div>  
+<label>CUT OUT</label>  
+<input id="cpCutOut" type="number">  
+</div>  <div>  
+<label>HOLE</label>  
+<input id="cpHole" type="number">  
+</div>  <div>  
+<label>INSULATING</label>  
+<input id="cpInsulating" type="number">  
+</div>  <div>  
+<label>LAMINATED</label>  
+<input  
+id="cpLaminatedPlain"  
+type="number"  
+value="15600"  
+placeholder="15600">  
+<div class="small-note">  
+Laminated glass processing — separate from Laminated Film.  
+</div>  
+</div>  <div>  
+<label>LAMINATED FILM 0.76mm</label>  
+<input id="cpLaminatedFilm" type="number">  
+</div>  <div>  
+<label>SANDBLASTING</label>  
+<input id="cpSandblasting" type="number">  
+</div>  </div>  <h3 class="section-title">  
+ACCESSORIES CATALOGUE  
+</h3>  <div class="small-note">  
+Catalogue accessories are suggestions only. The description can be edited freely.  
+</div>  <button type="button" onclick="addAccessoryCP()">  
+＋ ADD ACCESSORY  
+</button>  <div class="table-wrap" style="margin-top:6px">  <table class="cp-table">  <thead>  
+<tr>  
+<th>N</th>  
+<th>DESCRIPTION</th>  
+<th>PRICE</th>  
+<th>REMOVE</th>  
+</tr>  
+</thead>  <tbody id="accessoryCP"></tbody>  </table>  </div>  <h3 class="section-title">  
+VAT / DISCOUNT  
+</h3>  <div class="cp-grid">  <div>  
+<label>VAT %</label>  
+<input id="cpVAT" type="number">  
+</div>  <div>  
+<label>DISCOUNT %</label>  
+<input id="cpDiscount" type="number">  
+</div>  </div>  <h3 class="section-title">  
+INVOICE NUMBER  
+</h3>  <div class="cp-grid">  <div>  <label>  
+<input  
+id="cpAutoInvoice"  
+type="checkbox"  
+style="width:auto">  
+AUTO GENERATE INVOICE NUMBER  
+</label>  </div>  <div>  <label>INVOICE NUMBER PATTERN</label>
+
+<input  
+id="cpInvoicePattern"  
+placeholder="JG-{YYYY}{MM}{DD}-{HH}{mm}{ss}">
+
+<div class="small-note">  
+Supported: {YYYY} {YY} {MM} {DD} {HH} {mm} {ss} {timestamp}  
+</div>  </div>  </div>  <h3 class="section-title">  
+BANK / PAYMENT DETAILS  
+</h3>  <div class="cp-grid">  <div>  
+<label>CRDB ACCOUNT 1</label>  
+<input id="cpBank1">  
+</div>  <div>  
+<label>CRDB ACCOUNT 2</label>  
+<input id="cpBank2">  
+</div>  <div>  
+<label>M-PESA NUMBER</label>  
+<input id="cpMpesa">  
+</div>  </div>  <h3 class="section-title">  
+COMMISSION  
+</h3>  <div style="max-width:260px">  <label>DEFAULT COMMISSION %</label>
+
+<input id="cpCommission" type="number">  </div>  <h3 class="section-title">  
+CONTROL PANEL PASSWORD  
+</h3>  <div class="cp-grid">  <div>  <label>CURRENT PASSWORD</label>
+
+<input  
+id="cpCurrentPassword"  
+type="password"  
+placeholder="Current password">
+
+</div>  <div>  <label>NEW PASSWORD</label>
+
+<input  
+id="cpNewPassword"  
+type="password"  
+placeholder="Minimum 4 characters">
+
+</div>  </div>  <div class="cp-actions">  <button  
+type="button"  
+class="btn-orange"  
+onclick="changeControlPassword()">
+🔑 CHANGE PASSWORD
+</button>
+
+</div>  <div class="small-note">  
+Default password: 1234. Recovery code: Khaled@#1234.  
+</div>  <h3 class="section-title">  
+DATABASE PASSWORD  
+</h3>  <div class="cp-grid">  <div>  <label>CURRENT DATABASE PASSWORD</label>
+
+<input  
+id="cpCurrentDBPassword"  
+type="password"  
+placeholder="Current database password">
+
+</div>  <div>  <label>NEW DATABASE PASSWORD</label>
+
+<input  
+id="cpNewDBPassword"  
+type="password"  
+placeholder="Minimum 4 characters">
+
+</div>  </div>  <div class="cp-actions">  <button  
+type="button"  
+class="btn-orange"  
+onclick="changeDatabasePassword()">
+🔐 CHANGE DATABASE PASSWORD
+</button>
+
+</div>  <div class="small-note">  
+Default Database password: 1234. Recovery code: Khaled@#1234.  
+</div>  <div class="cp-actions">  <button  
+type="button"  
+class="btn-green"  
+onclick="saveControlPanel()">
+💾 SAVE SETTINGS
+</button>
+
+<button  
+type="button"  
+onclick="closeControlPanel()">
+CLOSE
+</button>
+
+</div>  </div>  </div>  </div>  <div id="toast" class="toast"></div>  <script>  
+  
+const COUNTRIES=[  
+["🇹🇿","Tanzania","+255"],  
+["🇰🇪","Kenya","+254"],  
+["🇺🇬","Uganda","+256"],  
+["🇷🇼","Rwanda","+250"],  
+["🇧🇮","Burundi","+257"],  
+["🇨🇩","DR Congo","+243"],  
+["🇿🇲","Zambia","+260"],  
+["🇲🇼","Malawi","+265"],  
+["🇲🇿","Mozambique","+258"],  
+["🇰🇲","Comoros","+269"],  
+["🇸🇨","Seychelles","+248"],  
+["🇩🇿","Algeria","+213"],  
+["🇦🇴","Angola","+244"],  
+["🇧🇯","Benin","+229"],  
+["🇧🇼","Botswana","+267"],  
+["🇧🇫","Burkina Faso","+226"],  
+["🇨🇻","Cape Verde","+238"],  
+["🇨🇲","Cameroon","+237"],  
+["🇨🇫","Central African Republic","+236"],  
+["🇹🇩","Chad","+235"],  
+["🇨🇬","Congo Republic","+242"],  
+["🇨🇮","Côte d'Ivoire","+225"],  
+["🇩🇯","Djibouti","+253"],  
+["🇪🇬","Egypt","+20"],  
+["🇬🇶","Equatorial Guinea","+240"],  
+["🇪🇷","Eritrea","+291"],  
+["🇸🇿","Eswatini","+268"],  
+["🇪🇹","Ethiopia","+251"],  
+["🇬🇦","Gabon","+241"],  
+["🇬🇲","Gambia","+220"],  
+["🇬🇭","Ghana","+233"],  
+["🇬🇳","Guinea","+224"],  
+["🇬🇼","Guinea-Bissau","+245"],  
+["🇱🇸","Lesotho","+266"],  
+["🇱🇷","Liberia","+231"],  
+["🇱🇾","Libya","+218"],  
+["🇲🇬","Madagascar","+261"],  
+["🇲🇱","Mali","+223"],  
+["🇲🇷","Mauritania","+222"],  
+["🇲🇺","Mauritius","+230"],  
+["🇲🇦","Morocco","+212"],  
+["🇳🇦","Namibia","+264"],  
+["🇳🇪","Niger","+227"],  
+["🇳🇬","Nigeria","+234"],  
+["🇷🇪","Réunion","+262"],  
+["🇸🇳","Senegal","+221"],  
+["🇸🇱","Sierra Leone","+232"],  
+["🇸🇴","Somalia","+252"],  
+["🇿🇦","South Africa","+27"],  
+["🇸🇸","South Sudan","+211"],  
+["🇸🇩","Sudan","+249"],  
+["🇹🇬","Togo","+228"],  
+["🇹🇳","Tunisia","+216"],  
+["🇿🇼","Zimbabwe","+263"]  
+];  
+  
+  
+const DEFAULT_SETTINGS={  
+  
+vat:18,  
+discount:0,  
+autoInvoice:true,  
+  
+invoicePattern:"JG-{YYYY}{MM}{DD}-{HH}{mm}{ss}",  
+  
+tempered:[  
+["4mm Clear Glass","49400"],  
+["5mm Clear Glass","54600"],  
+["6mm Clear Glass","59800"],  
+["8mm Clear Glass","67600"],  
+["10mm Clear Glass","80600"],  
+["12mm Clear Glass","96200"],  
+["4mm Dark Grey","45000"],  
+["5mm Dark Grey","59800"],  
+["6mm Dark Grey","71500"],  
+["4mm O/W Dark Grey","50000"],  
+["5mm O/W Dark Grey","62400"],  
+["6mm O/W Dark Grey","72800"],  
+["O/W Green","65000"],  
+["4mm O/W Dark Blue","50000"],  
+["5mm O/W Dark Blue","54600"],  
+["6mm O/W Dark Blue","78000"],  
+["4mm T/Bronze","49400"],  
+["5mm T/Bronze","52000"],  
+["6mm T/Bronze","59800"],  
+["4mm O/W Bronze","46800"],  
+["5mm O/W Bronze","52000"],  
+["6mm O/W Bronze","62400"]  
+],  
+  
+nonTempered:[  
+["4mm Clear","29000","34500"],  
+["5mm Clear","34000","39500"],  
+["6mm Clear","40000","45500"],  
+["8mm Clear","49000","54500"],  
+["10mm Clear","61000","66500"],  
+["12mm Clear","76000","81500"],  
+["4mm Dark Grey","36000","41500"],  
+["5mm Dark Grey","43000","48500"],  
+["6mm Dark Grey","51500","57000"],  
+["4mm O/W Dark Grey","36500","42000"],  
+["5mm O/W Dark Grey","44000","49500"],  
+["6mm O/W Dark Grey","53000","58500"],  
+["4mm O/W Dark Blue","32000","37500"],  
+["5mm O/W Dark Blue","39000","44500"],  
+["6mm O/W Dark Blue","52000","57500"],  
+["6mm Fond O/W Blue","58500","64000"],  
+["5mm T/Bronze","35500","41000"],  
+["4mm O/W Bronze","30500","36000"],  
+["5mm O/W Bronze","36000","41500"],  
+["5mm O/W Green","47000","52500"],  
+["4mm Mirror","34500","40000"],  
+["5mm Mirror","41000","46500"]  
+],  
+  
+processing:{  
+cutOut:7800,  
+hole:2600,  
+insulating:15600,  
+laminated:15600,  
+laminatedFilm:31200,  
+sandblasting:18200  
+},  
+  
+accessories:[],  
+  
+bank1:"0123456789",  
+bank2:"025 036 210 6800",  
+mpesa:"5509334",  
+commission:5  
+  
+};  
+  
+  
+const SETTINGS_KEY="JG_SETTINGS";  
+const PASSWORD_KEY="JG_PASSWORD";  
+const DB_PASSWORD_KEY="JG_DATABASE_PASSWORD";  
+const INVOICE_KEY="JG_INVOICE_DATABASE";  
+const DRAFT_KEY="JG_ACTIVE_ORDER";  
+  
+const DEFAULT_PASSWORD="1234";  
+const DEFAULT_DB_PASSWORD="1234";  
+const RECOVERY_CODE="Khaled@#1234";  
+  
+let settings=loadSettings();  
+let savedPassword=localStorage.getItem(PASSWORD_KEY)||DEFAULT_PASSWORD;  
+let savedDBPassword=localStorage.getItem(DB_PASSWORD_KEY)||DEFAULT_DB_PASSWORD;  
+  
+let currentInvoiceNo=null;  
+let restoringDraft=false;  
+let autosaveTimer=null;  
+  
+let databaseUnlocked=false;  
+let databaseEditingInvoice=null;  
+  
+  
+/* =========================================================  
+   BASIC HELPERS  
+========================================================= */  
+  
+function clone(x){  
+return JSON.parse(JSON.stringify(x));  
+}  
+  
+function num(value){  
+return Number(value)||0;  
+}  
+  
+function money(value){  
+return Number(value||0).toLocaleString("en-US",{  
+minimumFractionDigits:2,  
+maximumFractionDigits:2  
+});  
+}  
+  
+function esc(value){  
+return String(value??"").replace(/[&<>"']/g,function(c){  
+return{  
+"&":"&amp;",  
+"<":"&lt;",  
+">":"&gt;",  
+'"':"&quot;",  
+"'":"&#39;"  
+}[c];  
+});  
+}  
+  
+function toast(message){  
+  
+const t=document.getElementById("toast");  
+  
+t.textContent=message;  
+t.style.display="block";  
+  
+clearTimeout(window.toastTimer);  
+  
+window.toastTimer=setTimeout(function(){  
+t.style.display="none";  
+},3000);  
+  
+}  
+  
+function showError(message){  
+  
+document.getElementById("errorMessage").textContent=message;  
+  
+toast(message);  
+  
+}  
+  
+function clearError(){  
+  
+document.getElementById("errorMessage").textContent="";  
+  
+}  
+  
+  
+/* =========================================================  
+   SETTINGS  
+========================================================= */  
+  
+function loadSettings(){  
+  
+try{  
+  
+const saved=JSON.parse(localStorage.getItem(SETTINGS_KEY));  
+  
+if(!saved)return clone(DEFAULT_SETTINGS);  
+  
+const result=clone(DEFAULT_SETTINGS);  
+  
+Object.keys(saved).forEach(function(key){  
+result[key]=saved[key];  
+});  
+  
+result.tempered=(result.tempered||[]).map(function(x){  
+  
+if(x.length>=4){  
+return[String(x[0]||""),num(x[3])];  
+}  
+  
+return[String(x[0]||""),num(x[1])];  
+  
+});  
+  
+result.nonTempered=(result.nonTempered||[]).map(function(x){  
+  
+if(x.length>=5){  
+return[String(x[0]||""),num(x[3]),num(x[4])];  
+}  
+  
+return[String(x[0]||""),num(x[1]),num(x[2])];  
+  
+});  
+  
+result.tempered=result.tempered.filter(function(x){  
+return x[0].trim()!="";  
+});  
+  
+result.nonTempered=result.nonTempered.filter(function(x){  
+return x[0].trim()!="";  
+});  
+  
+result.processing=result.processing||clone(DEFAULT_SETTINGS.processing);  
+  
+if(result.processing.laminated===undefined){  
+result.processing.laminated=15600;  
+}  
+  
+if(result.processing.laminatedFilm===undefined){  
+result.processing.laminatedFilm=31200;  
+}  
+  
+return result;  
+  
+}catch(e){  
+  
+return clone(DEFAULT_SETTINGS);  
+  
+}  
+  
+}  
+  
+function saveSettings(){  
+  
+localStorage.setItem(  
+SETTINGS_KEY,  
+JSON.stringify(settings)  
+);  
+  
+}  
+  
+  
+/* =========================================================  
+   PHONE  
+========================================================= */  
+  
+function loadCountryCodes(){  
+  
+const select=document.getElementById("countryCode");  
+  
+select.innerHTML=COUNTRIES.map(function(c){  
+  
+return`<option value="${c[2]}">${c[0]} ${c[1]} (${c[2]})</option>`;  
+  
+}).join("");  
+  
+select.value="+255";  
+  
+updatePhonePreview();  
+  
+}  
+  
+function loadDatabaseCountryCodes(){  
+  
+const select=document.getElementById("dbEditCountryCode");  
+  
+if(!select)return;  
+  
+select.innerHTML=COUNTRIES.map(function(c){  
+  
+return`<option value="${c[2]}">${c[0]} ${c[1]} (${c[2]})</option>`;  
+  
+}).join("");  
+  
+select.value="+255";  
+  
+}  
+  
+function updatePhonePreview(){  
+  
+const code=document.getElementById("countryCode").value;  
+  
+const phone=document  
+.getElementById("customerPhone")  
+.value.trim();  
+  
+document.getElementById("phonePreview").textContent=  
+phone  
+?("Full number: "+code+" "+phone)  
+:"";  
+  
+}  
+  
+  
+/* =========================================================  
+   CONTROL PANEL  
+========================================================= */  
+  
+function openControlPanel(){  
+  
+document.getElementById("controlModal")  
+.style.display="block";  
+  
+document.getElementById("cpLogin")  
+.style.display="block";  
+  
+document.getElementById("cpContent")  
+.classList.add("hidden");  
+  
+document.getElementById("cpPassword").value="";  
+  
+setTimeout(function(){  
+  
+document.getElementById("cpPassword").focus();  
+  
+},100);  
+  
+}  
+  
+function closeControlPanel(){  
+  
+document.getElementById("controlModal")  
+.style.display="none";  
+  
+}  
+  
+function showRecovery(){  
+  
+document.getElementById("recoveryArea")  
+.classList.toggle("hidden");  
+  
+}  
+  
+function recoverPassword(){  
+  
+const code=document  
+.getElementById("recoveryCode")  
+.value;  
+  
+if(code!==RECOVERY_CODE){  
+  
+toast("Invalid recovery code.");  
+  
+return;  
+  
+}  
+  
+const newPassword=prompt(  
+"Enter new Control Panel password:"  
+);  
+  
+if(newPassword===null)return;  
+  
+if(newPassword.length<4){  
+  
+toast("Password must contain at least 4 characters.");  
+  
+return;  
+  
+}  
+  
+savedPassword=newPassword;  
+  
+localStorage.setItem(  
+PASSWORD_KEY,  
+newPassword  
+);  
+  
+document.getElementById("recoveryCode").value="";  
+  
+toast("Password reset successfully.");  
+  
+}  
+  
+function unlockControlPanel(){  
+  
+if(  
+document.getElementById("cpPassword").value  
+!==savedPassword  
+){  
+  
+toast("Wrong password.");  
+  
+return;  
+  
+}  
+  
+loadCPInputs();  
+  
+document.getElementById("cpLogin")  
+.style.display="none";  
+  
+document.getElementById("cpContent")  
+.classList.remove("hidden");  
+  
+}  
+  
+function loadCPInputs(){  
+  
+document.getElementById("cpVAT").value=settings.vat;  
+document.getElementById("cpDiscount").value=settings.discount;  
+  
+document.getElementById("cpAutoInvoice").checked=  
+settings.autoInvoice;  
+  
+document.getElementById("cpInvoicePattern").value=  
+settings.invoicePattern;  
+  
+document.getElementById("cpCutOut").value=  
+settings.processing.cutOut;  
+  
+document.getElementById("cpHole").value=  
+settings.processing.hole;  
+  
+document.getElementById("cpInsulating").value=  
+settings.processing.insulating;  
+  
+document.getElementById("cpLaminatedPlain").value=  
+settings.processing.laminated;  
+  
+document.getElementById("cpLaminatedFilm").value=  
+settings.processing.laminatedFilm;  
+  
+document.getElementById("cpSandblasting").value=  
+settings.processing.sandblasting;  
+  
+document.getElementById("cpBank1").value=  
+settings.bank1;  
+  
+document.getElementById("cpBank2").value=  
+settings.bank2;  
+  
+document.getElementById("cpMpesa").value=  
+settings.mpesa;  
+  
+document.getElementById("cpCommission").value=  
+settings.commission;  
+  
+renderTemperedCP();  
+renderNonTemperedCP();  
+renderAccessoriesCP();  
+  
+document.getElementById("cpCurrentDBPassword").value="";  
+document.getElementById("cpNewDBPassword").value="";  
+  
+}  
+  
+  
+/* =========================================================  
+   PASSWORD CHANGE  
+========================================================= */  
+  
+function changeControlPassword(){  
+  
+const current=  
+document.getElementById("cpCurrentPassword")  
+.value;  
+  
+const next=  
+document.getElementById("cpNewPassword")  
+.value;  
+  
+if(current!==savedPassword){  
+  
+toast("Current password is incorrect.");  
+  
+return;  
+  
+}  
+  
+if(next.length<4){  
+  
+toast("New password must contain at least 4 characters.");  
+  
+return;  
+  
+}  
+  
+savedPassword=next;  
+  
+localStorage.setItem(  
+PASSWORD_KEY,  
+next  
+);  
+  
+document.getElementById("cpCurrentPassword").value="";  
+document.getElementById("cpNewPassword").value="";  
+  
+toast("Control Panel password changed successfully.");  
+  
+}  
+  
+function changeDatabasePassword(){  
+  
+const current=  
+document.getElementById("cpCurrentDBPassword")  
+.value;  
+  
+const next=  
+document.getElementById("cpNewDBPassword")  
+.value;  
+  
+if(current!==savedDBPassword){  
+  
+toast("Current Database password is incorrect.");  
+  
+return;  
+  
+}  
+  
+if(next.length<4){  
+  
+toast("Database password must contain at least 4 characters.");  
+  
+return;  
+  
+}  
+  
+savedDBPassword=next;  
+  
+localStorage.setItem(  
+DB_PASSWORD_KEY,  
+next  
+);  
+  
+document.getElementById("cpCurrentDBPassword").value="";  
+document.getElementById("cpNewDBPassword").value="";  
+  
+toast("Database password changed successfully.");  
+  
+}  
+  
+  
+/* =========================================================  
+   CONTROL PANEL TABLES  
+========================================================= */  
+  
+function renderTemperedCP(){  
+  
+const body=document.getElementById("temperedCP");  
+  
+body.innerHTML=settings.tempered.map(function(x,i){  
+  
+return`  
+<tr>  
+  
+<td>${i+1}</td>  
+  
+<td>  
+<input id="td_${i}" value="${esc(x[0])}">  
+</td>  
+  
+<td>  
+<span class="cp-type-badge">TEMPERED</span>  
+</td>  
+  
+<td>  
+<input id="tp_${i}"  
+type="number"  
+min="0"  
+value="${num(x[1])}">  
+</td>  
+  
+<td>  
+<button type="button"  
+class="remove-btn"  
+onclick="removeTempered(${i})">×</button>  
+</td>  
+  
+</tr>  
+`;  
+  
+}).join("");  
+  
+}  
+  
+function renderNonTemperedCP(){  
+  
+const body=document.getElementById("nonTemperedCP");  
+  
+body.innerHTML=settings.nonTempered.map(function(x,i){  
+  
+return`  
+<tr>  
+  
+<td>${i+1}</td>  
+  
+<td>  
+<input id="nd_${i}" value="${esc(x[0])}">  
+</td>  
+  
+<td>  
+<span class="cp-type-badge">NON-TEMPERED</span>  
+</td>  
+  
+<td>  
+<input id="ncut_${i}"  
+type="number"  
+min="0"  
+value="${num(x[1])}">  
+</td>  
+  
+<td>  
+<input id="npol_${i}"  
+type="number"  
+min="0"  
+value="${num(x[2])}">  
+</td>  
+  
+<td>  
+<button type="button"  
+class="remove-btn"  
+onclick="removeNonTempered(${i})">×</button>  
+</td>  
+  
+</tr>  
+`;  
+  
+}).join("");  
+  
+}  
+  
+function renderAccessoriesCP(){  
+  
+const body=document.getElementById("accessoryCP");  
+  
+body.innerHTML=settings.accessories.map(function(x,i){  
+  
+return`  
+<tr>  
+  
+<td>${i+1}</td>  
+  
+<td>  
+<input id="acd_${i}"  
+value="${esc(x[0])}">  
+</td>  
+  
+<td>  
+<input id="acp_${i}"  
+type="number"  
+min="0"  
+value="${num(x[1])}">  
+</td>  
+  
+<td>  
+<button type="button"  
+class="remove-btn"  
+onclick="removeAccessoryCP(${i})">×</button>  
+</td>  
+  
+</tr>  
+`;  
+  
+}).join("");  
+  
+}  
+  
+function addTemperedEntry(){  
+  
+settings.tempered.push(  
+["NEW TEMPERED GLASS",0]  
+);  
+  
+renderTemperedCP();  
+  
+}  
+  
+function addNonTemperedEntry(){  
+  
+settings.nonTempered.push(  
+["NEW NON-TEMPERED GLASS",0,0]  
+);  
+  
+renderNonTemperedCP();  
+  
+}  
+  
+function removeTempered(i){  
+  
+settings.tempered.splice(i,1);  
+  
+renderTemperedCP();  
+  
+}  
+  
+function removeNonTempered(i){  
+  
+settings.nonTempered.splice(i,1);  
+  
+renderNonTemperedCP();  
+  
+}  
+  
+function addAccessoryCP(){  
+  
+settings.accessories.push(  
+["NEW ACCESSORY",0]  
+);  
+  
+renderAccessoriesCP();  
+  
+}  
+  
+function removeAccessoryCP(i){  
+  
+settings.accessories.splice(i,1);  
+  
+renderAccessoriesCP();  
+  
+}  
+  
+  
+/* =========================================================  
+   CATALOGUE  
+========================================================= */  
+  
+function uniqueCatalogue(list){  
+  
+const seen=new Set();  
+  
+return list.filter(function(item){  
+  
+const name=String(item[0]||"")  
+.trim()  
+.toLowerCase();  
+  
+if(!name)return false;  
+  
+if(seen.has(name))return false;  
+  
+seen.add(name);  
+  
+return true;  
+  
+});  
+  
+}  
+  
+function getUniquePlusCatalogue(){  
+  
+const result=[];  
+const seen=new Set();  
+  
+function add(list){  
+  
+list.forEach(function(x){  
+  
+const name=String(x[0]||"").trim();  
+  
+if(!name)return;  
+  
+const key=name.toLowerCase();  
+  
+if(seen.has(key))return;  
+  
+seen.add(key);  
+  
+result.push({  
+name:name,  
+price:num(x[1])  
+});  
+  
+});  
+  
+}  
+  
+add(settings.tempered);  
+add(settings.nonTempered);  
+  
+return result;  
+  
+}  
+  
+function findPlusCatalogueItem(description){  
+  
+const key=String(description||"")  
+.trim()  
+.toLowerCase();  
+  
+if(!key)return null;  
+  
+const catalogue=getUniquePlusCatalogue();  
+  
+return catalogue.find(function(x){  
+  
+return x.name.toLowerCase()===key;  
+  
+})||null;  
+  
+}  
+  
+function updatePlusDescriptionList(){  
+  
+let old=document.getElementById("plusSearchList");  
+  
+if(old)old.remove();  
+  
+const list=document.createElement("datalist");  
+  
+list.id="plusSearchList";  
+  
+getUniquePlusCatalogue().forEach(function(x){  
+  
+const op=document.createElement("option");  
+  
+op.value=x.name;  
+  
+list.appendChild(op);  
+  
+});  
+  
+document.body.appendChild(list);  
+  
+}  
+  
+function getCatalogueNames(type){  
+  
+if(type==="Tempered"){  
+  
+return settings.tempered.map(function(x){  
+return x[0];  
+});  
+  
+}  
+  
+if(type==="Non-Tempered"){  
+  
+return settings.nonTempered.map(function(x){  
+return x[0];  
+});  
+  
+}  
+  
+return getUniquePlusCatalogue().map(function(x){  
+return x.name;  
+});  
+  
+}  
+  
+function updateGlassDescriptionList(){  
+  
+let old=document.getElementById("glassSearchList");  
+  
+if(old)old.remove();  
+  
+const list=document.createElement("datalist");  
+  
+list.id="glassSearchList";  
+  
+const names=[];  
+  
+settings.tempered.forEach(function(x){  
+  
+if(x[0])names.push(x[0]);  
+  
+});  
+  
+settings.nonTempered.forEach(function(x){  
+  
+if(x[0])names.push(x[0]);  
+  
+});  
+  
+const unique=[];  
+const seen=new Set();  
+  
+names.forEach(function(name){  
+  
+const key=String(name)  
+.trim()  
+.toLowerCase();  
+  
+if(!seen.has(key)){  
+  
+seen.add(key);  
+unique.push(name);  
+  
+}  
+  
+});  
+  
+unique.forEach(function(name){  
+  
+const op=document.createElement("option");  
+  
+op.value=name;  
+  
+list.appendChild(op);  
+  
+});  
+  
+document.body.appendChild(list);  
+  
+}  
+  
+function updateRowDescriptionList(row){  
+  
+const type=row  
+.querySelector(".glassType")  
+.value;  
+  
+const input=row  
+.querySelector(".description");  
+  
+if(type==="PLUS"){  
+  
+input.removeAttribute("list");  
+  
+return;  
+  
+}  
+  
+const listId=  
+"glassList_"+  
+Math.random()  
+.toString(36)  
+.substring(2);  
+  
+let list=document.getElementById(listId);  
+  
+if(list)list.remove();  
+  
+list=document.createElement("datalist");  
+  
+list.id=listId;  
+  
+getCatalogueNames(type)  
+.forEach(function(name){  
+  
+const op=document.createElement("option");  
+  
+op.value=name;  
+  
+list.appendChild(op);  
+  
+});  
+  
+document.body.appendChild(list);  
+  
+input.setAttribute("list",listId);  
+  
+}  
+  
+function findCatalogueItem(row){  
+  
+const type=row  
+.querySelector(".glassType")  
+.value;  
+  
+const description=row  
+.querySelector(".description")  
+.value  
+.trim()  
+.toLowerCase();  
+  
+if(!description)return null;  
+  
+if(type==="Tempered"){  
+  
+return settings.tempered.find(function(x){  
+  
+return String(x[0])  
+.trim()  
+.toLowerCase()===description;  
+  
+})||null;  
+  
+}  
+  
+if(type==="Non-Tempered"){  
+  
+return settings.nonTempered.find(function(x){  
+  
+return String(x[0])  
+.trim()  
+.toLowerCase()===description;  
+  
+})||null;  
+  
+}  
+  
+return null;  
+  
+}  
+  
+  
+/* =========================================================  
+   SAVE CONTROL PANEL  
+========================================================= */  
+  
+function saveControlPanel(){  
+  
+const oldPattern=settings.invoicePattern;  
+  
+settings.tempered=settings.tempered.map(function(x,i){  
+  
+return[  
+document.getElementById("td_"+i).value.trim(),  
+num(document.getElementById("tp_"+i).value)  
+];  
+  
+}).filter(function(x){  
+  
+return x[0]!=="" &&  
+x[0].toLowerCase()!=="new tempered glass";  
+  
+});  
+  
+settings.nonTempered=settings.nonTempered.map(function(x,i){  
+  
+return[  
+document.getElementById("nd_"+i).value.trim(),  
+num(document.getElementById("ncut_"+i).value),  
+num(document.getElementById("npol_"+i).value)  
+];  
+  
+}).filter(function(x){  
+  
+return x[0]!=="" &&  
+x[0].toLowerCase()!=="new non-tempered glass";  
+  
+});  
+  
+settings.accessories=settings.accessories.map(function(x,i){  
+  
+return[  
+document.getElementById("acd_"+i).value.trim(),  
+num(document.getElementById("acp_"+i).value)  
+];  
+  
+}).filter(function(x){  
+  
+return x[0]!=="";  
+  
+});  
+  
+settings.processing={  
+  
+cutOut:num(  
+document.getElementById("cpCutOut").value  
+),  
+  
+hole:num(  
+document.getElementById("cpHole").value  
+),  
+  
+insulating:num(  
+document.getElementById("cpInsulating").value  
+),  
+  
+laminated:num(  
+document.getElementById("cpLaminatedPlain").value  
+),  
+  
+laminatedFilm:num(  
+document.getElementById("cpLaminatedFilm").value  
+),  
+  
+sandblasting:num(  
+document.getElementById("cpSandblasting").value  
+)  
+  
+};  
+  
+settings.vat=num(  
+document.getElementById("cpVAT").value  
+);  
+  
+settings.discount=num(  
+document.getElementById("cpDiscount").value  
+);  
+  
+settings.autoInvoice=  
+document.getElementById("cpAutoInvoice")  
+.checked;  
+  
+let newPattern=  
+document.getElementById("cpInvoicePattern")  
+.value.trim();  
+  
+settings.invoicePattern=  
+newPattern||  
+"JG-{YYYY}{MM}{DD}-{HH}{mm}{ss}";  
+  
+settings.bank1=  
+document.getElementById("cpBank1").value;  
+  
+settings.bank2=  
+document.getElementById("cpBank2").value;  
+  
+settings.mpesa=  
+document.getElementById("cpMpesa").value;  
+  
+settings.commission=num(  
+document.getElementById("cpCommission").value  
+);  
+  
+settings.tempered=  
+uniqueCatalogue(settings.tempered);  
+  
+settings.nonTempered=  
+uniqueCatalogue(settings.nonTempered);  
+  
+settings.accessories=  
+uniqueCatalogue(settings.accessories);  
+  
+saveSettings();  
+  
+updateGlassDescriptionList();  
+updatePlusDescriptionList();  
+updateAccessoryList();  
+  
+document.querySelectorAll(".glass-row")  
+.forEach(function(row){  
+  
+const type=  
+row.querySelector(".glassType").value;  
+  
+if(type==="PLUS"){  
+  
+applyPlusPrice(row);  
+  
+}else{  
+  
+applyGlassPrice(row);  
+  
+}  
+  
+});  
+  
+calculateTotals();  
+  
+saveDraft();  
+  
+toast(  
+oldPattern!==settings.invoicePattern  
+?"INVOICE PATTERN SAVED: "+settings.invoicePattern  
+:"SETTINGS SAVED SUCCESSFULLY."  
+);  
+  
+closeControlPanel();  
+  
+}  
+  
+  
+/* =========================================================  
+   GLASS ROW  
+========================================================= */  
+  
+function addGlass(type,skipFocus=false){  
+  
+const row=document.createElement("tr");  
+  
+row.className="glass-row";  
+  
+row.innerHTML=`  
+  
+<td class="rowNo"></td>  
+  
+<td>  
+  
+<select class="glassType">  
+  
+<option value="Tempered"  
+${type==="Tempered"?"selected":""}>  
+TEMPERED  
+</option>  
+  
+<option value="Non-Tempered"  
+${type==="Non-Tempered"?"selected":""}>  
+NON-TEMPERED  
+</option>  
+  
+</select>  
+  
+</td>  
+  
+<td>  
+  
+<input  
+class="description"  
+placeholder="SEARCH / DESCRIPTION"  
+autocomplete="off">  
+  
+</td>  
+  
+<td>  
+  
+<select class="unit">  
+  
+<option value="MM">MM</option>  
+<option value="CM">CM</option>  
+  
+</select>  
+  
+</td>  
+  
+<td>  
+<input class="width" type="number" min="0">  
+</td>  
+  
+<td>  
+<input class="height" type="number" min="0">  
+</td>  
+  
+<td class="sqm">0.000</td>  
+  
+<td>  
+<input class="qty" type="number" min="1" value="1">  
+</td>  
+  
+<td>  
+  
+<div class="non-temp-process-holder"></div>  
+  
+<input class="unitPrice" type="number" min="0">  
+  
+</td>  
+  
+<td class="amount">0.00</td>  
+  
+<td>  
+<input class="remark" placeholder="REMARK">  
+</td>  
+  
+<td>  
+<button type="button"  
+class="remove-btn">×</button>  
+</td>  
+  
+`;  
+  
+document.getElementById("orderBody")  
+.appendChild(row);  
+  
+bindGlassRow(row);  
+  
+updateGlassDescriptionList();  
+updatePlusDescriptionList();  
+  
+applyGlassPrice(row);  
+  
+calculateTotals();  
+  
+if(!skipFocus)  
+focusFirstUsefulField(row);  
+  
+return row;  
+  
+}  
+  
+function focusFirstUsefulField(row){  
+  
+const field=row  
+.querySelector(".description");  
+  
+if(field){  
+  
+setTimeout(function(){  
+  
+field.focus();  
+  
+},20);  
+  
+}  
+  
+}  
+  
+  
+/* =========================================================  
+   PLUS  
+========================================================= */  
+  
+function addPlus(){  
+  
+const rows=[  
+...document.querySelectorAll(".glass-row")  
+];  
+  
+if(rows.length===0){  
+  
+const row=addGlass("Tempered");  
+  
+const description=  
+row.querySelector(".description");  
+  
+description.value=" + ";  
+  
+description.focus();  
+  
+calculateTotals();  
+  
+saveDraft();  
+  
+return;  
+  
+}  
+  
+let row=null;  
+  
+const active=document.activeElement;  
+  
+if(active&&active.closest){  
+  
+const activeRow=  
+active.closest(".glass-row");  
+  
+if(activeRow){  
+row=activeRow;  
+}  
+  
+}  
+  
+if(!row){  
+row=rows[rows.length-1];  
+}  
+  
+const description=  
+row.querySelector(".description");  
+  
+const oldValue=  
+description.value.trimEnd();  
+  
+if(oldValue===""){  
+  
+description.value="+ ";  
+  
+}else{  
+  
+if(!oldValue.endsWith("+")){  
+  
+description.value=  
+oldValue+" + ";  
+  
+}else{  
+  
+description.value=  
+oldValue+" ";  
+  
+}  
+  
+}  
+  
+description.focus();  
+  
+description.setSelectionRange(  
+description.value.length,  
+description.value.length  
+);  
+  
+row.dataset.plusMode="true";  
+  
+if(  
+row.querySelector(".glassType").value==="PLUS"  
+){  
+  
+row.querySelector(".glassType").value="Tempered";  
+  
+}  
+  
+applyGlassPrice(row);  
+  
+calculateTotals();  
+  
+saveDraft();  
+  
+}  
+  
+  
+/* =========================================================  
+   PRICES  
+========================================================= */  
+  
+function applyGlassPrice(row){  
+  
+const type=  
+row.querySelector(".glassType")  
+.value;  
+  
+const holder=  
+row.querySelector(".non-temp-process-holder");  
+  
+if(type==="Tempered"){  
+  
+holder.innerHTML="";  
+  
+const item=findCatalogueItem(row);  
+  
+if(item){  
+  
+row.querySelector(".unitPrice")  
+.value=num(item[1]);  
+  
+}else{  
+  
+if(!row.dataset.plusMode){  
+  
+row.querySelector(".unitPrice").value="";  
+  
+}  
+  
+}  
+  
+return;  
+  
+}  
+  
+if(type==="Non-Tempered"){  
+  
+let selector=  
+row.querySelector(".nonTempProcess");  
+  
+if(!selector){  
+  
+selector=document.createElement("select");  
+  
+selector.className="nonTempProcess";  
+  
+selector.innerHTML=`  
+  
+<option value="BOTH">  
+BOTH CUT + POLISH  
+</option>  
+  
+<option value="CUT">CUT</option>  
+  
+<option value="POLISH">POLISH</option>  
+  
+`;  
+  
+holder.appendChild(selector);  
+  
+selector.addEventListener("change",function(){  
+  
+updateNonTemperedPrice(row);  
+  
+});  
+  
+}  
+  
+selector.value=  
+selector.value||"BOTH";  
+  
+updateNonTemperedPrice(row);  
+  
+}  
+  
+}  
+  
+function applyPlusPrice(row){  
+  
+const description=  
+row.querySelector(".description")  
+.value  
+.trim();  
+  
+const item=  
+findPlusCatalogueItem(description);  
+  
+const holder=  
+row.querySelector(".non-temp-process-holder");  
+  
+if(holder)  
+holder.innerHTML="";  
+  
+if(item){  
+  
+row.querySelector(".unitPrice")  
+.value=item.price;  
+  
+}else if(!row.dataset.plusMode){  
+  
+row.querySelector(".unitPrice").value="";  
+  
+}  
+  
+calculateTotals();  
+  
+}  
+  
+function updateNonTemperedPrice(row){  
+  
+const item=findCatalogueItem(row);  
+  
+if(!item){  
+  
+if(!row.dataset.plusMode){  
+  
+row.querySelector(".unitPrice")  
+.value="";  
+  
+}  
+  
+return;  
+  
+}  
+  
+const selector=  
+row.querySelector(".nonTempProcess");  
+  
+if(!selector)return;  
+  
+let price=0;  
+  
+if(selector.value==="CUT"){  
+  
+price=num(item[1]);  
+  
+}else if(selector.value==="POLISH"){  
+  
+price=num(item[2]);  
+  
+}else{  
+  
+price=  
+num(item[1])+  
+num(item[2]);  
+  
+}  
+  
+row.querySelector(".unitPrice")  
+.value=price;  
+  
+calculateTotals();  
+  
+}  
+  
+  
+/* =========================================================  
+   DESCRIPTION  
+========================================================= */  
+  
+function getGlassDescription(row){  
+  
+const type=  
+row.querySelector(".glassType")  
+.value;  
+  
+const typed=  
+row.querySelector(".description")  
+.value  
+.trim();  
+  
+if(row.dataset.plusMode==="true"){  
+  
+return typed||"GLASS";  
+  
+}  
+  
+if(!typed){  
+  
+return type==="Tempered"  
+?"TEMPERED GLASS"  
+:"NON-TEMPERED GLASS";  
+  
+}  
+  
+let baseName=typed;  
+  
+if(type==="Tempered"){  
+  
+const item=settings.tempered.find(function(x){  
+  
+return String(x[0])  
+.trim()  
+.toLowerCase()===typed.toLowerCase();  
+  
+});  
+  
+if(item)  
+baseName=item[0];  
+  
+return baseName+" Tempered";  
+  
+}  
+  
+if(type==="Non-Tempered"){  
+  
+const item=settings.nonTempered.find(function(x){  
+  
+return String(x[0])  
+.trim()  
+.toLowerCase()===typed.toLowerCase();  
+  
+});  
+  
+if(item)  
+baseName=item[0];  
+  
+const processElement=  
+row.querySelector(".nonTempProcess");  
+  
+const process=processElement  
+?processElement.value  
+:"BOTH";  
+  
+if(process==="CUT")  
+return baseName+" Cut";  
+  
+if(process==="POLISH")  
+return baseName+" Polish";  
+  
+return baseName+" Non-Tempered";  
+  
+}  
+  
+return typed;  
+  
+}  
+  
+  
+/* =========================================================  
+   ROW EVENTS  
+========================================================= */  
+  
+function bindGlassRow(row){  
+  
+updateRowDescriptionList(row);  
+  
+row.querySelectorAll("input,select")  
+.forEach(function(el){  
+  
+el.addEventListener("input",function(){  
+  
+if(el.classList.contains("description")){  
+  
+if(  
+el.value.includes("+")||  
+row.dataset.plusMode==="true"  
+){  
+  
+row.dataset.plusMode="true";  
+  
+const holder=  
+row.querySelector(  
+".non-temp-process-holder"  
+);  
+  
+if(holder)  
+holder.innerHTML="";  
+  
+}else{  
+  
+applyGlassPrice(row);  
+  
+}  
+  
+}  
+  
+calculateTotals();  
+  
+scheduleDraftSave();  
+  
+});  
+  
+el.addEventListener("change",function(){  
+  
+if(el.classList.contains("glassType")){  
+  
+row.dataset.plusMode="false";  
+  
+row.querySelector(".description")  
+.value="";  
+  
+row.querySelector(".unitPrice")  
+.value="";  
+  
+updateRowDescriptionList(row);  
+  
+applyGlassPrice(row);  
+  
+}  
+  
+if(el.classList.contains("description")){  
+  
+if(el.value.includes("+")){  
+  
+row.dataset.plusMode="true";  
+  
+applyPlusPrice(row);  
+  
+}else{  
+  
+applyGlassPrice(row);  
+  
+}  
+  
+}  
+  
+calculateTotals();  
+  
+scheduleDraftSave();  
+  
+});  
+  
+});  
+  
+row.querySelector(".remove-btn").onclick=function(){  
+  
+row.remove();  
+  
+calculateTotals();  
+  
+saveDraft();  
+  
+};  
+  
+}  
+  
+  
+/* =========================================================  
+   AREA  
+========================================================= */  
+  
+function calculateGlassRow(row){  
+  
+let width=num(  
+row.querySelector(".width").value  
+);  
+  
+let height=num(  
+row.querySelector(".height").value  
+);  
+  
+const unit=  
+row.querySelector(".unit").value;  
+  
+if(unit==="CM"){  
+  
+width*=10;  
+height*=10;  
+  
+}  
+  
+const qty=num(  
+row.querySelector(".qty").value  
+);  
+  
+const area=  
+(width*height*qty)/1000000;  
+  
+const price=num(  
+row.querySelector(".unitPrice").value  
+);  
+  
+const amount=  
+area*price;  
+  
+row.querySelector(".sqm")  
+.textContent=  
+area.toFixed(3);  
+  
+row.querySelector(".amount")  
+.textContent=  
+money(amount);  
+  
+return{  
+  
+width:width,  
+height:height,  
+qty:qty,  
+sqm:area,  
+price:price,  
+amount:amount  
+  
+};  
+  
+}  
+  
+  
+/* =========================================================  
+   EXTRAS  
+========================================================= */  
+  
+function addExtra(type){  
+  
+const row=document.createElement("div");  
+  
+row.className="extra-row";  
+  
+const price=  
+type==="CUT OUT"  
+?settings.processing.cutOut  
+:settings.processing.hole;  
+  
+row.innerHTML=`  
+  
+<input value="${type}" readonly>  
+  
+<input  
+class="extraQty"  
+type="number"  
+min="1"  
+value="1">  
+  
+<input  
+class="extraPrice"  
+type="number"  
+min="0"  
+value="${price}">  
+  
+<span class="extraAmount">  
+${money(price)}  
+</span>  
+  
+<button type="button"  
+class="remove-btn">×</button>  
+  
+`;  
+  
+document.getElementById("extraRows")  
+.appendChild(row);  
+  
+row.querySelectorAll("input")  
+.forEach(function(el){  
+  
+el.addEventListener("input",function(){  
+  
+calculateTotals();  
+scheduleDraftSave();  
+  
+});  
+  
+});  
+  
+row.querySelector(".remove-btn")  
+.onclick=function(){  
+  
+row.remove();  
+  
+calculateTotals();  
+  
+saveDraft();  
+  
+};  
+  
+calculateTotals();  
+  
+saveDraft();  
+  
+}  
+  
+  
+/* =========================================================  
+   ACCESSORIES  
+========================================================= */  
+  
+function addAccessory(){  
+  
+const row=document.createElement("div");  
+  
+row.className="accessory-row";  
+  
+row.innerHTML=`  
+  
+<div class="accessoryNo"></div>  
+  
+<input  
+class="accessoryDescription"  
+list="accessoryList"  
+placeholder="CHOOSE / EDIT ACCESSORY NAME"  
+autocomplete="off">  
+  
+<input  
+class="accessoryQty"  
+type="number"  
+min="1"  
+value="1">  
+  
+<input  
+class="accessoryPrice"  
+type="number"  
+min="0"  
+placeholder="EDIT PRICE">  
+  
+<div class="accessoryAmount">  
+0.00  
+</div>  
+  
+<button type="button"  
+class="remove-btn">×</button>  
+  
+`;  
+  
+document.getElementById("accessoryRows")  
+.appendChild(row);  
+  
+updateAccessoryList();  
+  
+const description=  
+row.querySelector(".accessoryDescription");  
+  
+const price=  
+row.querySelector(".accessoryPrice");  
+  
+const qty=  
+row.querySelector(".accessoryQty");  
+  
+function applyAccessoryCataloguePrice(){  
+  
+const typedName=  
+description.value  
+.trim()  
+.toLowerCase();  
+  
+const x=settings.accessories.find(function(a){  
+  
+return String(a[0])  
+.trim()  
+.toLowerCase()===typedName;  
+  
+});  
+  
+if(x){  
+  
+price.value=num(x[1]);  
+  
+}  
+  
+calculateTotals();  
+  
+scheduleDraftSave();  
+  
+}  
+  
+description.addEventListener(  
+"input",  
+applyAccessoryCataloguePrice  
+);  
+  
+description.addEventListener(  
+"change",  
+applyAccessoryCataloguePrice  
+);  
+  
+price.addEventListener("input",function(){  
+  
+calculateTotals();  
+  
+scheduleDraftSave();  
+  
+});  
+  
+qty.addEventListener("input",function(){  
+  
+calculateTotals();  
+  
+scheduleDraftSave();  
+  
+});  
+  
+row.querySelector(".remove-btn")  
+.onclick=function(){  
+  
+row.remove();  
+  
+calculateTotals();  
+  
+saveDraft();  
+  
+};  
+  
+calculateTotals();  
+  
+description.focus();  
+  
+saveDraft();  
+  
+}  
+  
+function updateAccessoryList(){  
+  
+let old=  
+document.getElementById("accessoryList");  
+  
+if(old)old.remove();  
+  
+const list=  
+document.createElement("datalist");  
+  
+list.id="accessoryList";  
+  
+uniqueCatalogue(settings.accessories)  
+.forEach(function(x){  
+  
+const op=  
+document.createElement("option");  
+  
+op.value=x[0];  
+  
+list.appendChild(op);  
+  
+});  
+  
+document.body.appendChild(list);  
+  
+}  
+  
+  
+/* =========================================================  
+   TOTALS  
+========================================================= */  
+  
+function calculateTotals(){  
+  
+let orderSubtotal=0;  
+  
+document.querySelectorAll(".glass-row")  
+.forEach(function(row,i){  
+  
+row.querySelector(".rowNo")  
+.textContent=i+1;  
+  
+const x=  
+calculateGlassRow(row);  
+  
+orderSubtotal+=x.amount;  
+  
+});  
+  
+document.querySelectorAll(".extra-row")  
+.forEach(function(row){  
+  
+const qty=num(  
+row.querySelector(".extraQty").value  
+);  
+  
+const price=num(  
+row.querySelector(".extraPrice").value  
+);  
+  
+const amount=qty*price;  
+  
+row.querySelector(".extraAmount")  
+.textContent=money(amount);  
+  
+orderSubtotal+=amount;  
+  
+});  
+  
+let accessorySubtotal=0;  
+  
+document.querySelectorAll(".accessory-row")  
+.forEach(function(row,i){  
+  
+row.querySelector(".accessoryNo")  
+.textContent=i+1;  
+  
+const qty=num(  
+row.querySelector(".accessoryQty").value  
+);  
+  
+const price=num(  
+row.querySelector(".accessoryPrice").value  
+);  
+  
+const amount=qty*price;  
+  
+row.querySelector(".accessoryAmount")  
+.textContent=money(amount);  
+  
+accessorySubtotal+=amount;  
+  
+});  
+  
+const vat=  
+orderSubtotal*num(settings.vat)/100;  
+  
+const discount=  
+orderSubtotal*num(settings.discount)/100;  
+  
+const grandTotal=  
+orderSubtotal+vat-discount;  
+  
+document.getElementById("orderSubtotal")  
+.textContent=money(orderSubtotal);  
+  
+document.getElementById("orderVAT")  
+.textContent=money(vat);  
+  
+document.getElementById("orderDiscount")  
+.textContent=money(discount);  
+  
+document.getElementById("orderGrandTotal")  
+.textContent=money(grandTotal);  
+  
+document.getElementById("accessorySubtotal")  
+.textContent=money(accessorySubtotal);  
+  
+return{  
+  
+subtotal:orderSubtotal,  
+accessorySubtotal:accessorySubtotal,  
+vat:vat,  
+discount:discount,  
+grandTotal:grandTotal  
+  
+};  
+  
+}  
+  
+  
+/* =========================================================  
+   INVOICE DATABASE  
+========================================================= */  
+  
+function getInvoiceDatabase(){  
+  
+try{  
+  
+const data=  
+JSON.parse(  
+localStorage.getItem(INVOICE_KEY)||"[]"  
+);  
+  
+return Array.isArray(data)?data:[];  
+  
+}catch(e){  
+  
+return[];  
+  
+}  
+  
+}  
+  
+function saveInvoiceDatabase(data){  
+  
+const db=getInvoiceDatabase();  
+  
+const index=db.findIndex(function(x){  
+  
+return String(x.invoiceNo)  
+.toLowerCase()===  
+String(data.invoiceNo)  
+.toLowerCase();  
+  
+});  
+  
+if(index!==-1){  
+  
+db[index]=data;  
+  
+}else{  
+  
+db.unshift(data);  
+  
+}  
+  
+localStorage.setItem(  
+INVOICE_KEY,  
+JSON.stringify(db)  
+);  
+  
+}  
+  
+  
+/* =========================================================  
+   DATABASE PASSWORD / ACCESS  
+========================================================= */  
+  
+function openDatabaseLogin(){  
+  
+document.getElementById("dbModal")  
+.style.display="block";  
+  
+document.getElementById("dbLogin")  
+.classList.remove("hidden");  
+  
+document.getElementById("dbContent")  
+.classList.add("hidden");  
+  
+document.getElementById("dbPassword").value="";  
+  
+document.getElementById("dbRecoveryCode").value="";  
+  
+databaseUnlocked=false;  
+  
+setTimeout(function(){  
+  
+document.getElementById("dbPassword").focus();  
+  
+},100);  
+  
+}  
+  
+function closeDatabase(){  
+  
+databaseUnlocked=false;  
+databaseEditingInvoice=null;  
+  
+document.getElementById("dbModal")  
+.style.display="none";  
+  
+}  
+  
+function showDatabaseRecovery(){  
+  
+document.getElementById("dbRecoveryArea")  
+.classList.toggle("hidden");  
+  
+}  
+  
+function recoverDatabasePassword(){  
+  
+const code=  
+document.getElementById("dbRecoveryCode")  
+.value;  
+  
+if(code!==RECOVERY_CODE){  
+  
+toast("Invalid recovery code.");  
+  
+return;  
+  
+}  
+  
+const newPassword=prompt(  
+"Enter new Database password:"  
+);  
+  
+if(newPassword===null)return;  
+  
+if(newPassword.length<4){  
+  
+toast("Database password must contain at least 4 characters.");  
+  
+return;  
+  
+}  
+  
+savedDBPassword=newPassword;  
+  
+localStorage.setItem(  
+DB_PASSWORD_KEY,  
+newPassword  
+);  
+  
+document.getElementById("dbRecoveryCode").value="";  
+  
+toast("Database password reset successfully.");  
+  
+}  
+  
+function unlockDatabase(){  
+  
+const password=  
+document.getElementById("dbPassword")  
+.value;  
+  
+if(password!==savedDBPassword){  
+  
+toast("Wrong Database password.");  
+  
+return;  
+  
+}  
+  
+databaseUnlocked=true;  
+  
+document.getElementById("dbLogin")  
+.classList.add("hidden");  
+  
+document.getElementById("dbContent")  
+.classList.remove("hidden");  
+  
+document.getElementById("dbListView")  
+.classList.remove("hidden");  
+  
+document.getElementById("dbEditView")  
+.classList.add("hidden");  
+  
+searchDatabase();  
+  
+toast("DATABASE UNLOCKED.");  
+  
+}  
+  
+function lockDatabase(){  
+  
+databaseUnlocked=false;  
+databaseEditingInvoice=null;  
+  
+document.getElementById("dbContent")  
+.classList.add("hidden");  
+  
+document.getElementById("dbLogin")  
+.classList.remove("hidden");  
+  
+document.getElementById("dbPassword").value="";  
+  
+toast("DATABASE LOCKED.");  
+  
+}  
+  
+  
+/* =========================================================  
+   DATABASE SEARCH  
+========================================================= */  
+  
+function changeDatabaseSearchType(){  
+  
+const type=  
+document.getElementById("dbSearchType")  
+.value;  
+  
+const input=  
+document.getElementById("dbSearchInput");  
+  
+const dateArea=  
+document.getElementById("dbDateArea");  
+  
+const monthArea=  
+document.getElementById("dbMonthArea");  
+  
+dateArea.classList.add("hidden");  
+monthArea.classList.add("hidden");  
+  
+input.value="";  
+  
+if(type==="date"){  
+  
+input.classList.add("hidden");  
+dateArea.classList.remove("hidden");  
+  
+}else if(type==="monthInterval"){  
+  
+input.classList.add("hidden");  
+monthArea.classList.remove("hidden");  
+  
+}else{  
+  
+input.classList.remove("hidden");  
+  
+if(type==="month"){  
+  
+input.placeholder="e.g. 2026-09 or September";  
+  
+}else if(type==="number"){  
+  
+input.placeholder="Search phone / contact number";  
+  
+}else if(type==="name"){  
+  
+input.placeholder="Search customer name";  
+  
+}else if(type==="id"){  
+  
+input.placeholder="Search customer ID";  
+  
+}else if(type==="invoice"){  
+  
+input.placeholder="Search invoice number";  
+  
+}else{  
+  
+input.placeholder="Search database...";  
+  
+}  
+  
+}  
+  
+searchDatabase();  
+  
+}  
+  
+function normalizeSearch(value){  
+  
+return String(value||"")  
+.toLowerCase()  
+.trim();  
+  
+}  
+  
+function getRecordDateObject(record){  
+  
+if(record.createdAt){  
+  
+const d=new Date(record.createdAt);  
+  
+if(!isNaN(d.getTime()))  
+return d;  
+  
+}  
+  
+if(record.date){  
+  
+const parts=  
+String(record.date).split("/");  
+  
+if(parts.length===3){  
+  
+return new Date(  
+Number(parts[2]),  
+Number(parts[1])-1,  
+Number(parts[0])  
+);  
+  
+}  
+  
+}  
+  
+return null;  
+  
+}  
+  
+function recordMatchesDatabaseSearch(record){  
+  
+const type=  
+document.getElementById("dbSearchType")  
+.value;  
+  
+const query=  
+normalizeSearch(  
+document.getElementById("dbSearchInput")  
+.value  
+);  
+  
+const name=  
+normalizeSearch(record.customerName);  
+  
+const id=  
+normalizeSearch(record.customerID);  
+  
+const invoice=  
+normalizeSearch(record.invoiceNo);  
+  
+const phone=  
+normalizeSearch(  
+(record.countryCode||"")+" "+  
+(record.customerPhone||"")  
+);  
+  
+const address=  
+normalizeSearch(record.customerAddress);  
+  
+const date=  
+getRecordDateObject(record);  
+  
+if(type==="all"){  
+  
+if(!query)return true;  
+  
+return(  
+name.includes(query)||  
+id.includes(query)||  
+invoice.includes(query)||  
+phone.includes(query)||  
+address.includes(query)  
+);  
+  
+}  
+  
+if(type==="name")  
+return name.includes(query);  
+  
+if(type==="id")  
+return id.includes(query);  
+  
+if(type==="invoice")  
+return invoice.includes(query);  
+  
+if(type==="number")  
+return phone.includes(query)||  
+normalizeSearch(record.customerPhone)  
+.includes(query);  
+  
+if(type==="month"){  
+  
+if(!query)return true;  
+  
+if(!date)return false;  
+  
+const year=  
+String(date.getFullYear());  
+  
+const month=  
+String(date.getMonth()+1)  
+.padStart(2,"0");  
+  
+const monthText=  
+year+"-"+month;  
+  
+const fullMonth=  
+date.toLocaleString(  
+"en-US",  
+{month:"long"}  
+).toLowerCase();  
+  
+return(  
+monthText.includes(query)||  
+fullMonth.includes(query)||  
+(year+" "+fullMonth).includes(query)  
+);  
+  
+}  
+  
+if(type==="date"){  
+  
+const fromValue=  
+document.getElementById("dbDateFrom").value;  
+  
+const toValue=  
+document.getElementById("dbDateTo").value;  
+  
+if(!date)return false;  
+  
+const recordDay=  
+new Date(  
+date.getFullYear(),  
+date.getMonth(),  
+date.getDate()  
+);  
+  
+if(fromValue){  
+  
+const from=  
+new Date(fromValue+"T00:00:00");  
+  
+if(recordDay<from)  
+return false;  
+  
+}  
+  
+if(toValue){  
+  
+const to=  
+new Date(toValue+"T23:59:59");  
+  
+if(recordDay>to)  
+return false;  
+  
+}  
+  
+return true;  
+  
+}  
+  
+if(type==="monthInterval"){  
+  
+const from=  
+document.getElementById("dbMonthFrom").value;  
+  
+const to=  
+document.getElementById("dbMonthTo").value;  
+  
+if(!date)return false;  
+  
+const recordMonth=  
+date.getFullYear()*12+  
+date.getMonth();  
+  
+if(from){  
+  
+const parts=from.split("-");  
+  
+const fromMonth=  
+Number(parts[0])*12+  
+Number(parts[1])-1;  
+  
+if(recordMonth<fromMonth)  
+return false;  
+  
+}  
+  
+if(to){  
+  
+const parts=to.split("-");  
+  
+const toMonth=  
+Number(parts[0])*12+  
+Number(parts[1])-1;  
+  
+if(recordMonth>toMonth)  
+return false;  
+  
+}  
+  
+return true;  
+  
+}  
+  
+return true;  
+  
+}  
+  
+function searchDatabase(){  
+  
+if(!databaseUnlocked)return;  
+  
+const db=getInvoiceDatabase();  
+  
+const filtered=db.filter(  
+recordMatchesDatabaseSearch  
+);  
+  
+renderDatabase(filtered);  
+  
+}  
+  
+function renderDatabase(records){  
+  
+const body=  
+document.getElementById("databaseBody");  
+  
+document.getElementById("dbResultCount")  
+.textContent=  
+records.length+  
+(records.length===1  
+?" record"  
+:" records");  
+  
+if(!records.length){  
+  
+body.innerHTML=`  
+<tr>  
+<td colspan="9" class="db-empty">  
+NO RECORDS FOUND  
+</td>  
+</tr>  
+`;  
+  
+return;  
+  
+}  
+  
+body.innerHTML=records.map(function(x,i){  
+  
+return`  
+<tr>  
+  
+<td>${i+1}</td>  
+  
+<td>${esc(x.customerName||"")}</td>  
+  
+<td>${esc(x.customerID||"")}</td>  
+  
+<td>${esc(x.customerAddress||"")}</td>  
+  
+<td>  
+${esc(  
+x.countryCode  
+?x.countryCode+" "+(x.customerPhone||"")  
+:(x.customerPhone||"")  
+)}  
+</td>  
+  
+<td>${esc(x.invoiceNo||"")}</td>  
+  
+<td>${esc(x.date||"")}</td>  
+  
+<td class="amount">  
+${money(x.grandTotal)}  
+</td>  
+  
+<td class="db-actions">  
+  
+<button  
+type="button"  
+onclick="openDatabaseRecord('${encodeURIComponent(  
+String(x.invoiceNo||"")  
+)}')">  
+VIEW / EDIT  
+</button>  
+  
+<button  
+type="button"  
+class="btn-red"  
+onclick="deleteDatabaseRecord('${encodeURIComponent(  
+String(x.invoiceNo||"")  
+)}')">  
+DELETE  
+</button>  
+  
+</td>  
+  
+</tr>  
+`;  
+  
+}).join("");  
+  
+}  
+  
+function clearDatabaseSearch(){  
+  
+document.getElementById("dbSearchType")  
+.value="all";  
+  
+document.getElementById("dbSearchInput")  
+.value="";  
+  
+document.getElementById("dbDateFrom").value="";  
+document.getElementById("dbDateTo").value="";  
+document.getElementById("dbMonthFrom").value="";  
+document.getElementById("dbMonthTo").value="";  
+  
+changeDatabaseSearchType();  
+  
+}  
+  
+  
+/* =========================================================  
+   DATABASE RECORD EDITOR  
+========================================================= */  
+  
+function openDatabaseRecord(encodedInvoice){  
+  
+if(!databaseUnlocked){  
+  
+toast("Unlock Database first.");  
+  
+return;  
+  
+}  
+  
+const invoiceNo=  
+decodeURIComponent(encodedInvoice);  
+  
+const db=getInvoiceDatabase();  
+  
+const record=db.find(function(x){  
+  
+return String(x.invoiceNo).toLowerCase()===  
+invoiceNo.toLowerCase();  
+  
+});  
+  
+if(!record){  
+  
+toast("Record not found.");  
+  
+return;  
+  
+}  
+  
+databaseEditingInvoice=clone(record);  
+  
+renderDatabaseEditor(databaseEditingInvoice);  
+  
+document.getElementById("dbListView")  
+.classList.add("hidden");  
+  
+document.getElementById("dbEditView")  
+.classList.remove("hidden");  
+  
+}  
+  
+function closeDatabaseEditor(){  
+  
+databaseEditingInvoice=null;  
+  
+document.getElementById("dbEditView")  
+.classList.add("hidden");  
+  
+document.getElementById("dbListView")  
+.classList.remove("hidden");  
+  
+searchDatabase();  
+  
+}  
+  
+function renderDatabaseEditor(data){  
+  
+document.getElementById("dbCurrentRecord")  
+.textContent=  
+"EDITING: "+(data.invoiceNo||"")+  
+" | CUSTOMER: "+(data.customerName||"")+  
+" | DATE: "+(data.date||"");  
+  
+document.getElementById("dbEditCustomerName").value=  
+data.customerName||"";  
+  
+document.getElementById("dbEditCustomerID").value=  
+data.customerID||"";  
+  
+document.getElementById("dbEditInvoiceNo").value=  
+data.invoiceNo||"";  
+  
+document.getElementById("dbEditCustomerPhone").value=  
+data.customerPhone||"";  
+  
+document.getElementById("dbEditCustomerTIN").value=  
+data.customerTIN||"";  
+  
+document.getElementById("dbEditSellerTIN").value=  
+data.sellerTIN||"";  
+  
+document.getElementById("dbEditCustomerAddress").value=  
+data.customerAddress||"";  
+  
+document.getElementById("dbEditWorkingDays").value=  
+data.workingDays||"";  
+  
+document.getElementById("dbEditDate").value=  
+data.date||"";  
+  
+loadDatabaseCountryCodes();  
+  
+if(  
+data.countryCode&&  
+[...document.getElementById("dbEditCountryCode").options]  
+.some(function(o){  
+return o.value===data.countryCode;  
+})  
+){  
+  
+document.getElementById("dbEditCountryCode").value=  
+data.countryCode;  
+  
+}  
+  
+document.getElementById("dbEditVAT").value=  
+data.vatPercent!==undefined  
+?data.vatPercent  
+:settings.vat;  
+  
+document.getElementById("dbEditDiscount").value=  
+data.discountPercent!==undefined  
+?data.discountPercent  
+:settings.discount;  
+  
+renderDatabaseEditGlass(data.glass||[]);  
+renderDatabaseEditExtras(data.extras||[]);  
+renderDatabaseEditAccessories(data.accessories||[]);  
+  
+calculateDatabaseEditorTotals();  
+  
+}  
+  
+function renderDatabaseEditGlass(items){  
+  
+const body=  
+document.getElementById("dbEditGlassBody");  
+  
+body.innerHTML="";  
+  
+items.forEach(function(x){  
+  
+dbEditorAddGlass(  
+x.type||"Tempered",  
+x  
+);  
+  
+});  
+  
+}  
+  
+function dbEditorAddGlass(type,data){  
+  
+const body=  
+document.getElementById("dbEditGlassBody");  
+  
+const row=  
+document.createElement("tr");  
+  
+const item=data||{};  
+  
+row.innerHTML=`  
+  
+<td class="dbGlassNo"></td>  
+  
+<td>  
+  
+<select class="dbGlassType">  
+  
+<option value="Tempered"  
+${type==="Tempered"?"selected":""}>  
+TEMPERED  
+</option>  
+  
+<option value="Non-Tempered"  
+${type==="Non-Tempered"?"selected":""}>  
+NON-TEMPERED  
+</option>  
+  
+</select>  
+  
+</td>  
+  
+<td>  
+<input  
+class="dbGlassDescription"  
+value="${esc(item.description||"")}"  
+placeholder="DESCRIPTION">  
+</td>  
+  
+<td>  
+<input  
+class="dbGlassWidth"  
+type="number"  
+min="0"  
+value="${num(item.width)}">  
+</td>  
+  
+<td>  
+<input  
+class="dbGlassHeight"  
+type="number"  
+min="0"  
+value="${num(item.height)}">  
+</td>  
+  
+<td>  
+<input  
+class="dbGlassQty"  
+type="number"  
+min="1"  
+value="${num(item.qty)||1}">  
+</td>  
+  
+<td class="dbGlassSqm">  
+0.000  
+</td>  
+  
+<td>  
+<input  
+class="dbGlassPrice"  
+type="number"  
+min="0"  
+value="${num(item.price)}">  
+</td>  
+  
+<td class="dbGlassAmount">  
+0.00  
+</td>  
+  
+<td>  
+<input  
+class="dbGlassRemark"  
+value="${esc(item.remark||"")}"  
+placeholder="REMARK">  
+</td>  
+  
+<td>  
+<button  
+type="button"  
+class="remove-btn"  
+onclick="this.closest('tr').remove();calculateDatabaseEditorTotals()">  
+×  
+</button>  
+</td>  
+  
+`;  
+  
+body.appendChild(row);  
+  
+row.querySelectorAll("input,select")  
+.forEach(function(el){  
+  
+el.addEventListener("input",calculateDatabaseEditorTotals);  
+el.addEventListener("change",calculateDatabaseEditorTotals);  
+  
+});  
+  
+calculateDatabaseEditorTotals();  
+  
+}  
+  
+function renderDatabaseEditExtras(items){  
+  
+const box=  
+document.getElementById("dbEditExtras");  
+  
+box.innerHTML="";  
+  
+items.forEach(function(x){  
+  
+dbEditorAddExtra(  
+x.description||x.type||"CUT OUT",  
+x  
+);  
+  
+});  
+  
+}  
+  
+function dbEditorAddExtra(type,data){  
+  
+const box=  
+document.getElementById("dbEditExtras");  
+  
+const item=data||{};  
+  
+const row=document.createElement("div");  
+  
+row.className="extra-row";  
+  
+row.innerHTML=`  
+  
+<input  
+class="dbExtraDescription"  
+value="${esc(type)}"  
+readonly>  
+  
+<input  
+class="dbExtraQty"  
+type="number"  
+min="1"  
+value="${num(item.qty)||1}">  
+  
+<input  
+class="dbExtraPrice"  
+type="number"  
+min="0"  
+value="${num(item.price)}">  
+  
+<span class="dbExtraAmount">  
+0.00  
+</span>  
+  
+<button  
+type="button"  
+class="remove-btn"  
+onclick="this.closest('.extra-row').remove();calculateDatabaseEditorTotals()">  
+×  
+</button>  
+  
+`;  
+  
+box.appendChild(row);  
+  
+row.querySelectorAll("input")  
+.forEach(function(el){  
+  
+el.addEventListener(  
+"input",  
+calculateDatabaseEditorTotals  
+);  
+  
+});  
+  
+calculateDatabaseEditorTotals();  
+  
+}  
+  
+function renderDatabaseEditAccessories(items){  
+  
+const body=  
+document.getElementById("dbEditAccessoriesBody");  
+  
+body.innerHTML="";  
+  
+items.forEach(function(x){  
+  
+dbEditorAddAccessory(x);  
+  
+});  
+  
+}  
+  
+function dbEditorAddAccessory(data){  
+  
+const item=data||{};  
+  
+const body=  
+document.getElementById("dbEditAccessoriesBody");  
+  
+const row=document.createElement("tr");  
+  
+row.innerHTML=`  
+  
+<td class="dbAccessoryNo"></td>  
+  
+<td>  
+<input  
+class="dbAccessoryDescription"  
+value="${esc(item.description||"")}"  
+placeholder="ACCESSORY">  
+</td>  
+  
+<td>  
+<input  
+class="dbAccessoryQty"  
+type="number"  
+min="1"  
+value="${num(item.qty)||1}">  
+</td>  
+  
+<td>  
+<input  
+class="dbAccessoryPrice"  
+type="number"  
+min="0"  
+value="${num(item.price)}">  
+</td>  
+  
+<td class="dbAccessoryAmount">  
+0.00  
+</td>  
+  
+<td>  
+<button  
+type="button"  
+class="remove-btn"  
+onclick="this.closest('tr').remove();calculateDatabaseEditorTotals()">  
+×  
+</button>  
+</td>  
+  
+`;  
+  
+body.appendChild(row);  
+  
+row.querySelectorAll("input")  
+.forEach(function(el){  
+  
+el.addEventListener(  
+"input",  
+calculateDatabaseEditorTotals  
+);  
+  
+});  
+  
+calculateDatabaseEditorTotals();  
+  
+}  
+  
+function calculateDatabaseEditorTotals(){  
+  
+let subtotal=0;  
+  
+document.querySelectorAll("#dbEditGlassBody tr")  
+.forEach(function(row,i){  
+  
+const width=num(  
+row.querySelector(".dbGlassWidth").value  
+);  
+  
+const height=num(  
+row.querySelector(".dbGlassHeight").value  
+);  
+  
+const qty=num(  
+row.querySelector(".dbGlassQty").value  
+);  
+  
+const sqm=  
+(width*height*qty)/1000000;  
+  
+const price=num(  
+row.querySelector(".dbGlassPrice").value  
+);  
+  
+const amount=sqm*price;  
+  
+row.querySelector(".dbGlassNo")  
+.textContent=i+1;  
+  
+row.querySelector(".dbGlassSqm")  
+.textContent=sqm.toFixed(3);  
+  
+row.querySelector(".dbGlassAmount")  
+.textContent=money(amount);  
+  
+subtotal+=amount;  
+  
+});  
+  
+document.querySelectorAll("#dbEditExtras .extra-row")  
+.forEach(function(row){  
+  
+const qty=num(  
+row.querySelector(".dbExtraQty").value  
+);  
+  
+const price=num(  
+row.querySelector(".dbExtraPrice").value  
+);  
+  
+const amount=qty*price;  
+  
+row.querySelector(".dbExtraAmount")  
+.textContent=money(amount);  
+  
+subtotal+=amount;  
+  
+});  
+  
+let accessorySubtotal=0;  
+  
+document.querySelectorAll("#dbEditAccessoriesBody tr")  
+.forEach(function(row,i){  
+  
+const qty=num(  
+row.querySelector(".dbAccessoryQty").value  
+);  
+  
+const price=num(  
+row.querySelector(".dbAccessoryPrice").value  
+);  
+  
+const amount=qty*price;  
+  
+row.querySelector(".dbAccessoryNo")  
+.textContent=i+1;  
+  
+row.querySelector(".dbAccessoryAmount")  
+.textContent=money(amount);  
+  
+accessorySubtotal+=amount;  
+  
+});  
+  
+const vatPercent=num(  
+document.getElementById("dbEditVAT").value  
+);  
+  
+const discountPercent=num(  
+document.getElementById("dbEditDiscount").value  
+);  
+  
+const vat=  
+subtotal*vatPercent/100;  
+  
+const discount=  
+subtotal*discountPercent/100;  
+  
+const grandTotal=  
+subtotal+vat-discount;  
+  
+document.getElementById("dbEditSubtotal")  
+.textContent=money(subtotal);  
+  
+document.getElementById("dbEditVATAmount")  
+.textContent=money(vat);  
+  
+document.getElementById("dbEditDiscountAmount")  
+.textContent=money(discount);  
+  
+document.getElementById("dbEditAccessorySubtotal")  
+.textContent=money(accessorySubtotal);  
+  
+document.getElementById("dbEditGrandTotal")  
+.textContent=money(grandTotal);  
+  
+return{  
+subtotal:subtotal,  
+accessorySubtotal:accessorySubtotal,  
+vat:vat,  
+discount:discount,  
+grandTotal:grandTotal  
+};  
+  
+}  
+  
+function collectDatabaseEditedRecord(){  
+  
+if(!databaseEditingInvoice)return null;  
+  
+const originalInvoice=  
+databaseEditingInvoice.invoiceNo;  
+  
+const invoiceNo=  
+document.getElementById("dbEditInvoiceNo")  
+.value.trim();  
+  
+if(!invoiceNo){  
+  
+toast("Invoice number is required.");  
+  
+return null;  
+  
+}  
+  
+const db=getInvoiceDatabase();  
+  
+const duplicate=db.some(function(x){  
+  
+return String(x.invoiceNo).toLowerCase()===  
+invoiceNo.toLowerCase()&&  
+String(x.invoiceNo).toLowerCase()!==  
+String(originalInvoice).toLowerCase();  
+  
+});  
+  
+if(duplicate){  
+  
+toast("That Invoice Number already exists.");  
+  
+return null;  
+  
+}  
+  
+const totals=  
+calculateDatabaseEditorTotals();  
+  
+const glass=[];  
+  
+document.querySelectorAll("#dbEditGlassBody tr")  
+.forEach(function(row){  
+  
+const width=num(  
+row.querySelector(".dbGlassWidth").value  
+);  
+  
+const height=num(  
+row.querySelector(".dbGlassHeight").value  
+);  
+  
+const qty=num(  
+row.querySelector(".dbGlassQty").value  
+);  
+  
+if(width<=0||height<=0||qty<=0)return;  
+  
+const sqm=  
+(width*height*qty)/1000000;  
+  
+const price=num(  
+row.querySelector(".dbGlassPrice").value  
+);  
+  
+glass.push({  
+  
+type:  
+row.querySelector(".dbGlassType").value,  
+  
+description:  
+row.querySelector(".dbGlassDescription").value.trim(),  
+  
+width:width,  
+height:height,  
+qty:qty,  
+sqm:sqm,  
+price:price,  
+amount:sqm*price,  
+  
+remark:  
+row.querySelector(".dbGlassRemark").value.trim(),  
+  
+plusMode:false,  
+process:null  
+  
+});  
+  
+});  
+  
+const extras=[];  
+  
+document.querySelectorAll("#dbEditExtras .extra-row")  
+.forEach(function(row){  
+  
+const qty=num(  
+row.querySelector(".dbExtraQty").value  
+);  
+  
+const price=num(  
+row.querySelector(".dbExtraPrice").value  
+);  
+  
+extras.push({  
+  
+description:  
+row.querySelector(".dbExtraDescription").value,  
+  
+qty:qty,  
+price:price,  
+amount:qty*price  
+  
+});  
+  
+});  
+  
+const accessories=[];  
+  
+document.querySelectorAll("#dbEditAccessoriesBody tr")  
+.forEach(function(row){  
+  
+const description=  
+row.querySelector(".dbAccessoryDescription")  
+.value.trim();  
+  
+if(!description)return;  
+  
+const qty=num(  
+row.querySelector(".dbAccessoryQty").value  
+);  
+  
+const price=num(  
+row.querySelector(".dbAccessoryPrice").value  
+);  
+  
+accessories.push({  
+  
+description:description,  
+qty:qty,  
+price:price,  
+amount:qty*price  
+  
+});  
+  
+});  
+  
+const result=clone(databaseEditingInvoice);  
+  
+result.invoiceNo=invoiceNo;  
+  
+result.customerName=  
+document.getElementById("dbEditCustomerName")  
+.value.trim();  
+  
+result.customerID=  
+document.getElementById("dbEditCustomerID")  
+.value.trim();  
+  
+result.customerPhone=  
+document.getElementById("dbEditCustomerPhone")  
+.value.trim();  
+  
+result.countryCode=  
+document.getElementById("dbEditCountryCode")  
+.value;  
+  
+result.customerTIN=  
+document.getElementById("dbEditCustomerTIN")  
+.value.trim();  
+  
+result.sellerTIN=  
+document.getElementById("dbEditSellerTIN")  
+.value.trim();  
+  
+result.customerAddress=  
+document.getElementById("dbEditCustomerAddress")  
+.value.trim();  
+  
+result.workingDays=  
+num(document.getElementById("dbEditWorkingDays").value);  
+  
+result.glass=glass;  
+result.extras=extras;  
+result.accessories=accessories;  
+  
+result.subtotal=totals.subtotal;  
+result.accessorySubtotal=totals.accessorySubtotal;  
+result.vat=totals.vat;  
+result.discount=totals.discount;  
+result.grandTotal=totals.grandTotal;  
+  
+result.vatPercent=  
+num(document.getElementById("dbEditVAT").value);  
+  
+result.discountPercent=  
+num(document.getElementById("dbEditDiscount").value);  
+  
+return result;  
+  
+}  
+  
+function saveDatabaseEditedRecord(){  
+  
+if(!databaseEditingInvoice)return;  
+  
+const data=  
+collectDatabaseEditedRecord();  
+  
+if(!data)return;  
+  
+const db=getInvoiceDatabase();  
+  
+const oldInvoice=  
+String(databaseEditingInvoice.invoiceNo)  
+.toLowerCase();  
+  
+const index=db.findIndex(function(x){  
+  
+return String(x.invoiceNo).toLowerCase()===  
+oldInvoice;  
+  
+});  
+  
+if(index===-1){  
+  
+toast("Original database record not found.");  
+  
+return;  
+  
+}  
+  
+db[index]=data;  
+  
+localStorage.setItem(  
+INVOICE_KEY,  
+JSON.stringify(db)  
+);  
+  
+databaseEditingInvoice=clone(data);  
+  
+document.getElementById("dbCurrentRecord")  
+.textContent=  
+"EDITING: "+data.invoiceNo+  
+" | CUSTOMER: "+data.customerName+  
+" | DATE: "+data.date;  
+  
+toast("DATABASE RECORD UPDATED.");  
+  
+}  
+  
+function deleteCurrentDatabaseRecord(){  
+  
+if(!databaseEditingInvoice)return;  
+  
+const ok=confirm(  
+"DELETE THIS DATABASE RECORD?\n\n"+  
+"Customer: "+(databaseEditingInvoice.customerName||"")+  
+"\nInvoice: "+(databaseEditingInvoice.invoiceNo||"")+  
+"\n\nThis action cannot be undone."  
+);  
+  
+if(!ok)return;  
+  
+const invoice=  
+String(databaseEditingInvoice.invoiceNo)  
+.toLowerCase();  
+  
+const db=getInvoiceDatabase().filter(function(x){  
+  
+return String(x.invoiceNo).toLowerCase()!==invoice;  
+  
+});  
+  
+localStorage.setItem(  
+INVOICE_KEY,  
+JSON.stringify(db)  
+);  
+  
+databaseEditingInvoice=null;  
+  
+document.getElementById("dbEditView")  
+.classList.add("hidden");  
+  
+document.getElementById("dbListView")  
+.classList.remove("hidden");  
+  
+searchDatabase();  
+  
+toast("DATABASE RECORD DELETED.");  
+  
+}  
+  
+  
+/* =========================================================  
+   DATABASE INVOICE PREVIEW  
+========================================================= */  
+  
+function previewDatabaseRecordInvoice(){  
+  
+const data=  
+collectDatabaseEditedRecord();  
+  
+if(!data)return;  
+  
+renderInvoice(data);  
+  
+document.getElementById("invoiceArea")  
+.scrollIntoView({  
+behavior:"smooth"  
+});  
+  
+}  
+  
+  
+/* =========================================================  
+   DATABASE DELETE  
+========================================================= */  
+  
+function deleteDatabaseRecord(encodedInvoice){  
+  
+const invoiceNo=  
+decodeURIComponent(encodedInvoice);  
+  
+const db=getInvoiceDatabase();  
+  
+const record=db.find(function(x){  
+  
+return String(x.invoiceNo).toLowerCase()===  
+invoiceNo.toLowerCase();  
+  
+});  
+  
+if(!record){  
+  
+toast("Record not found.");  
+  
+return;  
+  
+}  
+  
+const ok=confirm(  
+"DELETE DATABASE RECORD?\n\n"+  
+"Customer: "+(record.customerName||"")+  
+"\nInvoice: "+(record.invoiceNo||"")+  
+"\n\nThis action cannot be undone."  
+);  
+  
+if(!ok)return;  
+  
+const newDb=db.filter(function(x){  
+  
+return String(x.invoiceNo).toLowerCase()!==  
+invoiceNo.toLowerCase();  
+  
+});  
+  
+localStorage.setItem(  
+INVOICE_KEY,  
+JSON.stringify(newDb)  
+);  
+  
+searchDatabase();  
+  
+toast("DATABASE RECORD DELETED.");  
+  
+}  
+  
+function exportDatabaseCSV(){  
+  
+const db=getInvoiceDatabase();  
+  
+if(!db.length){  
+  
+toast("Database is empty.");  
+  
+return;  
+  
+}  
+  
+const rows=[  
+  
+[  
+"Customer Name",  
+"Customer ID",  
+"Address",  
+"Contact",  
+"Invoice No",  
+"Date",  
+"Working Days",  
+"Subtotal",  
+"VAT",  
+"Discount",  
+"Grand Total"  
+]  
+  
+];  
+  
+db.forEach(function(x){  
+  
+rows.push([  
+  
+x.customerName||"",  
+x.customerID||"",  
+x.customerAddress||"",  
+(x.countryCode||"")+  
+" "+  
+(x.customerPhone||""),  
+x.invoiceNo||"",  
+x.date||"",  
+x.workingDays||"",  
+x.subtotal||0,  
+x.vat||0,  
+x.discount||0,  
+x.grandTotal||0  
+  
+]);  
+  
+});  
+  
+const csv=  
+rows.map(function(row){  
+  
+return row.map(function(value){  
+  
+const text=  
+String(value??"")  
+.replace(/"/g,'""');  
+  
+return'"'+text+'"';  
+  
+}).join(",");  
+  
+}).join("\n");  
+  
+const blob=  
+new Blob(  
+["\ufeff"+csv],  
+{type:"text/csv;charset=utf-8"}  
+);  
+  
+const url=  
+URL.createObjectURL(blob);  
+  
+const a=  
+document.createElement("a");  
+  
+a.href=url;  
+  
+a.download=  
+"JAVA_GLASS_DATABASE.csv";  
+  
+document.body.appendChild(a);  
+  
+a.click();  
+  
+a.remove();  
+  
+setTimeout(function(){  
+  
+URL.revokeObjectURL(url);  
+  
+},1000);  
+  
+toast("DATABASE EXPORTED.");  
+  
+}  
+  
+  
+/* =========================================================  
+   INVOICE PATTERN  
+========================================================= */  
+  
+function pad2(value){  
+  
+return String(value)  
+.padStart(2,"0");  
+  
+}  
+  
+function buildInvoicePattern(pattern,date){  
+  
+const d=date||new Date();  
+  
+const replacements={  
+  
+"{YYYY}":  
+String(d.getFullYear()),  
+  
+"{YY}":  
+String(d.getFullYear()).slice(-2),  
+  
+"{MM}":  
+pad2(d.getMonth()+1),  
+  
+"{DD}":  
+pad2(d.getDate()),  
+  
+"{HH}":  
+pad2(d.getHours()),  
+  
+"{mm}":  
+pad2(d.getMinutes()),  
+  
+"{ss}":  
+pad2(d.getSeconds()),  
+  
+"{timestamp}":  
+String(d.getTime())  
+  
+};  
+  
+let result=  
+String(  
+pattern||  
+"JG-{YYYY}{MM}{DD}-{HH}{mm}{ss}"  
+);  
+  
+Object.keys(replacements)  
+.forEach(function(token){  
+  
+result=  
+result  
+.split(token)  
+.join(replacements[token]);  
+  
+});  
+  
+return result;  
+  
+}  
+  
+  
+/* =========================================================  
+   INVOICE NUMBER  
+========================================================= */  
+  
+function generateInvoiceNumber(){  
+  
+const existing=  
+getInvoiceDatabase();  
+  
+const manual=  
+document.getElementById("invoiceNo")  
+.value.trim();  
+  
+if(currentInvoiceNo){  
+  
+if(  
+manual&&  
+manual!==currentInvoiceNo  
+){  
+  
+const duplicate=  
+existing.some(function(x){  
+  
+return String(x.invoiceNo)  
+.toLowerCase()===  
+manual.toLowerCase()&&  
+String(x.invoiceNo)  
+.toLowerCase()!==  
+String(currentInvoiceNo)  
+.toLowerCase();  
+  
+});  
+  
+if(duplicate)  
+return null;  
+  
+currentInvoiceNo=manual;  
+  
+return manual;  
+  
+}  
+  
+return currentInvoiceNo;  
+  
+}  
+  
+if(manual){  
+  
+if(existing.some(function(x){  
+  
+return String(x.invoiceNo)  
+.toLowerCase()===  
+manual.toLowerCase();  
+  
+})){  
+  
+return null;  
+  
+}  
+  
+currentInvoiceNo=manual;  
+  
+return manual;  
+  
+}  
+  
+if(!settings.autoInvoice){  
+  
+currentInvoiceNo="—";  
+  
+return currentInvoiceNo;  
+  
+}  
+  
+const now=new Date();  
+  
+const base=  
+buildInvoicePattern(  
+settings.invoicePattern,  
+now  
+);  
+  
+let candidate=base;  
+  
+let counter=1;  
+  
+while(existing.some(function(x){  
+  
+return String(x.invoiceNo)===  
+String(candidate);  
+  
+})){  
+  
+candidate=  
+base+"-"+counter;  
+  
+counter++;  
+  
+}  
+  
+currentInvoiceNo=candidate;  
+  
+return candidate;  
+  
+}  
+  
+  
+/* =========================================================  
+   DRAFT  
+========================================================= */  
+  
+function getDraft(){  
+  
+try{  
+  
+const raw=  
+localStorage.getItem(DRAFT_KEY);  
+  
+if(!raw)return null;  
+  
+return JSON.parse(raw);  
+  
+}catch(e){  
+  
+return null;  
+  
+}  
+  
+}  
+  
+function scheduleDraftSave(){  
+  
+clearTimeout(autosaveTimer);  
+  
+autosaveTimer=setTimeout(function(){  
+  
+saveDraft();  
+  
+},250);  
+  
+}  
+  
+function saveDraft(){  
+  
+if(restoringDraft)return;  
+  
+try{  
+  
+const draft={  
+  
+version:4,  
+  
+currentInvoiceNo:  
+currentInvoiceNo,  
+  
+invoiceVisible:  
+document.getElementById("invoiceArea")  
+.style.display==="block",  
+  
+customerName:  
+document.getElementById("customerName").value,  
+  
+customerID:  
+document.getElementById("customerID").value,  
+  
+invoiceNo:  
+document.getElementById("invoiceNo").value,  
+  
+countryCode:  
+document.getElementById("countryCode").value,  
+  
+customerPhone:  
+document.getElementById("customerPhone").value,  
+  
+customerTIN:  
+document.getElementById("customerTIN").value,  
+  
+sellerTIN:  
+document.getElementById("sellerTIN").value,  
+  
+customerAddress:  
+document.getElementById("customerAddress").value,  
+  
+workDays:  
+document.getElementById("workDays").value,  
+  
+glass:[],  
+extras:[],  
+accessories:[]  
+  
+};  
+  
+document.querySelectorAll(".glass-row")  
+.forEach(function(row){  
+  
+draft.glass.push({  
+  
+type:  
+row.querySelector(".glassType").value,  
+  
+description:  
+row.querySelector(".description").value,  
+  
+unit:  
+row.querySelector(".unit").value,  
+  
+width:  
+row.querySelector(".width").value,  
+  
+height:  
+row.querySelector(".height").value,  
+  
+qty:  
+row.querySelector(".qty").value,  
+  
+unitPrice:  
+row.querySelector(".unitPrice").value,  
+  
+remark:  
+row.querySelector(".remark").value,  
+  
+plusMode:  
+row.dataset.plusMode==="true",  
+  
+process:  
+row.querySelector(".nonTempProcess")  
+?row.querySelector(".nonTempProcess").value  
+:null  
+  
+});  
+  
+});  
+  
+document.querySelectorAll(".extra-row")  
+.forEach(function(row){  
+  
+draft.extras.push({  
+  
+type:  
+row.children[0].value,  
+  
+qty:  
+row.querySelector(".extraQty").value,  
+  
+price:  
+row.querySelector(".extraPrice").value  
+  
+});  
+  
+});  
+  
+document.querySelectorAll(".accessory-row")  
+.forEach(function(row){  
+  
+draft.accessories.push({  
+  
+description:  
+row.querySelector(".accessoryDescription").value,  
+  
+qty:  
+row.querySelector(".accessoryQty").value,  
+  
+price:  
+row.querySelector(".accessoryPrice").value  
+  
+});  
+  
+});  
+  
+localStorage.setItem(  
+DRAFT_KEY,  
+JSON.stringify(draft)  
+);  
+  
+}catch(e){  
+  
+console.warn("Draft save failed",e);  
+  
+}  
+  
+}  
+  
+  
+/* =========================================================  
+   RESTORE DRAFT  
+========================================================= */  
+  
+function restoreDraft(){  
+  
+const draft=getDraft();  
+  
+if(!draft){  
+  
+addGlass("Tempered",true);  
+  
+calculateTotals();  
+  
+return;  
+  
+}  
+  
+restoringDraft=true;  
+  
+try{  
+  
+document.getElementById("customerName")  
+.value=draft.customerName||"";  
+  
+document.getElementById("customerID")  
+.value=draft.customerID||"";  
+  
+document.getElementById("invoiceNo")  
+.value=draft.invoiceNo||"";  
+  
+if(draft.countryCode){  
+  
+const country=  
+document.getElementById("countryCode");  
+  
+if(  
+[...country.options]  
+.some(function(o){  
+return o.value===draft.countryCode;  
+})  
+){  
+  
+country.value=draft.countryCode;  
+  
+}  
+  
+}  
+  
+document.getElementById("customerPhone")  
+.value=draft.customerPhone||"";  
+  
+document.getElementById("customerTIN")  
+.value=draft.customerTIN||"";  
+  
+document.getElementById("sellerTIN")  
+.value=draft.sellerTIN||"";  
+  
+document.getElementById("customerAddress")  
+.value=draft.customerAddress||"";  
+  
+document.getElementById("workDays")  
+.value=draft.workDays||"";  
+  
+currentInvoiceNo=  
+draft.currentInvoiceNo||null;  
+  
+document.getElementById("orderBody")  
+.innerHTML="";  
+  
+document.getElementById("extraRows")  
+.innerHTML="";  
+  
+document.getElementById("accessoryRows")  
+.innerHTML="";  
+  
+if(  
+Array.isArray(draft.glass)&&  
+draft.glass.length  
+){  
+  
+draft.glass.forEach(function(g){  
+  
+const row=  
+addGlass(  
+g.type||"Tempered",  
+true  
+);  
+  
+row.dataset.plusMode=  
+g.plusMode===true  
+?"true"  
+:"false";  
+  
+row.querySelector(".description")  
+.value=g.description||"";  
+  
+row.querySelector(".unit")  
+.value=g.unit||"MM";  
+  
+row.querySelector(".width")  
+.value=g.width||"";  
+  
+row.querySelector(".height")  
+.value=g.height||"";  
+  
+row.querySelector(".qty")  
+.value=g.qty||1;  
+  
+row.querySelector(".unitPrice")  
+.value=g.unitPrice||"";  
+  
+row.querySelector(".remark")  
+.value=g.remark||"";  
+  
+updateRowDescriptionList(row);  
+  
+if(g.process){  
+  
+applyGlassPrice(row);  
+  
+const selector=  
+row.querySelector(".nonTempProcess");  
+  
+if(selector){  
+  
+selector.value=g.process;  
+  
+updateNonTemperedPrice(row);  
+  
+}  
+  
+}else{  
+  
+if(g.plusMode){  
+  
+const holder=  
+row.querySelector(  
+".non-temp-process-holder"  
+);  
+  
+if(holder)  
+holder.innerHTML="";  
+  
+}else{  
+  
+applyGlassPrice(row);  
+  
+}  
+  
+}  
+  
+});  
+  
+}else{  
+  
+addGlass("Tempered",true);  
+  
+}  
+  
+if(Array.isArray(draft.extras)){  
+  
+draft.extras.forEach(function(x){  
+  
+const row=  
+document.createElement("div");  
+  
+row.className="extra-row";  
+  
+row.innerHTML=`  
+  
+<input value="${esc(  
+x.type||"CUT OUT"  
+)}" readonly>  
+  
+<input  
+class="extraQty"  
+type="number"  
+min="1"  
+value="${num(x.qty)||1}">  
+  
+<input  
+class="extraPrice"  
+type="number"  
+min="0"  
+value="${num(x.price)}">  
+  
+<span class="extraAmount">  
+0.00  
+</span>  
+  
+<button type="button"  
+class="remove-btn">×</button>  
+  
+`;  
+  
+document.getElementById("extraRows")  
+.appendChild(row);  
+  
+row.querySelectorAll("input")  
+.forEach(function(el){  
+  
+el.addEventListener("input",function(){  
+  
+calculateTotals();  
+scheduleDraftSave();  
+  
+});  
+  
+});  
+  
+row.querySelector(".remove-btn")  
+.onclick=function(){  
+  
+row.remove();  
+  
+calculateTotals();  
+  
+saveDraft();  
+  
+};  
+  
+});  
+  
+}  
+  
+if(Array.isArray(draft.accessories)){  
+  
+draft.accessories.forEach(function(x){  
+  
+const row=  
+document.createElement("div");  
+  
+row.className="accessory-row";  
+  
+row.innerHTML=`  
+  
+<div class="accessoryNo"></div>  
+  
+<input  
+class="accessoryDescription"  
+list="accessoryList"  
+placeholder="CHOOSE / EDIT ACCESSORY NAME"  
+autocomplete="off"  
+value="${esc(x.description||"")}">  
+  
+<input  
+class="accessoryQty"  
+type="number"  
+min="1"  
+value="${num(x.qty)||1}">  
+  
+<input  
+class="accessoryPrice"  
+type="number"  
+min="0"  
+value="${num(x.price)}">  
+  
+<div class="accessoryAmount">  
+0.00  
+</div>  
+  
+<button type="button"  
+class="remove-btn">×</button>  
+  
+`;  
+  
+document.getElementById("accessoryRows")  
+.appendChild(row);  
+  
+const description=  
+row.querySelector(".accessoryDescription");  
+  
+const price=  
+row.querySelector(".accessoryPrice");  
+  
+const qty=  
+row.querySelector(".accessoryQty");  
+  
+function applyAccessoryCataloguePrice(){  
+  
+const typedName=  
+description.value  
+.trim()  
+.toLowerCase();  
+  
+const x=settings.accessories.find(function(a){  
+  
+return String(a[0])  
+.trim()  
+.toLowerCase()===typedName;  
+  
+});  
+  
+if(x)  
+price.value=num(x[1]);  
+  
+calculateTotals();  
+scheduleDraftSave();  
+  
+}  
+  
+description.addEventListener(  
+"input",  
+applyAccessoryCataloguePrice  
+);  
+  
+description.addEventListener(  
+"change",  
+applyAccessoryCataloguePrice  
+);  
+  
+price.addEventListener("input",function(){  
+  
+calculateTotals();  
+scheduleDraftSave();  
+  
+});  
+  
+qty.addEventListener("input",function(){  
+  
+calculateTotals();  
+scheduleDraftSave();  
+  
+});  
+  
+row.querySelector(".remove-btn")  
+.onclick=function(){  
+  
+row.remove();  
+  
+calculateTotals();  
+  
+saveDraft();  
+  
+};  
+  
+});  
+  
+}  
+  
+calculateTotals();  
+  
+updatePhonePreview();  
+  
+updateAccessoryList();  
+  
+if(  
+draft.invoiceVisible&&  
+currentInvoiceNo  
+){  
+  
+const db=getInvoiceDatabase();  
+  
+const saved=db.find(function(x){  
+  
+return String(x.invoiceNo)  
+.toLowerCase()===  
+String(currentInvoiceNo)  
+.toLowerCase();  
+  
+});  
+  
+if(saved){  
+  
+renderInvoice(saved);  
+  
+}else{  
+  
+const generatedData=  
+buildCurrentInvoiceData(false);  
+  
+if(generatedData){  
+  
+renderInvoice(generatedData);  
+  
+}  
+  
+}  
+  
+}  
+  
+}catch(e){  
+  
+console.warn(  
+"Draft restore failed",  
+e  
+);  
+  
+}finally{  
+  
+restoringDraft=false;  
+  
+saveDraft();  
+  
+}  
+  
+}  
+  
+  
+/* =========================================================  
+   BUILD INVOICE  
+========================================================= */  
+  
+function buildCurrentInvoiceData(requireValid=true){  
+  
+const days=num(  
+document.getElementById("workDays").value  
+);  
+  
+if(requireValid&&days<1){  
+  
+showError(  
+"Please enter Working Days."  
+);  
+  
+return null;  
+  
+}  
+  
+const glassRows=[  
+...document.querySelectorAll(".glass-row")  
+];  
+  
+const validGlass=  
+glassRows.filter(function(row){  
+  
+const width=num(  
+row.querySelector(".width").value  
+);  
+  
+const height=num(  
+row.querySelector(".height").value  
+);  
+  
+const qty=num(  
+row.querySelector(".qty").value  
+);  
+  
+return width>0&&height>0&&qty>0;  
+  
+});  
+  
+if(  
+requireValid&&  
+validGlass.length===0  
+){  
+  
+showError(  
+"Please enter Width, Height and Quantity for at least one glass item."  
+);  
+  
+return null;  
+  
+}  
+  
+let invoiceNumber=  
+currentInvoiceNo;  
+  
+if(!invoiceNumber){  
+  
+invoiceNumber=  
+generateInvoiceNumber();  
+  
+}  
+  
+if(!invoiceNumber){  
+  
+showError(  
+"Invoice No already exists. Please use another invoice number."  
+);  
+  
+return null;  
+  
+}  
+  
+document.getElementById("invoiceNo")  
+.value=invoiceNumber;  
+  
+const glass=[];  
+  
+validGlass.forEach(function(row){  
+  
+const calc=  
+calculateGlassRow(row);  
+  
+glass.push({  
+  
+type:  
+row.querySelector(".glassType")  
+.value,  
+  
+description:  
+getGlassDescription(row),  
+  
+width:calc.width,  
+height:calc.height,  
+qty:calc.qty,  
+sqm:calc.sqm,  
+price:calc.price,  
+amount:calc.amount,  
+  
+remark:  
+row.querySelector(".remark")  
+.value||"",  
+  
+plusMode:  
+row.dataset.plusMode==="true",  
+  
+process:  
+row.querySelector(".nonTempProcess")  
+?row.querySelector(".nonTempProcess").value  
+:null  
+  
+});  
+  
+});  
+  
+const extras=[  
+...document.querySelectorAll(".extra-row")  
+].map(function(row){  
+  
+const qty=num(  
+row.querySelector(".extraQty").value  
+);  
+  
+const price=num(  
+row.querySelector(".extraPrice").value  
+);  
+  
+return{  
+  
+description:  
+row.children[0].value,  
+  
+qty:qty,  
+  
+price:price,  
+  
+amount:qty*price  
+  
+};  
+  
+});  
+  
+const accessories=[  
+...document.querySelectorAll(".accessory-row")  
+].map(function(row){  
+  
+const description=  
+row.querySelector(  
+".accessoryDescription"  
+)  
+.value.trim();  
+  
+const qty=num(  
+row.querySelector(".accessoryQty")  
+.value  
+);  
+  
+const price=num(  
+row.querySelector(".accessoryPrice")  
+.value  
+);  
+  
+return{  
+  
+description:description,  
+qty:qty,  
+price:price,  
+amount:qty*price  
+  
+};  
+  
+}).filter(function(x){  
+  
+return x.description!=="";  
+  
+});  
+  
+const orderSubtotal=  
+  
+glass.reduce(function(a,x){  
+return a+x.amount;  
+},0)+  
+  
+extras.reduce(function(a,x){  
+return a+x.amount;  
+},0);  
+  
+const accessorySubtotal=  
+accessories.reduce(function(a,x){  
+return a+x.amount;  
+},0);  
+  
+const vat=  
+orderSubtotal*num(settings.vat)/100;  
+  
+const discount=  
+orderSubtotal*num(settings.discount)/100;  
+  
+const grandTotal=  
+orderSubtotal+vat-discount;  
+  
+const countryCode=  
+document.getElementById("countryCode")  
+.value;  
+  
+const phone=  
+document.getElementById("customerPhone")  
+.value.trim();  
+  
+const now=new Date();  
+  
+return{  
+  
+invoiceNo:invoiceNumber,  
+  
+date:now.toLocaleDateString("en-GB"),  
+  
+createdAt:now.toISOString(),  
+  
+customerName:  
+document.getElementById("customerName")  
+.value.trim(),  
+  
+customerPhone:phone,  
+  
+countryCode:countryCode,  
+  
+customerID:  
+document.getElementById("customerID")  
+.value.trim(),  
+  
+customerTIN:  
+document.getElementById("customerTIN")  
+.value.trim(),  
+  
+sellerTIN:  
+document.getElementById("sellerTIN")  
+.value.trim(),  
+  
+customerAddress:  
+document.getElementById("customerAddress")  
+.value.trim(),  
+  
+workingDays:days,  
+  
+glass:glass,  
+  
+extras:extras,  
+  
+accessories:accessories,  
+  
+subtotal:orderSubtotal,  
+  
+accessorySubtotal:accessorySubtotal,  
+  
+vat:vat,  
+  
+discount:discount,  
+  
+grandTotal:grandTotal,  
+  
+vatPercent:num(settings.vat),  
+  
+discountPercent:num(settings.discount)  
+  
+};  
+  
+}  
+  
+  
+/* =========================================================  
+   GENERATE  
+========================================================= */  
+  
+function generateInvoice(){  
+  
+clearError();  
+  
+const data=  
+buildCurrentInvoiceData(true);  
+  
+if(!data)return;  
+  
+currentInvoiceNo=  
+data.invoiceNo;  
+  
+document.getElementById("invoiceNo")  
+.value=data.invoiceNo;  
+  
+saveInvoiceDatabase(data);  
+  
+renderInvoice(data);  
+  
+saveDraft();  
+  
+toast("INVOICE SAVED / UPDATED");  
+  
+}  
+  
+  
+/* =========================================================  
+   RENDER INVOICE  
+========================================================= */  
+  
+function renderInvoice(data){  
+  
+document.getElementById("iName")  
+.textContent=data.customerName||"";  
+  
+document.getElementById("iAddress")  
+.textContent=data.customerAddress||"";  
+  
+document.getElementById("iCustomerTIN")  
+.textContent=data.customerTIN||"";  
+  
+document.getElementById("iSellerTIN")  
+.textContent=data.sellerTIN||"";  
+  
+document.getElementById("iPhone")  
+.textContent=data.customerPhone  
+?data.countryCode+" "+data.customerPhone  
+:"";  
+  
+document.getElementById("iCustomerID")  
+.textContent=data.customerID||"";  
+  
+document.getElementById("iInvoiceNo")  
+.textContent=data.invoiceNo||"";  
+  
+document.getElementById("iDate")  
+.textContent=data.date||"";  
+  
+document.getElementById("invoiceWorkingDays")  
+.textContent=data.workingDays||"";  
+  
+document.getElementById("invoiceBank1")  
+.textContent=settings.bank1;  
+  
+document.getElementById("invoiceBank2")  
+.textContent=settings.bank2;  
+  
+document.getElementById("invoiceMpesa")  
+.textContent=settings.mpesa;  
+  
+let html="";  
+  
+(data.glass||[]).forEach(function(x,i){  
+  
+html+=`  
+  
+<tr>  
+  
+<td>${i+1}</td>  
+  
+<td class="desc">  
+${esc(x.description)}  
+</td>  
+  
+<td>${x.width}</td>  
+  
+<td>${x.height}</td>  
+  
+<td>${x.qty}</td>  
+  
+<td>${Number(x.sqm||0).toFixed(3)}</td>  
+  
+<td>${money(x.price)}</td>  
+  
+<td>${money(x.amount)}</td>  
+  
+<td>${esc(x.remark)}</td>  
+  
+</tr>  
+  
+`;  
+  
+});  
+  
+(data.extras||[]).forEach(function(x){  
+  
+html+=`  
+  
+<tr>  
+  
+<td class="na">NA</td>  
+  
+<td class="desc">  
+${esc(x.description)}  
+</td>  
+  
+<td class="na">NA</td>  
+  
+<td class="na">NA</td>  
+  
+<td>${x.qty}</td>  
+  
+<td class="na">NA</td>  
+  
+<td>${money(x.price)}</td>  
+  
+<td>${money(x.amount)}</td>  
+  
+<td class="na">NA</td>  
+  
+</tr>  
+  
+`;  
+  
+});  
+  
+html+=`  
+  
+<tr class="invoice-summary-row">  
+  
+<td colspan="6"></td>  
+  
+<td class="invoice-summary-label">  
+SUBTOTAL  
+</td>  
+  
+<td>${money(data.subtotal)}</td>  
+  
+<td></td>  
+  
+</tr>  
+  
+<tr class="invoice-summary-row">  
+  
+<td colspan="6"></td>  
+  
+<td class="invoice-summary-label">  
+VAT  
+</td>  
+  
+<td>${money(data.vat)}</td>  
+  
+<td></td>  
+  
+</tr>  
+  
+<tr class="invoice-summary-row">  
+  
+<td colspan="6"></td>  
+  
+<td class="invoice-summary-label">  
+DISCOUNT  
+</td>  
+  
+<td>${money(data.discount)}</td>  
+  
+<td></td>  
+  
+</tr>  
+  
+<tr class="invoice-grand-row">  
+  
+<td colspan="6"></td>  
+  
+<td class="invoice-summary-label">  
+GRAND TOTAL  
+</td>  
+  
+<td class="invoice-grand-number">  
+${money(data.grandTotal)}  
+</td>  
+  
+<td></td>  
+  
+</tr>  
+  
+`;  
+  
+if((data.accessories||[]).length){  
+  
+html+=`  
+  
+<tr>  
+  
+<td colspan="9"  
+class="invoice-accessories-title">  
+ACCESSORIES  
+</td>  
+  
+</tr>  
+  
+`;  
+  
+data.accessories.forEach(function(x,i){  
+  
+html+=`  
+  
+<tr>  
+  
+<td>${i+1}</td>  
+  
+<td class="desc">  
+${esc(x.description)}  
+</td>  
+  
+<td class="na">NA</td>  
+  
+<td class="na">NA</td>  
+  
+<td>${x.qty}</td>  
+  
+<td class="na">NA</td>  
+  
+<td>${money(x.price)}</td>  
+  
+<td>${money(x.amount)}</td>  
+  
+<td class="na">NA</td>  
+  
+</tr>  
+  
+`;  
+  
+});  
+  
+html+=`  
+  
+<tr class="invoice-accessory-subtotal">  
+  
+<td></td>  
+<td></td>  
+<td></td>  
+<td></td>  
+<td></td>  
+<td></td>  
+  
+<td class="invoice-summary-label">  
+SUBTOTAL  
+</td>  
+  
+<td class="invoice-grand-number">  
+${money(data.accessorySubtotal)}  
+</td>  
+  
+<td></td>  
+  
+</tr>  
+  
+`;  
+  
+}  
+  
+document.getElementById("invoiceGlassRows")  
+.innerHTML=html;  
+  
+document.getElementById("invoiceArea")  
+.style.display="block";  
+  
+saveDraft();  
+  
+window.scrollTo({  
+  
+top:  
+document.getElementById("invoiceArea")  
+.offsetTop,  
+  
+behavior:"smooth"  
+  
+});  
+  
+}  
+  
+  
+/* =========================================================  
+   PRINT / EXCEL  
+========================================================= */  
+  
+function printInvoice(){  
+  
+const invoice=  
+document.getElementById("invoicePaper");  
+  
+if(!invoice){  
+  
+toast("Invoice not available.");  
+  
+return;  
+  
+}  
+  
+window.print();  
+  
+}  
+  
+function exportExcel(){  
+  
+const invoice=  
+document.getElementById("invoicePaper");  
+  
+if(!invoice){  
+  
+toast("Generate invoice first.");  
+  
+return;  
+  
+}  
+  
+const html=`  
+  
+<html>  
+  
+<head>  
+  
+<meta charset="UTF-8">  
+  
+</head>  
+  
+<body>  
+  
+${invoice.outerHTML}  
+  
+</body>  
+  
+</html>  
+  
+`;  
+  
+const blob=  
+new Blob(  
+["\ufeff"+html],  
+{  
+type:"application/vnd.ms-excel"  
+}  
+);  
+  
+const url=  
+URL.createObjectURL(blob);  
+  
+const a=  
+document.createElement("a");  
+  
+a.href=url;  
+  
+a.download=  
+"JAVA_GLASS_PROFORMA.xls";  
+  
+document.body.appendChild(a);  
+  
+a.click();  
+  
+a.remove();  
+  
+setTimeout(function(){  
+  
+URL.revokeObjectURL(url);  
+  
+},1000);  
+  
+}  
+  
+  
+/* =========================================================  
+   NEW ORDER  
+========================================================= */  
+  
+function newOrder(){  
+  
+const confirmed=  
+confirm(  
+"START NEW ORDER?\n\n"+  
+"The current active invoice will be closed and a new invoice number can be generated."  
+);  
+  
+if(!confirmed)return;  
+  
+currentInvoiceNo=null;  
+  
+localStorage.removeItem(DRAFT_KEY);  
+  
+document.getElementById("invoiceNo")  
+.value="";  
+  
+document.getElementById("customerName")  
+.value="";  
+  
+document.getElementById("customerID")  
+.value="";  
+  
+document.getElementById("customerPhone")  
+.value="";  
+  
+document.getElementById("customerTIN")  
+.value="";  
+  
+document.getElementById("sellerTIN")  
+.value="";  
+  
+document.getElementById("customerAddress")  
+.value="";  
+  
+document.getElementById("workDays")  
+.value="";  
+  
+document.getElementById("orderBody")  
+.innerHTML="";  
+  
+document.getElementById("extraRows")  
+.innerHTML="";  
+  
+document.getElementById("accessoryRows")  
+.innerHTML="";  
+  
+document.getElementById("invoiceArea")  
+.style.display="none";  
+  
+document.getElementById("phonePreview")  
+.textContent="";  
+  
+clearError();  
+  
+addGlass("Tempered");  
+  
+calculateTotals();  
+  
+saveDraft();  
+  
+toast("NEW ORDER READY.");  
+  
+}  
+  
+  
+/* =========================================================  
+   AUTO SAVE FORM  
+========================================================= */  
+  
+[  
+"customerName",  
+"customerID",  
+"invoiceNo",  
+"customerPhone",  
+"customerTIN",  
+"sellerTIN",  
+"customerAddress",  
+"workDays"  
+].forEach(function(id){  
+  
+document.getElementById(id)  
+.addEventListener("input",function(){  
+  
+if(id==="customerPhone"){  
+  
+updatePhonePreview();  
+  
+}  
+  
+scheduleDraftSave();  
+  
+});  
+  
+});  
+  
+document.getElementById("countryCode")  
+.addEventListener("change",function(){  
+  
+updatePhonePreview();  
+  
+scheduleDraftSave();  
+  
+});  
+  
+  
+/* =========================================================  
+   KEYBOARD  
+========================================================= */  
+  
+document.addEventListener("keydown",function(e){  
+  
+if(e.key==="Escape"){  
+  
+const cp=  
+document.getElementById("controlModal");  
+  
+const db=  
+document.getElementById("dbModal");  
+  
+if(cp.style.display==="block"){  
+  
+closeControlPanel();  
+  
+}  
+  
+if(db.style.display==="block"){  
+  
+if(  
+databaseUnlocked&&  
+!document.getElementById("dbEditView")  
+.classList.contains("hidden")  
+){  
+  
+closeDatabaseEditor();  
+  
+}else{  
+  
+closeDatabase();  
+  
+}  
+  
+}  
+  
+return;  
+  
+}  
+  
+if(  
+e.ctrlKey&&  
+e.key.toLowerCase()==="p"  
+){  
+  
+e.preventDefault();  
+  
+if(currentInvoiceNo){  
+  
+printInvoice();  
+  
+}else{  
+  
+toast("Generate invoice first.");  
+  
+}  
+  
+return;  
+  
+}  
+  
+if(  
+e.ctrlKey&&  
+e.key.toLowerCase()==="s"  
+){  
+  
+e.preventDefault();  
+  
+generateInvoice();  
+  
+return;  
+  
+}  
+  
+if(  
+e.ctrlKey&&  
+e.key.toLowerCase()==="n"  
+){  
+  
+e.preventDefault();  
+  
+newOrder();  
+  
+return;  
+  
+}  
+  
+if(  
+e.ctrlKey&&  
+e.key==="Enter"  
+){  
+  
+e.preventDefault();  
+  
+generateInvoice();  
+  
+return;  
+  
+}  
+  
+if(  
+e.key==="Enter"&&  
+!e.ctrlKey  
+){  
+  
+const target=e.target;  
+  
+if(  
+target.tagName==="TEXTAREA"||  
+target.type==="password"  
+){  
+  
+return;  
+  
+}  
+  
+if(target.tagName==="BUTTON"){  
+  
+e.preventDefault();  
+  
+target.click();  
+  
+return;  
+  
+}  
+  
+if(  
+target.classList.contains(  
+"accessoryDescription"  
+)||  
+target.classList.contains(  
+"description"  
+)  
+){  
+  
+return;  
+  
+}  
+  
+const fields=[  
+  
+...document.querySelectorAll(  
+'#orderCard input:not([type="hidden"]):not([disabled]),'+  
+'#orderCard select:not([disabled]),'+  
+'#orderCard textarea:not([disabled])'  
+)  
+  
+].filter(function(el){  
+  
+return el.offsetParent!==null;  
+  
+});  
+  
+const index=fields.indexOf(target);  
+  
+if(index!==-1){  
+  
+e.preventDefault();  
+  
+const next=fields[index+1];  
+  
+if(next){  
+  
+next.focus();  
+  
+if(  
+next.tagName==="INPUT"&&  
+next.type!=="number"&&  
+next.type!=="password"  
+){  
+  
+try{  
+next.select();  
+}catch(err){}  
+  
+}  
+  
+}  
+  
+}  
+  
+}  
+  
+});  
+  
+  
+document.addEventListener("keydown",function(e){  
+  
+if(  
+e.key!=="Enter"||  
+!e.shiftKey||  
+e.ctrlKey  
+)return;  
+  
+const target=e.target;  
+  
+if(  
+target.tagName==="TEXTAREA"||  
+target.type==="password"||  
+target.tagName==="BUTTON"  
+){  
+  
+return;  
+  
+}  
+  
+const fields=[  
+  
+...document.querySelectorAll(  
+'#orderCard input:not([type="hidden"]):not([disabled]),'+  
+'#orderCard select:not([disabled]),'+  
+'#orderCard textarea:not([disabled])'  
+)  
+  
+].filter(function(el){  
+  
+return el.offsetParent!==null;  
+  
+});  
+  
+const index=fields.indexOf(target);  
+  
+if(index>0){  
+  
+e.preventDefault();  
+  
+fields[index-1].focus();  
+  
+}  
+  
+});  
+  
+  
+/* =========================================================  
+   VISIBILITY  
+========================================================= */  
+  
+document.addEventListener(  
+"visibilitychange",  
+function(){  
+  
+if(  
+document.visibilityState==="hidden"  
+){  
+  
+saveDraft();  
+  
+}  
+  
+});  
+  
+window.addEventListener(  
+"pagehide",  
+function(){  
+  
+saveDraft();  
+  
+});  
+  
+window.addEventListener(  
+"beforeunload",  
+function(){  
+  
+saveDraft();  
+  
+});  
+  
+  
+/* =========================================================  
+   INITIALIZE  
+========================================================= */  
+  
+loadCountryCodes();  
+  
+loadDatabaseCountryCodes();  
+  
+updateGlassDescriptionList();  
+  
+updatePlusDescriptionList();  
+  
+updateAccessoryList();  
+  
+restoreDraft();  
+  
+calculateTotals();  
+  
+</script>  </body>  
+</html>  
