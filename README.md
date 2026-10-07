@@ -1,0 +1,2 @@
+# javaglass
+my interface
