@@ -997,8 +997,8 @@ NON-TEMPERED
 </div>  <div class="summary-row">  
 <strong>DISCOUNT</strong>  
 <strong id="orderDiscount">0.00</strong>  
-</div>  <div class="summary-row">  
-<strong>GRAND TOTAL</strong>  
+</div>  <div class="summary-row" style="display:none;">
+<strong>GRAND TOTAL</strong>
 <strong id="orderGrandTotal" contenteditable="true">0.00</strong>
 </div>  </div>  </div>  <div class="accessory-box">  <strong>ACCESSORIES</strong>
 
@@ -1014,10 +1014,17 @@ The description remains fully editable.
 <div></div>  
 </div>  <div id="accessoryRows"></div>  <button type="button" onclick="addAccessory()">  
 ＋ ADD ACCESSORY  
-</button>  <div class="summary-box accessory-summary">  <div class="summary">  <div class="summary-row">  
-<strong>SUBTOTAL</strong>  
+</button>  <div class="summary-box accessory-summary">  <div class="summary"><div class="summary-row" style="display:none;">
+<strong>SUBTOTAL</strong>
 <strong id="accessorySubtotal" contenteditable="true" style="background:transparent;color:#fff;padding:2px 6px;border:1px dashed rgba(255,255,255,0.6);border-radius:4px;outline:none;min-width:70px;display:inline-block;">0.00</strong>
-</div>  </div>  </div>  </div>  <div id="errorMessage" class="error"></div>  <div class="keyboard-help" style="text-align:center;font-size:14px;line-height:1.7;color:#FFD54F;">
+</div>  </div>  </div>  </div>  <div class="summary-box" style="margin-top:10px;">
+<div class="summary">
+<div class="summary-row" style="background:#000;color:#fff;padding:14px 16px;">
+<strong>TOTAL PAYABLE AMOUNT</strong>
+<strong id="totalPayableAmount">0.00</strong>
+</div>
+</div>
+</div><div id="errorMessage" class="error"></div>  <div class="keyboard-help" style="text-align:center;font-size:14px;line-height:1.7;color:#FFD54F;">
 <strong>✨ JAVA GLASS LTD ✨</strong><br>
 Where Clarity Meets Quality.<br>
 <span style="color:#fff;">Beautiful Glass. Brighter Homes. Better Business.</span><br>
@@ -3807,6 +3814,7 @@ document.getElementById("orderGrandTotal")
   
 document.getElementById("accessorySubtotal")  
 .textContent=money(accessorySubtotal);  
+var t=document.getElementById("totalPayableAmount"); if(t) t.textContent=money(grandTotal+accessorySubtotal);
   
 return{  
   
@@ -6803,7 +6811,14 @@ ${money(data.accessorySubtotal)}
   
 `;  
   
-}  
+}  html+=`
+<tr class="invoice-grand-row">
+<td colspan="6"></td>
+<td class="invoice-summary-label">TOTAL PAYABLE AMOUNT</td>
+<td class="invoice-grand-number">${money(data.grandTotal + (data.accessorySubtotal||0))}</td>
+<td></td>
+</tr>
+`;
   
 document.getElementById("invoiceGlassRows")  
 .innerHTML=html;  
