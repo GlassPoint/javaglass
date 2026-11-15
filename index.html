@@ -1017,17 +1017,13 @@ The description remains fully editable.
 </button>  <div class="summary-box accessory-summary">  <div class="summary">  <div class="summary-row">  
 <strong>SUBTOTAL</strong>  
 <strong id="accessorySubtotal" contenteditable="true" style="background:transparent;color:#fff;padding:2px 6px;border:1px dashed rgba(255,255,255,0.6);border-radius:4px;outline:none;min-width:70px;display:inline-block;">0.00</strong>
-</div>  </div>  </div>  </div>  <div id="errorMessage" class="error"></div>  <div class="keyboard-help">  
-<strong>KEYBOARD:</strong>  
-ENTER = move to next field |  
-CTRL+ENTER = generate invoice |  
-CTRL+P = print |  
-CTRL+S = generate/update invoice |  
-CTRL+N = new order |  
-ESC = close panel |  
-TAB / SHIFT+TAB = move between fields  
-</div>  <!-- PENDING LIST - OUTSIDE INVOICE -->
-<div style="margin-top:12px;background:#FFF8E1;border:1px solid #FFE082;border-radius:14px;overflow:hidden">
+</div>  </div>  </div>  </div>  <div id="errorMessage" class="error"></div>  <div class="keyboard-help" style="text-align:center;font-size:14px;line-height:1.7;color:#FFD54F;">
+<strong>✨ JAVA GLASS LTD ✨</strong><br>
+Where Clarity Meets Quality.<br>
+<span style="color:#fff;">Beautiful Glass. Brighter Homes. Better Business.</span><br>
+<span style="color:#ccc;font-size:12px;">Quality You Can See Through. Trust You Can Build On.</span>
+</div><!-- PENDING LIST - OUTSIDE INVOICE -->
+<div style="display:none;margin-top:12px;background:#FFF8E1;border:1px solid #FFE082;border-radius:14px;overflow:hidden">
 <button type="button" onclick="togglePendingList(event)" style="width:100%;text-align:left;padding:13px 14px;border:none;background:#FFD54F;color:#000 !important;font-weight:bold;font-size:15px">⏳ PENDING ORDERS (<span id="pendingCount">0</span>) ▼</button>
 <div id="pendingListBox" style="display:none;background:#fff;color:#000;max-height:300px;overflow:auto"></div>
 </div><div class="generate">  <button type="button"  
@@ -1128,9 +1124,9 @@ CUSTOMER
 <div id="actionsMenu" style="display:none;position:absolute;left:0;right:0;bottom:58px;background:#fff;border-radius:14px;box-shadow:0 8px 25px rgba(0,0,0,0.22);z-index:99;overflow:hidden;padding:6px">
 <button type="button" onclick="closeActionsMenu();printInvoice()" style="display:block;width:100%;text-align:left;padding:13px 12px;border:none;background:#fff;border-bottom:1px solid #eee;font-size:15px;color:#000;font-weight:bold">🖨️ &nbsp; PRINT INVOICE</button>
 <button type="button" onclick="closeActionsMenu();printInvoice()" style="display:block;width:100%;text-align:left;padding:13px 12px;border:none;background:#fff;border-bottom:1px solid #eee;font-size:15px;color:#000;font-weight:bold">📄 &nbsp; DOWNLOAD PDF</button>
-<button type="button" onclick="closeActionsMenu();exportExcel()" style="display:block;width:100%;text-align:left;padding:13px 12px;border:none;background:#fff;border-bottom:1px solid #eee;font-size:15px;color:#1a7f37;font-weight:bold">📊 &nbsp; EXPORT TO EXCEL</button>
+<button type="button" onclick="closeActionsMenu();exportExcel()" style="display:none;width:100%;text-align:left;padding:13px 12px;border:none;background:#fff;border-bottom:1px solid #eee;font-size:15px;color:#1a7f37;font-weight:bold">📊 &nbsp; EXPORT TO EXCEL</button>
 <button type="button" onclick="closeActionsMenu();newOrder()" style="display:block;width:100%;text-align:left;padding:13px 12px;border:none;background:#fff;border-bottom:1px solid #eee;font-size:15px;color:#000;font-weight:bold">➕ &nbsp; START NEW ORDER</button>
-<button type="button" onclick="closeActionsMenu();saveAsPending()" style="display:block;width:100%;text-align:left;padding:13px 12px;border:none;background:#FFF3CD;border-radius:8px;font-size:15px;font-weight:bold;color:#8a6d00;margin:4px 0">⏳ &nbsp; SAVE AS PENDING</button>
+<button type="button" onclick="closeActionsMenu();saveAsPending()" style="display:none;width:100%;text-align:left;padding:13px 12px;border:none;background:#FFF3CD;border-radius:8px;font-size:15px;font-weight:bold;color:#8a6d00;margin:4px 0">⏳ &nbsp; SAVE AS PENDING</button>
 <button type="button" onclick="closeActionsMenu();deleteCurrentOrder()" style="display:block;width:100%;text-align:left;padding:13px 12px;border:none;background:#FFE0E0;border-radius:8px;font-size:15px;font-weight:bold;color:#c00">🗑️ &nbsp; DELETE ORDER</button>
 </div>
 </div>
