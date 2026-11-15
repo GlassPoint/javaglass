@@ -997,7 +997,7 @@ NON-TEMPERED
 </div>  <div class="summary-row">  
 <strong>DISCOUNT</strong>  
 <strong id="orderDiscount">0.00</strong>  
-</div>  <div class="summary-row" style="display:none;">
+</div>  <div class="summary-row">
 <strong>GRAND TOTAL</strong>
 <strong id="orderGrandTotal" contenteditable="true">0.00</strong>
 </div>  </div>  </div>  <div class="accessory-box">  <strong>ACCESSORIES</strong>
@@ -1014,7 +1014,7 @@ The description remains fully editable.
 <div></div>  
 </div>  <div id="accessoryRows"></div>  <button type="button" onclick="addAccessory()">  
 ＋ ADD ACCESSORY  
-</button>  <div class="summary-box accessory-summary">  <div class="summary"><div class="summary-row" style="display:none;">
+</button>  <div class="summary-box accessory-summary">  <div class="summary"><div class="summary-row">
 <strong>SUBTOTAL</strong>
 <strong id="accessorySubtotal" contenteditable="true" style="background:transparent;color:#fff;padding:2px 6px;border:1px dashed rgba(255,255,255,0.6);border-radius:4px;outline:none;min-width:70px;display:inline-block;">0.00</strong>
 </div>  </div>  </div>  </div>  <div class="summary-box" style="margin-top:10px;">
@@ -7376,5 +7376,18 @@ restoreDraft();
   
 calculateTotals();  
   
-</script>  </body>  
+</script><script>
+function syncTotalPayable(){
+  var g=document.getElementById('orderGrandTotal');
+  var a=document.getElementById('accessorySubtotal');
+  var t=document.getElementById('totalPayableAmount');
+  if(!g||!a||!t) return;
+  var gv=parseFloat(g.textContent.replace(/,/g,''))||0;
+  var av=parseFloat(a.textContent.replace(/,/g,''))||0;
+  t.textContent=(gv+av).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+document.addEventListener('input',function(e){
+  if(e.target && (e.target.id==='orderGrandTotal' || e.target.id==='accessorySubtotal')) syncTotalPayable();
+});
+</script> </body>  
 </html>
