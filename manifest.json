@@ -1,20 +1,23 @@
 {
   "name": "JAVA GLASS LTD - Glass Order System",
   "short_name": "JAVA GLASS",
-  "start_url": "/",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0a0f1e",
   "theme_color": "#0a0f1e",
   "icons": [
     {
-      "src": "IMG-20261116-WA3694.jpg",
+      "src": "IMG-20261116-WA3694.png",
       "sizes": "192x192",
-      "type": "image/jpeg"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "IMG-20261116-WA3694.jpg",
+      "src": "IMG-20261116-WA3694.png",
       "sizes": "512x512",
-      "type": "image/jpeg"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
