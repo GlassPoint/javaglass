@@ -970,6 +970,29 @@ TEMPERED
 </button>  <button type="button" onclick="addGlass('Non-Tempered')">  
 NON-TEMPERED  
 </button>  <button type="button" onclick="addPlus()">+</button>
+<div style="background:#ffffff; border-radius:18px; padding:16px; box-shadow:0 8px 24px rgba(0,0,0,0.25); margin:12px 0;">
+  <div style="font-weight:800; color:#0A2342; font-size:16px; margin-bottom:12px;">💎BULK GLASS ORDER</div>
+  <label style="font-size:12px; color:#555; font-weight:700;">Name / Description</label>
+  <input id="bulkDesc" placeholder="Type Glass: 4mm Clear Glass" style="width:100%; padding:12px; border-radius:10px; border:1.5px solid #d0d7e3; margin:4px 0 10px; font-size:15px; background:#f8fafc;">
+  <div style="display:flex; gap:10px;">
+    <div style="flex:1;">
+      <label style="font-size:12px; color:#555; font-weight:700;">Count</label>
+      <input id="bulkCount" type="number" value="10" min="1" max="100" placeholder="Row ngapi?" style="width:100%; padding:12px; border-radius:10px; border:1.5px solid #d0d7e3; margin-top:4px; font-size:15px; background:#f8fafc;">
+    </div>
+    <div style="flex:1;">
+      <label style="font-size:12px; color:#555; font-weight:700;">Price</label>
+      <input id="bulkPrice" type="number" placeholder="Price (optional)" style="width:100%; padding:12px; border-radius:10px; border:1.5px solid #d0d7e3; margin-top:4px; font-size:15px; background:#f8fafc;">
+    </div>
+  </div>
+  <div style="display:flex; gap:10px; margin-top:14px;">
+    <button type="button" onclick="addGlassBulk('Tempered')" style="flex:1; background:#0B5ED7; color:#fff; border:none; padding:13px; border-radius:10px; font-weight:800;">+ TEMPERED BULK</button>
+    <button type="button" onclick="addGlassBulk('Non-Tempered')" style="flex:1; background:#0B5ED7; color:#fff; border:none; padding:13px; border-radius:10px; font-weight:800;">+ NON-TEMPERED BULK</button>
+  </div>
+</div>
+<button type="button" onclick="toggleBulkList()" style="padding:7px 10px;font-weight:bold;background:#ff9800;color:white">DELETE BULK</button>
+<button type="button" onclick="deleteAllGlass()" style="padding:7px 10px;font-weight:bold;background:#f44336;color:white">DELETE ALL</button>
+<div id="bulkList" style="margin-top:6px;font-size:13px"></div>
+<div id="bulkHistoryList" style="margin-top:6px;display:none;"></div>
 
 </div>  <div class="table-wrap">  <table class="order-table">  <thead>  
 <tr>  
@@ -1029,7 +1052,7 @@ The description remains fully editable.
 </div>
 </div>
 </div><div id="errorMessage" class="error"></div>  <div class="keyboard-help" style="text-align:center;font-size:14px;line-height:1.7;color:#FFD54F;">
-<strong>✨ JAVA GLASS LTD ✨</strong><br>
+<strong>JAVA GLASS LTD</strong><br>
 Where Clarity Meets Quality.<br>
 <span style="color:#fff;">Beautiful Glass. Brighter Homes. Better Business.</span><br>
 <span style="color:#ccc;font-size:12px;">Quality You Can See Through. Trust You Can Build On.</span>
@@ -2875,10 +2898,109 @@ function initBulkRemarkUI(){
   if(!wrap) return;
   const div = document.createElement("div");
   div.innerHTML = '<div style="display:flex;gap:8px;margin:10px 0 6px"><input id="bulkRemark" type="text" placeholder="Single remark:e.g C.E.T" style="flex:1;padding:11px;border-radius:8px;border:1px solid #294c43;background:#03100d;color:white"><button type="button" onclick="applyRemarkToAll()" style="padding:11px 14px;border:none;border-radius:8px;background:#72f5c8;font-weight:bold">APPLY TO ALL</button></div><label style="font-size:13px;color:#a9c3bc"><input type="checkbox" id="overwriteRemark"> Overwrite existing</label>';
-  wrap.parentNode.insertBefore(div, wrap);
+  var bulkCard = document.getElementById('bulkDesc');
+if(bulkCard){ bulkCard = bulkCard.parentElement; }
+var delBtn = Array.from(document.querySelectorAll('button')).find(function(b){ return b.textContent.indexOf('DELETE BULK') !== -1; });
+var delWrap = delBtn ? delBtn.parentElement : null;
+var modeBtns = document.querySelector('.mode-buttons');
+var parent = wrap.parentNode;
+if(bulkCard){ parent.insertBefore(bulkCard, wrap); }
+if(delWrap){ parent.insertBefore(delWrap, wrap); }
+parent.insertBefore(div, wrap);
+if(modeBtns){ parent.insertBefore(modeBtns, wrap); }
+['bulkDesc','bulkCount','bulkPrice'].forEach(function(id){ var el=document.getElementById(id); if(el){ el.style.color='#0A2342'; el.style.background='#ffffff'; } });
+
 }
 document.addEventListener("DOMContentLoaded", initBulkRemarkUI);
 setTimeout(initBulkRemarkUI, 500);
+var bulkHistory = [];
+var bulkIdCounter = 0;
+function addGlassBulk(type){
+  var descEl = document.getElementById('bulkDesc');
+  var countEl = document.getElementById('bulkCount');
+  var priceEl = document.getElementById('bulkPrice');
+
+  var desc = descEl ? descEl.value.trim() : '';
+  var n = countEl ? parseInt(countEl.value) : 1;
+  if(!n || n < 1) n = 1;
+  if(n > 100) n = 100;
+  var bulkPrice = priceEl ? priceEl.value.trim() : '';
+
+var oldRows = Array.prototype.slice.call(document.querySelectorAll('#orderBody .glass-row'));
+bulkIdCounter++;
+var thisBulkId = 'bulk-' + bulkIdCounter;
+
+  for(var i = 0; i < n; i++){
+    addGlass(type, true);
+  }
+
+  var allRows = Array.prototype.slice.call(document.querySelectorAll('#orderBody .glass-row'));
+var newRows = allRows.filter(function(r){ return oldRows.indexOf(r)===-1; });
+for(var j=0; j<newRows.length; j++){
+var row = newRows[j];
+row.dataset.bulkId = thisBulkId;
+
+    // 1. Weka DESCRIPTION moja kwenye zote
+    if(desc){
+      var d = row.querySelector('.description');
+      if(d){
+        d.value = desc;
+  }
+}
+
+    // 2. Weka bei
+    if(bulkPrice !== '' && bulkPrice !== null){
+      // Kama umeandika Price mwenyewe, tumia hiyo - ifunike ya Control Panel
+      var p = row.querySelector('.unitPrice');
+      if(p){
+        p.value = bulkPrice;
+        // Alama hii inazuia bei isifutwe tena na Control Panel
+        row.dataset.manualPrice = "1";
+      }
+    } else {
+      // Kama hukujaza Price, isome kutoka Control Panel
+      if(typeof applyGlassPrice === 'function'){
+        try{ applyGlassPrice(row); }catch(e){}
+      }
+      if(type === 'Non-Tempered' && typeof updateNonTemperedPrice === 'function'){
+        try{ updateNonTemperedPrice(row); }catch(e){}
+      }
+    }
+  }
+
+  if(typeof calculateTotals === 'function'){ calculateTotals(); } bulkHistory.push({id: thisBulkId, desc: desc || type, type: type, count: n});
+renderBulkList();
+
+  // Focus kwenye row ya kwanza ya bulk ili uanze kujaza H na W
+  var firstNew = newRows[0];
+  if(firstNew){
+    var w = firstNew.querySelector('input:not(.description):not(.unitPrice)');
+    // Jaribu kupata WIDTH input
+    var inputs = firstNew.querySelectorAll('input');
+    for(var k=0;k<inputs.length;k++){
+      if(inputs[k].placeholder && inputs[k].placeholder.toLowerCase().indexOf('width')>-1){ inputs[k].focus(); break; }
+    }
+  }
+}
+function renderBulkList(){
+var el=document.getElementById('bulkHistoryList');
+if(!el) return;
+if(!bulkHistory.length){ el.innerHTML='<div style="color:#888;font-size:12px;">No bulk yet</div>'; return; }
+el.innerHTML=bulkHistory.map(function(b){ return '<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 6px;border:1px solid #ddd;border-radius:6px;margin-bottom:4px;background:#fff;"><span>'+b.desc+' ('+b.count+')</span><button onclick="deleteBulkGroup(\''+b.id+'\')" style="background:#e53935;color:#fff;border:none;border-radius:4px;padding:3px 8px;">DELETE</button></div>'; }).join('');
+}
+function toggleBulkList(){
+var el=document.getElementById('bulkHistoryList');
+if(!el) return;
+renderBulkList();
+if(el.style.display==='none' || el.style.display===''){ el.style.display='block'; } else { el.style.display='none'; }
+}
+function deleteBulkGroup(id){
+if(!confirm('DELETE this bulk?')) return;
+document.querySelectorAll('#orderBody .glass-row[data-bulk-id="'+id+'"]').forEach(function(r){ r.remove(); });
+bulkHistory=bulkHistory.filter(function(b){ return b.id!==id; });
+renderBulkList();
+if(typeof calculateTotals==='function'){ calculateTotals(); }
+}
  function addGlass(type,skipFocus=false){  
   
 const row=document.createElement("tr");  
@@ -2962,8 +3084,10 @@ class="remove-btn">×</button>
   
 `;  
   
-document.getElementById("orderBody")  
-.appendChild(row);  
+
+const orderBodyEl = document.getElementById("orderBody");
+orderBodyEl.insertBefore(row, orderBodyEl.firstChild);
+
   
 bindGlassRow(row);  
   
@@ -3737,11 +3861,11 @@ function calculateTotals(){
   
 let orderSubtotal=0;  
   
-document.querySelectorAll(".glass-row")  
-.forEach(function(row,i){  
-  
-row.querySelector(".rowNo")  
-.textContent=i+1;  
+const allGlassRows = document.querySelectorAll(".glass-row");
+const totalGlass = allGlassRows.length;
+allGlassRows.forEach(function(row,i){
+row.querySelector(".rowNo")
+.textContent = totalGlass - i;
   
 const x=  
 calculateGlassRow(row);  
@@ -6267,6 +6391,13 @@ saveDraft();
 /* =========================================================  
    BUILD INVOICE  
 ========================================================= */  
+let editSeq = 0;
+document.addEventListener('input', function(e){
+  var r = e.target.closest('.glass-row');
+  if(r && !r.dataset.editOrder){
+    r.dataset.editOrder = ++editSeq;
+  }
+});
   
 function buildCurrentInvoiceData(requireValid=true){  
   
@@ -6341,7 +6472,12 @@ return null;
 }  
   
 document.getElementById("invoiceNo")  
-.value=invoiceNumber;  
+.value=invoiceNumber; 
+validGlass.sort(function(a,b){
+  var ao = parseInt(a.dataset.editOrder || 999999);
+  var bo = parseInt(b.dataset.editOrder || 999999);
+  return ao - bo;
+}); 
   
 const glass=[];  
   
