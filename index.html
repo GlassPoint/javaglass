@@ -963,42 +963,44 @@ placeholder="Phone number">
 </div>  </div>  <h3 class="section-title">02. WORKING DAYS</h3>  <div style="max-width:260px">  
 <label>WORKING DAYS *</label>  
 <input id="workDays" type="number" min="1">  
-</div>  <h3 class="section-title">03. GLASS ORDER</h3>  <div class="small-note">  
-Enter Width, Height and Quantity. Area is calculated automatically.  
-</div>  <div class="mode-buttons">  <button type="button" onclick="addGlass('Tempered')">  
-TEMPERED  
-</button>  <button type="button" onclick="addGlass('Non-Tempered')">  
-NON-TEMPERED  
-</button>  <button type="button" onclick="addPlus()">+</button>
+<h3 class="section-title">03. GLASS ORDER</h3> <div class="small-note">Enter Width, Height and Quantity. Area is calculated automatically.</div>
+
 <div style="background:#ffffff; border-radius:18px; padding:16px; box-shadow:0 8px 24px rgba(0,0,0,0.25); margin:12px 0;">
-  <div style="font-weight:800; color:#0A2342; font-size:16px; margin-bottom:12px;">💎BULK GLASS ORDER</div>
-  <label style="font-size:12px; color:#555; font-weight:700;">Name / Description</label>
-  <input id="bulkDesc" placeholder="Type Glass: 4mm Clear Glass" style="width:100%; padding:12px; border-radius:10px; border:1.5px solid #d0d7e3; margin:4px 0 10px; font-size:15px; background:#f8fafc;">
-  <div style="display:flex; gap:10px;">
-    <div style="flex:1;">
-      <label style="font-size:12px; color:#555; font-weight:700;">Count</label>
-      <input id="bulkCount" type="number" value="10" min="1" max="100" placeholder="Row ngapi?" style="width:100%; padding:12px; border-radius:10px; border:1.5px solid #d0d7e3; margin-top:4px; font-size:15px; background:#f8fafc;">
-    </div>
-    <div style="flex:1;">
-      <label style="font-size:12px; color:#555; font-weight:700;">Price</label>
-      <input id="bulkPrice" type="number" placeholder="Price (optional)" style="width:100%; padding:12px; border-radius:10px; border:1.5px solid #d0d7e3; margin-top:4px; font-size:15px; background:#f8fafc;">
-    </div>
-  </div>
-  <div style="display:flex; gap:10px; margin-top:14px;">
-    <button type="button" onclick="addGlassBulk('Tempered')" style="flex:1; background:#0B5ED7; color:#fff; border:none; padding:13px; border-radius:10px; font-weight:800;">+ TEMPERED BULK</button>
-    <button type="button" onclick="addGlassBulk('Non-Tempered')" style="flex:1; background:#0B5ED7; color:#fff; border:none; padding:13px; border-radius:10px; font-weight:800;">+ NON-TEMPERED BULK</button>
-  </div>
+
+<div style="font-weight:800; color:#0A2342; font-size:16px; margin-bottom:12px;">💎 BULK GLASS ORDER</div>
+
+<label style="font-size:12px; color:#555; font-weight:700;">Name / Description</label>
+<input id="bulkDesc" placeholder="Type Glass: 4mm Clear Glass" style="width:100%; padding:12px; border-radius:10px; border:1.5px solid #d0d7e3; margin:4px 0 10px; font-size:15px; background:#f8fafc; color:#111; font-weight:700;">
+
+<div style="display:flex; gap:10px;">
+<div style="flex:1;">
+<label style="font-size:12px; color:#555; font-weight:700;">Count</label>
+<input id="bulkCount" type="number" value="10" min="1" max="100" placeholder="Row ngapi?" style="width:100%; padding:12px; border-radius:10px; border:1.5px solid #d0d7e3; margin-top:4px; font-size:15px; background:#f8fafc; color:#111; font-weight:700;">
 </div>
+<div style="flex:1;">
+<label style="font-size:12px; color:#555; font-weight:700;">Price</label>
+<input id="bulkPrice" type="number" placeholder="Price (optional)" style="width:100%; padding:12px; border-radius:10px; border:1.5px solid #d0d7e3; margin-top:4px; font-size:15px; background:#f8fafc; color:#111; font-weight:700;">
+</div>
+</div>
+
+<div style="display:flex; gap:10px; margin-top:14px;">
+<button type="button" onclick="addGlassBulk('Plain')" style="flex:1; background:#0B5ED7; color:#fff; border:none; padding:13px; border-radius:10px; font-weight:800;">+ PLAIN BULK</button>
+<button type="button" onclick="addGlassBulk('Tempered')" style="flex:1; background:#0B5ED7; color:#fff; border:none; padding:13px; border-radius:10px; font-weight:800;">+ TEMPERED BULK</button>
+<button type="button" onclick="addGlassBulk('Non-Tempered')" style="flex:1; background:#0B5ED7; color:#fff; border:none; padding:13px; border-radius:10px; font-weight:800;">+ NON-TEMPERED BULK</button>
+</div>
+
+</div>
+
 <button type="button" onclick="toggleBulkList()" style="padding:7px 10px;font-weight:bold;background:#ff9800;color:white">DELETE BULK</button>
 <button type="button" onclick="deleteAllGlass()" style="padding:7px 10px;font-weight:bold;background:#f44336;color:white">DELETE ALL</button>
 <div id="bulkList" style="margin-top:6px;font-size:13px"></div>
 <div id="bulkHistoryList" style="margin-top:6px;display:none;"></div>
 
-</div>  <div class="table-wrap">  <table class="order-table">  <thead>  
-<tr>  
-<th>S/N</th>  
-<th>TYPE</th>  
-<th>DESCRIPTION / SEARCH</th>  
+</div>
+
+<div class="mode-buttons"> <button type="button" onclick="addGlass('Tempered')">TEMPERED</button> <button type="button" onclick="addGlass('Non-Tempered')">NON-TEMPERED</button> <button type="button" onclick="addPlus()">+</button> </div>
+
+<div class="table-wrap"> <table class="order-table"> <thead> <tr> <th>S/N</th> <th>TYPE</th> <th>DESCRIPTION / SEARCH</th> <th>UNIT</th>
 <th>UNIT</th>  
 <th>WIDTH</th>  
 <th>HEIGHT</th>  
@@ -3018,7 +3020,7 @@ row.innerHTML=`
 <option value="Tempered"  
 ${type==="Tempered"?"selected":""}>  
 TEMPERED  
-</option>  
+</option> <option value="Plain" ${type==="Plain"?"selected":""}>PLAIN</option>
   
 <option value="Non-Tempered"  
 ${type==="Non-Tempered"?"selected":""}>  
