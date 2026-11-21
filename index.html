@@ -960,39 +960,50 @@ placeholder="Phone number">
 </div>  <div class="full">  
 <label>CUSTOMER ADDRESS</label>  
 <input id="customerAddress">  
-</div>  </div>  <h3 class="section-title">02. WORKING DAYS</h3>  <div style="max-width:260px">  
-<label>WORKING DAYS *</label>  
-<input id="workDays" type="number" min="1">  
+</div>
+</div>
+<h3 class="section-title">02. WORKING DAYS</h3>
+<div style="max-width:260px">
+<label>WORKING DAYS *</label>
+<input id="workDays" type="number" min="1">
+</div>
 <h3 class="section-title">03. GLASS ORDER</h3> <div class="small-note">Enter Width, Height and Quantity. Area is calculated automatically.</div>
 
-<div style="background:#ffffff; border-radius:18px; padding:16px; box-shadow:0 8px 24px rgba(0,0,0,0.25); margin:12px 0;">
+<div style="background:#ffffff; border-radius:18px; padding:16px; box-shadow:0 8px 24px rgba(0,0,0,0.25); margin:12px 0; width:100%; max-width:100%; box-sizing:border-box; overflow:visible; position:relative; z-index:10;">
 
 <div style="font-weight:800; color:#0A2342; font-size:16px; margin-bottom:12px;">💎 BULK GLASS ORDER</div>
 
 <label style="font-size:12px; color:#555; font-weight:700;">Name / Description</label>
-<input id="bulkDesc" placeholder="Type Glass: 4mm Clear Glass" style="width:100%; padding:12px; border-radius:10px; border:1.5px solid #d0d7e3; margin:4px 0 10px; font-size:15px; background:#f8fafc; color:#111; font-weight:700;">
+<input id="bulkDesc" placeholder="Type Glass: 4mm Clear Glass" style="width:100%; padding:12px; border-radius:10px; border:1.5px solid #d0d7e3; margin:4px 0 10px; font-size:15px; background:#f8fafc; color:#111; font-weight:700; box-sizing:border-box;">
 
 <div style="display:flex; gap:10px;">
-<div style="flex:1;">
+<div style="flex:1; min-width:0;">
 <label style="font-size:12px; color:#555; font-weight:700;">Count</label>
-<input id="bulkCount" type="number" value="10" min="1" max="100" placeholder="Row ngapi?" style="width:100%; padding:12px; border-radius:10px; border:1.5px solid #d0d7e3; margin-top:4px; font-size:15px; background:#f8fafc; color:#111; font-weight:700;">
+<input id="bulkCount" type="number" value="10" min="1" max="100" placeholder="Row ngapi?" style="width:100%; padding:12px; border-radius:10px; border:1.5px solid #d0d7e3; margin-top:4px; font-size:15px; background:#f8fafc; color:#111; font-weight:700; box-sizing:border-box;">
 </div>
-<div style="flex:1;">
+<div style="flex:1; min-width:0;">
 <label style="font-size:12px; color:#555; font-weight:700;">Price</label>
-<input id="bulkPrice" type="number" placeholder="Price (optional)" style="width:100%; padding:12px; border-radius:10px; border:1.5px solid #d0d7e3; margin-top:4px; font-size:15px; background:#f8fafc; color:#111; font-weight:700;">
+<input id="bulkPrice" type="number" placeholder="Price (optional)" style="width:100%; padding:12px; border-radius:10px; border:1.5px solid #d0d7e3; margin-top:4px; font-size:15px; background:#f8fafc; color:#111; font-weight:700; box-sizing:border-box;">
 </div>
 </div>
 
-<div style="display:flex; gap:10px; margin-top:14px;">
-<button type="button" onclick="addGlassBulk('Plain')" style="flex:1; background:#0B5ED7; color:#fff; border:none; padding:13px; border-radius:10px; font-weight:800;">+ PLAIN BULK</button>
-<button type="button" onclick="addGlassBulk('Tempered')" style="flex:1; background:#0B5ED7; color:#fff; border:none; padding:13px; border-radius:10px; font-weight:800;">+ TEMPERED BULK</button>
-<button type="button" onclick="addGlassBulk('Non-Tempered')" style="flex:1; background:#0B5ED7; color:#fff; border:none; padding:13px; border-radius:10px; font-weight:800;">+ NON-TEMPERED BULK</button>
+<div style="display:flex; gap:8px; margin-top:14px; flex-wrap:wrap;">
+<button type="button" onclick="addGlassBulk('Plain')" style="flex:1 1 90px; min-width:0; background:#0B5ED7; color:#fff; border:none; padding:13px 4px; border-radius:10px; font-weight:800;">+ PLAIN BULK</button>
+<button type="button" onclick="addGlassBulk('Tempered')" style="flex:1 1 110px; min-width:0; background:#0B5ED7; color:#fff; border:none; padding:13px 4px; border-radius:10px; font-weight:800;">+ TEMPERED BULK</button>
+<div style="position:relative; flex:1 1 130px; min-width:0;">
+  <button type="button" onclick="toggleNonTempMenu()" style="width:100%; background:#0B5ED7; color:#fff; border:none; padding:13px 4px; border-radius:10px; font-weight:800;">+ NON-TEMPERED BULK ▼</button>
+  <div id="nonTempMenu" style="display:none; position:absolute; top:calc(100% + 6px); left:0; right:0; background:#fff; border:1px solid #ccc; border-radius:10px; overflow:hidden; z-index:9999; box-shadow:0 10px 25px rgba(0,0,0,0.35);">
+    <button type="button" onclick="document.getElementById('nonTempMenu').style.display='none'; addGlassBulk('Non-Tempered')" style="width:100%; padding:12px; border:none; background:#fff; color:#111; font-weight:800; border-bottom:1px solid #eee; font-size:14px;">NON-TEMPERED</button>
+    <button type="button" onclick="document.getElementById('nonTempMenu').style.display='none'; addGlassBulk('Polish')" style="width:100%; padding:12px; border:none; background:#fff; color:#111; font-weight:800; border-bottom:1px solid #eee; font-size:14px;">POLISH</button>
+    <button type="button" onclick="document.getElementById('nonTempMenu').style.display='none'; addGlassBulk('Cut')" style="width:100%; padding:12px; border:none; background:#fff; color:#111; font-weight:800; font-size:14px;">CUT</button>
+  </div>
+</div>
 </div>
 
-</div>
-
+<div style="margin-top:12px;">
 <button type="button" onclick="toggleBulkList()" style="padding:7px 10px;font-weight:bold;background:#ff9800;color:white">DELETE BULK</button>
 <button type="button" onclick="deleteAllGlass()" style="padding:7px 10px;font-weight:bold;background:#f44336;color:white">DELETE ALL</button>
+</div>
 <div id="bulkList" style="margin-top:6px;font-size:13px"></div>
 <div id="bulkHistoryList" style="margin-top:6px;display:none;"></div>
 
@@ -1000,8 +1011,11 @@ placeholder="Phone number">
 
 <div class="mode-buttons"> <button type="button" onclick="addGlass('Tempered')">TEMPERED</button> <button type="button" onclick="addGlass('Non-Tempered')">NON-TEMPERED</button> <button type="button" onclick="addPlus()">+</button> </div>
 
-<div class="table-wrap"> <table class="order-table"> <thead> <tr> <th>S/N</th> <th>TYPE</th> <th>DESCRIPTION / SEARCH</th> <th>UNIT</th>
-<th>UNIT</th>  
+<div class="table-wrap"> <table class="order-table"> <thead> <tr> <th style="white-space:nowrap;">
+  <button type="button" onclick="sortGlassRows()" id="sortBtn" style="background:none; border:none; color:#fff; font-weight:bold; cursor:pointer; font-size:14px;">
+    S/N ↕
+  </button>
+</th> <th>TYPE</th> <th>DESCRIPTION / SEARCH</th> <th>UNIT</th>
 <th>WIDTH</th>  
 <th>HEIGHT</th>  
 <th>SQM</th>  
@@ -2916,8 +2930,28 @@ if(modeBtns){ parent.insertBefore(modeBtns, wrap); }
 document.addEventListener("DOMContentLoaded", initBulkRemarkUI);
 setTimeout(initBulkRemarkUI, 500);
 var bulkHistory = [];
+try{ bulkHistory = JSON.parse(localStorage.getItem('glass_bulkHistory')||'[]'); }catch(e){ bulkHistory = []; }
+function saveBulkHistory(){ try{ localStorage.setItem('glass_bulkHistory', JSON.stringify(bulkHistory)); }catch(e){} }
+function rebuildBulkHistoryFromRows(){
+  if(bulkHistory.length) return;
+  var seen = {};
+  document.querySelectorAll('#orderBody .glass-row[data-bulk-id]').forEach(function(r){
+    var id = r.getAttribute('data-bulk-id');
+    if(!seen[id]){ seen[id]=true; bulkHistory.push({id:id, desk: r.querySelector('input[placeholder*="SEARCH"]') ? r.querySelector('input[placeholder*="SEARCH"]').value : id, count: 1}); }
+    else { bulkHistory.forEach(function(b){ if(b.id===id) b.count++; }); }
+  });
+saveBulkHistory();
+}
 var bulkIdCounter = 0;
 function addGlassBulk(type){
+// Futa row ya default tupu - angalia DESCRIPTION tu
+var _empty = Array.prototype.slice.call(document.querySelectorAll('#orderBody .glass-row'));
+_empty.forEach(function(row){
+  var _desc = row.querySelector('input[placeholder*="SEARCH"]');
+  if(_desc && _desc.value.trim() === "") row.remove();
+});
+var bulkProcess=null;
+if(type==='Polish'||type==='Cut'||type==='POLISH'||type==='CUT'){bulkProcess=type.toUpperCase();type='Non-Tempered';}
   var descEl = document.getElementById('bulkDesc');
   var countEl = document.getElementById('bulkCount');
   var priceEl = document.getElementById('bulkPrice');
@@ -2941,6 +2975,7 @@ var newRows = allRows.filter(function(r){ return oldRows.indexOf(r)===-1; });
 for(var j=0; j<newRows.length; j++){
 var row = newRows[j];
 row.dataset.bulkId = thisBulkId;
+if(bulkProcess){var sel=row.querySelector('.nonTempProcess');if(sel){sel.value=bulkProcess;try{updateNonTemperedPrice(row);}catch(e){}}}
 
     // 1. Weka DESCRIPTION moja kwenye zote
     if(desc){
@@ -2971,6 +3006,7 @@ row.dataset.bulkId = thisBulkId;
   }
 
   if(typeof calculateTotals === 'function'){ calculateTotals(); } bulkHistory.push({id: thisBulkId, desc: desc || type, type: type, count: n});
+saveBulkHistory();
 renderBulkList();
 
   // Focus kwenye row ya kwanza ya bulk ili uanze kujaza H na W
@@ -2986,9 +3022,63 @@ renderBulkList();
 }
 function renderBulkList(){
 var el=document.getElementById('bulkHistoryList');
+
 if(!el) return;
 if(!bulkHistory.length){ el.innerHTML='<div style="color:#888;font-size:12px;">No bulk yet</div>'; return; }
 el.innerHTML=bulkHistory.map(function(b){ return '<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 6px;border:1px solid #ddd;border-radius:6px;margin-bottom:4px;background:#fff;"><span>'+b.desc+' ('+b.count+')</span><button onclick="deleteBulkGroup(\''+b.id+'\')" style="background:#e53935;color:#fff;border:none;border-radius:4px;padding:3px 8px;">DELETE</button></div>'; }).join('');
+}
+function deleteAllGlass(){
+  var old = document.getElementById('deleteAllMenu');
+  if(old){ old.remove(); return; }
+
+  var menu = document.createElement('div');
+  menu.id = 'deleteAllMenu';
+  menu.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:10px;border-radius:12px;z-index:99999;width:85%;max-width:320px;box-shadow:0 10px 30px rgba(0,0,0,0.4);display:flex;flex-direction:column;gap:10px;';
+
+  menu.innerHTML =
+    '<button onclick="deleteAllBulkOnly()" style="padding:14px;border:none;border-radius:10px;background:#f59e0b;color:white;font-weight:bold;">delete all bulk</button>' +
+    '<button onclick="deleteAllRowsOnly()" style="padding:14px;border:none;border-radius:10px;background:#ef4444;color:white;font-weight:bold;">delete all row</button>' +
+    '<button onclick="document.getElementById(\'deleteAllMenu\').remove()" style="padding:10px;border:none;background:transparent;font-weight:bold;">cancel</button>';
+
+  document.body.appendChild(menu);
+}
+
+function deleteAllBulkOnly(){
+  if(!confirm('Futa BULK zote? Row za kawaida zitabaki.')) return;
+  var body = document.getElementById('orderBody');
+  if(body) body.querySelectorAll('tr[data-bulk-id]').forEach(function(r){ r.remove(); });
+  if(typeof bulkHistory !== 'undefined') bulkHistory = [];
+  if(typeof saveBulkHistory === 'function') saveBulkHistory();
+
+  // FUTA BULK KWENYE KUMBUKUMBU YA ORDER PIA - ndiyo iliyokuwa inazirudisha
+  try{
+    Object.keys(localStorage).forEach(function(k){
+      var v = localStorage.getItem(k);
+      if(!v) return;
+      try{
+        var data = JSON.parse(v);
+        if(Array.isArray(data)){
+          var filtered = data.filter(function(item){
+            if(!item || typeof item !== 'object') return true;
+            return !item.bulkId && !item.bulk_id && !item.isBulk && item.type !== 'bulk';
+          });
+          if(filtered.length !== data.length) localStorage.setItem(k, JSON.stringify(filtered));
+        }
+      }catch(e){}
+      var l = k.toLowerCase();
+      if(l.includes('bulk')) localStorage.removeItem(k);
+    });
+  }catch(e){}
+
+  // Jaribu ku-save order mpya baada ya kufuta
+  if(typeof saveOrder === 'function') saveOrder();
+  if(typeof saveData === 'function') saveData();
+  if(typeof saveGlass === 'function') saveGlass();
+  if(typeof saveOrders === 'function') saveOrders();
+
+  var m = document.getElementById('deleteAllMenu'); if(m) m.remove();
+  if(typeof calculateTotals === 'function') calculateTotals();
+  if(typeof renderBulkList === 'function') renderBulkList();
 }
 function toggleBulkList(){
 var el=document.getElementById('bulkHistoryList');
@@ -2996,12 +3086,72 @@ if(!el) return;
 renderBulkList();
 if(el.style.display==='none' || el.style.display===''){ el.style.display='block'; } else { el.style.display='none'; }
 }
+function _rowFinger(row){
+  var vals = [];
+  row.querySelectorAll('input,select,textarea').forEach(function(i){ vals.push((i.value||'').trim()); });
+  return vals.join('|');
+}
+function _removeFingerprintsFromStorage(fps){
+  if(!fps.length) return;
+  Object.keys(localStorage).forEach(function(k){
+    try{
+      var raw = localStorage.getItem(k); if(!raw) return;
+      var data = JSON.parse(raw);
+      var arr = null; var wrapKey = null;
+      if(Array.isArray(data)) arr = data;
+      else if(data && typeof data === 'object'){
+        if(Array.isArray(data.rows)){ arr = data.rows; wrapKey='rows'; }
+        else if(Array.isArray(data.items)){ arr = data.items; wrapKey='items'; }
+        else if(Array.isArray(data.data)){ arr = data.data; wrapKey='data'; }
+      }
+      if(!arr) return;
+      var before = arr.length;
+      var filtered = arr.filter(function(item){
+        var f = '';
+        if(Array.isArray(item)) f = item.join('|');
+        else if(item && typeof item === 'object') f = Object.values(item).join('|');
+        else f = String(item);
+        return !fps.includes(f);
+      });
+      if(filtered.length !== before){
+        if(wrapKey){ data[wrapKey]=filtered; localStorage.setItem(k, JSON.stringify(data)); }
+        else localStorage.setItem(k, JSON.stringify(filtered));
+      }
+    }catch(e){}
+  });
+}
 function deleteBulkGroup(id){
-if(!confirm('DELETE this bulk?')) return;
-document.querySelectorAll('#orderBody .glass-row[data-bulk-id="'+id+'"]').forEach(function(r){ r.remove(); });
-bulkHistory=bulkHistory.filter(function(b){ return b.id!==id; });
-renderBulkList();
-if(typeof calculateTotals==='function'){ calculateTotals(); }
+  if(!confirm('Futa BULK hii?')) return;
+  var body = document.getElementById('orderBody');
+  var rows = body ? Array.from(body.querySelectorAll('tr[data-bulk-id="'+id+'"]')) : [];
+  var fps = rows.map(_rowFinger);
+  rows.forEach(function(r){ r.remove(); });
+  bulkHistory = bulkHistory.filter(function(b){ return String(b.id) !== String(id); });
+  saveBulkHistory();
+  _removeFingerprintsFromStorage(fps);
+  if(typeof calculateTotals === 'function') calculateTotals();
+  if(typeof renderBulkList === 'function') renderBulkList();
+  // Lazimisha ORDER ihifadhiwe upya bila hizo row
+  document.querySelectorAll('#orderBody input, #orderBody select').forEach(function(i){
+    i.dispatchEvent(new Event('input',{bubbles:true}));
+    i.dispatchEvent(new Event('change',{bubbles:true}));
+  });
+}
+function deleteAllBulkOnly(){
+  if(!confirm('Futa BULK zote? Row za kawaida zitabaki.')) return;
+  var body = document.getElementById('orderBody');
+  var rows = body ? Array.from(body.querySelectorAll('tr[data-bulk-id]')) : [];
+  var fps = rows.map(_rowFinger);
+  rows.forEach(function(r){ r.remove(); });
+  bulkHistory = [];
+  saveBulkHistory();
+  _removeFingerprintsFromStorage(fps);
+  if(typeof calculateTotals === 'function') calculateTotals();
+  if(typeof renderBulkList === 'function') renderBulkList();
+  document.querySelectorAll('#orderBody input, #orderBody select').forEach(function(i){
+    i.dispatchEvent(new Event('input',{bubbles:true}));
+    i.dispatchEvent(new Event('change',{bubbles:true}));
+  });
 }
  function addGlass(type,skipFocus=false){  
   
@@ -3026,6 +3176,7 @@ TEMPERED
 ${type==="Non-Tempered"?"selected":""}>  
 NON-TEMPERED  
 </option>  
+
   
 </select>  
   
@@ -7531,5 +7682,91 @@ function syncTotalPayable(){
 document.addEventListener('input',function(e){
   if(e.target && (e.target.id==='orderGrandTotal' || e.target.id==='accessorySubtotal')) syncTotalPayable();
 });
+let sortAsc = true;
+function sortGlassRows(){
+  const tbody = document.querySelector("table tbody");
+  const rows = Array.from(tbody.querySelectorAll("tr.glass-row"));
+
+  rows.sort((a,b)=>{
+    const aNo = parseInt(a.querySelector(".rowNo")?.textContent || 0);
+    const bNo = parseInt(b.querySelector(".rowNo")?.textContent || 0);
+    return sortAsc ? aNo - bNo : bNo - aNo;
+  });
+
+  rows.forEach(r => tbody.appendChild(r));
+
+  // HII NDIO FIX: Andika upya namba 1..N kutokana na order mpya
+  rows.forEach((r, i) => {
+  const el = r.querySelector(".rowNo");
+  if(el) el.textContent = i + 1;
+  r.dataset.editOrder = i + 1;
+});
+
+  sortAsc = !sortAsc;
+}
+function toggleNonTempMenu(){
+  const m = document.getElementById("nonTempMenu");
+  m.style.display = (m.style.display === "none" || !m.style.display) ? "block" : "none";
+}
+try{
+var _origBulk = window.addGlassBulk;
+if(_origBulk && !_origBulk._fixed){
+var _newBulk = function(count, desc, id){
+var r = _origBulk(count, desc, id);
+try{
+var h = JSON.parse(localStorage.getItem('bulkHistory')||'[]');
+if(id){ h.push({id:id, desc:desc, count:count}); localStorage.setItem('bulkHistory', JSON.stringify(h)); }
+}catch(e){}
+return r;
+};
+_newBulk._fixed = true;
+window.addGlassBulk = _newBulk;
+}
+}catch(e){}
+try{
+document.addEventListener('click', function(e){
+var t = e.target;
+if(!t || !t.textContent) return;
+var txt = t.textContent.toLowerCase();
+if(txt.indexOf('delete all row') !== -1){
+e.preventDefault(); e.stopPropagation();
+if(!confirm('Futa row zote?')) return;
+try{ localStorage.clear(); }catch(err){}
+var allRows = document.querySelectorAll('table tbody tr, table tr');
+for(var i=1;i<allRows.length;i++){ try{ allRows[i].remove(); }catch(err){} }
+var tb = document.querySelector('tbody');
+if(tb) tb.innerHTML='';
+try{ if(typeof updateTotals==='function') updateTotals(); }catch(err){}
+alert('Row zote zimefutwa!');
+location.reload();
+}
+}, true);
+}catch(e){}
+try{
+window.deleteAllBulkOnly = function(){
+if(!confirm('Futa bulk zote?')) return;
+window.bulkHistory = [];
+try{ localStorage.setItem('bulkHistory','[]'); }catch(e){}
+try{ localStorage.removeItem('glassDraft'); }catch(e){}
+var tb = document.querySelector('tbody');
+if(tb) tb.innerHTML='';
+try{ if(typeof updateTotals==='function') updateTotals(); }catch(e){}
+try{ if(typeof renderBulkList==='function') renderBulkList(); }catch(e){}
+var m=document.getElementById('deleteAllMenu'); if(m) m.remove();
+alert('Bulk zote zimefutwa!');
+};
+window.deleteAllRowsOnly = function(){
+if(!confirm('Futa row zote?')) return;
+window.bulkHistory = [];
+try{ localStorage.setItem('bulkHistory','[]'); }catch(e){}
+try{ localStorage.removeItem('glassDraft'); }catch(e){}
+var tb = document.querySelector('tbody');
+if(tb) tb.innerHTML='';
+try{ if(typeof updateTotals==='function') updateTotals(); }catch(e){}
+try{ if(typeof renderBulkList==='function') renderBulkList(); }catch(e){}
+var m=document.getElementById('deleteAllMenu'); if(m) m.remove();
+alert('Row zote zimefutwa!');
+};
+}catch(e){}
 </script> </body>  
 </html>
