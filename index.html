@@ -1601,10 +1601,10 @@ AUTO GENERATE INVOICE NUMBER
 
 <input  
 id="cpInvoicePattern"  
-placeholder="JG-{YYYY}{MM}{DD}-{HH}{mm}{ss}">
+placeholder="INV-{YY}-{count}">
 
 <div class="small-note">  
-Supported: {YYYY} {YY} {MM} {DD} {HH} {mm} {ss} {timestamp}  
+Supported: INV-{YY}-{count} 
 </div>  </div>  </div>  <h3 class="section-title">  
 BANK / PAYMENT DETAILS  
 </h3>  <div class="cp-grid">  <div>  
@@ -1749,7 +1749,7 @@ vat:18,
 discount:0,  
 autoInvoice:true,  
   
-invoicePattern:"JG-{YYYY}{MM}{DD}-{HH}{mm}{ss}",  
+invoicePattern:"INV-{YY}-{count}",  
   
 tempered:[  
 ["4mm Clear Glass","49400"],  
@@ -2825,7 +2825,7 @@ document.getElementById("cpInvoicePattern")
   
 settings.invoicePattern=  
 newPattern||  
-"JG-{YYYY}{MM}{DD}-{HH}{mm}{ss}";  
+"INV-{YY}-{count}";  
   
 settings.bank1=  
 document.getElementById("cpBank1").value;  
@@ -5848,7 +5848,9 @@ String(seq||1).padStart(3,"0"),
 "{SEQ3}":
 String(seq||1).padStart(3,"0"),
 "{SEQ4}":
-String(seq||1).padStart(4,"0")
+String(seq||1).padStart(4,"0"),
+"{count}":
+String(seq||1).padStart(4,"0"),
   
 };  
   
@@ -6884,7 +6886,7 @@ document.getElementById("iPhone")
 :"";  
   
 document.getElementById("iCustomerID")  
-.textContent=data.customerID||"";  
+.textContent=(data.customerID||(data.invoiceNo?"JV"+data.invoiceNo.split("-").pop():""));  
   
 document.getElementById("iInvoiceNo")  
 .textContent=data.invoiceNo||"";  
@@ -7709,21 +7711,6 @@ function toggleNonTempMenu(){
   m.style.display = (m.style.display === "none" || !m.style.display) ? "block" : "none";
 }
 try{
-var _origBulk = window.addGlassBulk;
-if(_origBulk && !_origBulk._fixed){
-var _newBulk = function(count, desc, id){
-var r = _origBulk(count, desc, id);
-try{
-var h = JSON.parse(localStorage.getItem('bulkHistory')||'[]');
-if(id){ h.push({id:id, desc:desc, count:count}); localStorage.setItem('bulkHistory', JSON.stringify(h)); }
-}catch(e){}
-return r;
-};
-_newBulk._fixed = true;
-window.addGlassBulk = _newBulk;
-}
-}catch(e){}
-try{
 document.addEventListener('click', function(e){
 var t = e.target;
 if(!t || !t.textContent) return;
@@ -7768,5 +7755,142 @@ var m=document.getElementById('deleteAllMenu'); if(m) m.remove();
 alert('Row zote zimefutwa!');
 };
 }catch(e){}
+try{
+try{
+// Kumbuka kila bulk kivyake
+function saveMyBulks(){
+try{ localStorage.setItem('myBulks', JSON.stringify(window.myBulks||[])); }catch(e){}
+}
+try{
+var sb = localStorage.getItem('myBulks');
+window.myBulks = sb ? JSON.parse(sb) : [];
+}catch(e){ window.myBulks = []; }
+
+// Kila ukitengeneza bulk, itunze
+document.addEventListener('click', function(e){
+var t = e.target.closest('button');
+if(!t) return;
+var txt = (t.innerText||'').toLowerCase();
+if(txt.includes('plain bulk') || txt.includes('tempered bulk')){
+setTimeout(function(){
+var rows = document.querySelectorAll('tbody tr');
+var desc = (document.querySelector('input[placeholder*="Name"]')||{}).value || '';
+// Chukua bulk ya mwisho iliyoongezeka: row 10 za mwisho ni bulk mpya
+// Tunahifadhi tu idadi na jina
+var countInput = document.querySelector('input[placeholder*="Count"]');
+var c = countInput ? parseInt(countInput.value||'0') : 0;
+if(c>0){
+window.myBulks.push({name: desc || ('Bulk '+(window.myBulks.length+1)), count: c, time: Date.now()});
+saveMyBulks();
+}
+}, 500);
+}
+}, true);
+
+// DELETE BULK MPYA - CHAGUA
+document.addEventListener('click', function(e){
+var t = e.target.closest('button');
+if(!t) return;
+var txt = (t.innerText||'').toLowerCase().trim();
+if(txt !== 'delete bulk') return;
+e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+
+if(!window.myBulks.length){
+alert('No bulk yet - hakuna bulk iliyohifadhiwa. Tengeneza bulk mpya kwanza.');
+return;
+}
+// Tengeneza orodha ya kuchagua
+var old = document.getElementById('chooseBulkBox'); if(old) old.remove();
+var box = document.createElement('div');
+box.id='chooseBulkBox';
+box.style.cssText='position:fixed;top:20%;left:5%;right:5%;background:#fff;color:#000;padding:16px;border-radius:12px;z-index:9999;box-shadow:0 0 20px rgba(0,0,0,.5)';
+var html = '<b>Chagua bulk ya kufuta:</b><br><br>';
+window.myBulks.forEach(function(b,i){
+html += '<div style="display:flex;justify-content:space-between;padding:10px;border-bottom:1px solid #ddd"><span>'+(i+1)+'. '+b.name+' ('+b.count+' row)</span><button data-del="'+i+'" style="background:red;color:#fff;border:none;padding:6px 12px;border-radius:8px">FUTA</button></div>';
+});
+html += '<br><button id="closeChoose" style="width:100%;padding:10px;border-radius:8px">FUNGA</button>';
+box.innerHTML = html;
+document.body.appendChild(box);
+
+box.addEventListener('click', function(ev){
+if(ev.target.id==='closeChoose'){ box.remove(); return; }
+var idx = ev.target.getAttribute('data-del');
+if(idx===null) return;
+idx = parseInt(idx);
+var b = window.myBulks[idx];
+if(!confirm('Futa "'+b.name+'" ('+b.count+' row)? Nyingine zitabaki.')) return;
+// Futa row za bulk hiyo: tunafuta kuanzia mwisho kwenda mwanzo kwa idadi yake
+// Bulk za mwisho ziko juu (S/N kubwa), kwa hiyo tunahesabu kulingana na nafasi yake
+var tb = document.querySelector('tbody');
+var allRows = tb ? Array.from(tb.querySelectorAll('tr')) : [];
+// Kama bulk ni ya kwanza, iko chini. Kama ni ya mwisho, iko juu.
+// Tunafuta kulingana na mpangilio: bulk ya mwisho = row za juu
+var start = 0;
+for(var j=window.myBulks.length-1;j>idx;j--){ start += window.myBulks[j].count; }
+for(var k=0;k<b.count;k++){
+var r = allRows[start];
+if(r) r.remove();
+}
+window.myBulks.splice(idx,1);
+saveMyBulks();
+try{ localStorage.removeItem('glassDraft'); }catch(err){}
+try{ if(typeof updateTotals==='function') updateTotals(); }catch(err){}
+box.remove();
+alert('Bulk "'+b.name+'" imefutwa! Nyingine zimebaki.');
+});
+}, true);
+}catch(e){}
+try{
+window.myBulks = JSON.parse(localStorage.getItem('myBulks')||'[]');
+function saveB(){ localStorage.setItem('myBulks', JSON.stringify(window.myBulks)); }
+document.addEventListener('click', function(e){
+var t=e.target.closest('button'); if(!t) return;
+var txt=(t.innerText||'').toLowerCase();
+if(txt.includes('plain bulk')||txt.includes('tempered bulk')){
+var c=parseInt((document.querySelector('input[placeholder*="Count"]')||{}).value||'0');
+if(c>0){ setTimeout(function(){
+var rows=document.querySelectorAll('tbody tr'); var sns=[];
+rows.forEach(function(r){ var s=r.cells[0]?r.cells[0].innerText.trim():''; if(s) sns.push(s); });
+window.myBulks.push({name:'Bulk '+(window.myBulks.length+1), count:c, sns:sns.slice(0,c)}); saveB();
+},600); }
+}
+}, true);
+document.addEventListener('click', function(e){
+var t=e.target.closest('button'); if(!t) return;
+if((t.innerText||'').toLowerCase().trim()!=='delete bulk') return;
+e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+if(!window.myBulks.length){ alert('No bulk yet - tengeneza bulk mpya kwanza, ndio itakumbuka.'); return; }
+var old=document.getElementById('cb'); if(old) old.remove();
+var box=document.createElement('div'); box.id='cb';
+box.style.cssText='position:fixed;top:20%;left:5%;right:5%;background:#fff;color:#000;padding:16px;border-radius:12px;z-index:9999';
+var h='<b>Chagua bulk ya kufuta:</b><br><br>';
+window.myBulks.forEach(function(b,i){ h+='<div style="display:flex;justify-content:space-between;padding:10px;border-bottom:1px solid #ddd"><span>'+(i+1)+'. '+b.name+' ('+b.count+')</span><button data-d="'+i+'" style="background:red;color:#fff;border:none;padding:6px 12px;border-radius:8px">FUTA</button></div>'; });
+h+='<br><button id="cc" style="width:100%;padding:10px">FUNGA</button>';
+box.innerHTML=h; document.body.appendChild(box);
+box.addEventListener('click', function(ev){
+if(ev.target.id==='cc'){ box.remove(); return; }
+var idx=ev.target.getAttribute('data-d'); if(idx===null) return; idx=parseInt(idx);
+var b=window.myBulks[idx];
+if(!confirm('Futa '+b.name+'?')) return;
+document.querySelectorAll('tbody tr').forEach(function(r){ var s=r.cells[0]?r.cells[0].innerText.trim():''; if(b.sns.includes(s)) r.remove(); });
+window.myBulks.splice(idx,1); saveB();
+try{ localStorage.removeItem('glassDraft'); }catch(err){}
+try{ if(typeof updateTotals==='function') updateTotals(); }catch(err){}
+box.remove(); alert(b.name+' imefutwa, nyingine zimebaki.');
+});
+}, true);
+}catch(e){}
+}
+function syncCustomerID(){
+  var inv = document.getElementById('invoiceNo');
+  var cust = document.getElementById('customerID');
+  if(!inv || !cust) return;
+  var parts = inv.value.split('-');
+  var num = parts[parts.length-1];
+  if(num && num.length>=3){
+    cust.value = 'JV' + num;
+  }
+}
+setInterval(syncCustomerID, 500);
 </script> </body>  
 </html>
